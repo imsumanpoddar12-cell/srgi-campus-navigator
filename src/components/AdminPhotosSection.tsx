@@ -34,6 +34,7 @@ export default function AdminPhotosSection({
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
   const [avatarInput, setAvatarInput] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -43,6 +44,7 @@ export default function AdminPhotosSection({
     setNameInput(admin.name);
     setEmailInput(admin.email);
     setPhoneInput(admin.phone || "");
+    setPasswordInput(admin.password || "");
     setAvatarInput(admin.avatarUrl || "");
     setSavedSuccess(false);
   };
@@ -55,6 +57,7 @@ export default function AdminPhotosSection({
       name: nameInput.trim() || editingAdmin.name,
       email: emailInput.trim() || editingAdmin.email,
       phone: phoneInput.trim() || editingAdmin.phone,
+      password: passwordInput.trim() || editingAdmin.password,
       avatarUrl: avatarInput.trim() || undefined,
     });
 
@@ -185,11 +188,16 @@ export default function AdminPhotosSection({
                   </span>
                 </div>
 
-                {/* Admin Name */}
+                {/* Admin Name & Username */}
                 <div className="text-center mt-3">
                   <h3 className="text-base font-bold text-slate-900 tracking-tight">
                     {admin.name}
                   </h3>
+                  <div className="mt-1 flex items-center justify-center gap-1.5">
+                    <span className="text-[11px] font-mono font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-100">
+                      @{admin.username || admin.id}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Contact Information */}
@@ -366,6 +374,21 @@ export default function AdminPhotosSection({
                   onChange={(e) => setPhoneInput(e.target.value)}
                   placeholder="Optional phone number"
                   className="w-full p-2.5 bg-slate-50 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800"
+                />
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">
+                  Admin Login Password
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder="Enter login password (e.g. a@12)"
+                  className="w-full p-2.5 bg-slate-50 rounded-xl border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800 font-mono"
                 />
               </div>
 

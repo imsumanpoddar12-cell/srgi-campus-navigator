@@ -76,7 +76,13 @@ export default function App() {
   const [collegeInfo] = useState(initialCollegeInfo);
 
   const [admins, setAdmins] = useState<AdminUser[]>(() => {
-    return safeParse(safeGetItem("srgi_admins"), initialAdmins);
+    const saved = safeParse<AdminUser[]>(safeGetItem("srgi_admins"), []);
+    // If empty or containing outdated credentials, migrate to new initialAdmins
+    if (!saved || saved.length === 0 || !saved.some((a) => a.id === "suman92" || a.password === "a@12")) {
+      safeSetItem("srgi_admins", JSON.stringify(initialAdmins));
+      return initialAdmins;
+    }
+    return saved;
   });
 
   const [team, setTeam] = useState<TeamMember[]>(() => {

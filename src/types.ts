@@ -6,6 +6,8 @@ export interface AdminUser {
   password: string;
   email: string;
   role: RoleType;
+  username?: string;
+  aliasUsernames?: string[];
   phone?: string;
   avatarUrl?: string;
 }

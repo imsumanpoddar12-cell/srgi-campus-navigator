@@ -29,17 +29,20 @@ export default function AdminLoginModal({
     const foundAdmin = admins.find(
       (a) =>
         a.id.toLowerCase() === input ||
+        (a.username && a.username.toLowerCase() === input) ||
+        (a.aliasUsernames && a.aliasUsernames.some((alias) => alias.toLowerCase() === input)) ||
         a.email.toLowerCase() === input ||
+        a.name.toLowerCase() === input ||
         a.name.toLowerCase().includes(input)
     );
 
     if (!foundAdmin) {
-      setErrorMsg("Admin ID or Email not recognized. Please check your credentials.");
+      setErrorMsg("Admin username, ID, or Email not recognized. Please check your credentials.");
       return;
     }
 
     if (foundAdmin.password !== password.trim()) {
-      setErrorMsg("Incorrect password. Please verify your phone/password credentials.");
+      setErrorMsg("Incorrect password. Please verify your admin password.");
       return;
     }
 
@@ -97,7 +100,7 @@ export default function AdminLoginModal({
                 required
                 value={adminIdOrEmail}
                 onChange={(e) => setAdminIdOrEmail(e.target.value)}
-                placeholder="e.g. suman01 or imsumanpoddar12@gmail.com"
+                placeholder="e.g. suman92 or imsumanpoddar12@gmail.com"
                 className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-blue-600 font-medium"
               />
             </div>
@@ -115,7 +118,7 @@ export default function AdminLoginModal({
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password (default: your contact number)"
+                placeholder="Enter password (e.g. a@12, a@13, etc.)"
                 className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-blue-600 font-medium"
               />
             </div>
@@ -131,7 +134,7 @@ export default function AdminLoginModal({
         </form>
 
         <div className="mt-4 p-3 bg-slate-50 rounded-xl text-[11px] text-slate-500 border border-slate-100 text-center">
-          Available to registered admins (Suman Kumar, Vivek Sahani, Pranjal Maurya, Roshan Kumar Bharti, Rijawan Khan, Avinash Prajapati, Vivek Saroj).
+          Available to registered admins: SUMAN KUMAR (suman92), Vivek Sahani (vivek93), Pranjal Maurya (pranjal94), Roshan Kumar Bharti (roshan95), Rijawan Khan (rijawan96), Avinash Prajapati (avinash97), Vivek Saroj (viveksaroj98).
         </div>
       </div>
     </div>
