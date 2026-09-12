@@ -1,0 +1,6 @@
+{
+  "name": "SRGI Campus Navigator - My Campus Info",
+  "description": "Smart campus navigation, block directory, faculties, timetable, team showcase, and Gemini AI assistant for SR Group of Institutions.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
