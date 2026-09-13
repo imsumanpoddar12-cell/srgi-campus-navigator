@@ -19,6 +19,8 @@ import AdminLoginModal from "./components/AdminLoginModal";
 import AIAssistantModal from "./components/AIAssistantModal";
 import AcknowledgementModal from "./components/AcknowledgementModal";
 import SRGILogo from "./components/SRGILogo";
+import CameraDetectorSection from "./components/CameraDetectorSection";
+import SendMessageSection from "./components/SendMessageSection";
 
 import {
   initialCollegeInfo,
@@ -30,7 +32,7 @@ import {
 } from "./data/campusData";
 import { defaultCampusPhotos } from "./data/campusPhotos";
 import { AdminUser, TeamMember, CampusLocation, CampusPhotoItem } from "./types";
-import { Sparkles, Heart, ShieldCheck, Compass, Mic } from "lucide-react";
+import { Sparkles, Heart, ShieldCheck, Compass, Mic, Camera, MessageSquare } from "lucide-react";
 
 // Safe localStorage utilities to prevent unhandled quota/security exceptions
 function safeGetItem(key: string): string | null {
@@ -77,34 +79,15 @@ export default function App() {
   // State initialization with safe localStorage fallback
   const [collegeInfo] = useState(initialCollegeInfo);
 
-  const [admins, setAdmins] = useState<AdminUser[]>(() => {
-    const saved = safeParse<AdminUser[]>(safeGetItem("srgi_admins"), []);
-    // If empty or containing outdated credentials, migrate to new initialAdmins
-    if (!saved || saved.length === 0 || !saved.some((a) => a.id === "suman92" || a.password === "a@12")) {
-      safeSetItem("srgi_admins", JSON.stringify(initialAdmins));
-      return initialAdmins;
-    }
-    // Automatically update admins with official photo URLs if missing or previous unsplash placeholder
-    const updated = saved.map((admin) => {
-      const match = initialAdmins.find((init) => init.id === admin.id);
-      if (match && (!admin.avatarUrl || admin.avatarUrl.includes("unsplash.com"))) {
-        return { ...admin, avatarUrl: match.avatarUrl };
-      }
-      return admin;
-    });
-    return updated;
+  const [admins] = useState<AdminUser[]>(() => {
+    // Admin information is permanently locked and verified ("koi bhi edit nahi kr skta")
+    safeSetItem("srgi_admins", JSON.stringify(initialAdmins));
+    return initialAdmins;
   });
 
-  const [team, setTeam] = useState<TeamMember[]>(() => {
-    const saved = safeParse<TeamMember[]>(safeGetItem("srgi_team"), initialTeamMembers);
-    const updated = saved.map((member) => {
-      const match = initialTeamMembers.find((init) => init.id === member.id);
-      if (match && (!member.photoUrl || member.photoUrl.includes("unsplash.com"))) {
-        return { ...member, photoUrl: match.photoUrl };
-      }
-      return member;
-    });
-    return updated;
+  const [team] = useState<TeamMember[]>(() => {
+    safeSetItem("srgi_team", JSON.stringify(initialTeamMembers));
+    return initialTeamMembers;
   });
 
   const [locations, setLocations] = useState<CampusLocation[]>(() => {
@@ -186,21 +169,6 @@ export default function App() {
   }, [loggedAdmin]);
 
   // Handlers
-  const handleUpdateAdmin = (id: string, updated: Partial<AdminUser>) => {
-    setAdmins((prev) =>
-      prev.map((admin) => (admin.id === id ? { ...admin, ...updated } : admin))
-    );
-    if (loggedAdmin && loggedAdmin.id === id) {
-      setLoggedAdmin((prev) => (prev ? { ...prev, ...updated } : null));
-    }
-  };
-
-  const handleUpdateTeamMember = (id: string, updated: Partial<TeamMember>) => {
-    setTeam((prev) =>
-      prev.map((member) => (member.id === id ? { ...member, ...updated } : member))
-    );
-  };
-
   const handleAddLocation = (newLoc: CampusLocation) => {
     setLocations((prev) => [newLoc, ...prev]);
   };
@@ -287,9 +255,32 @@ export default function App() {
               }
             }}
             team={team}
-            onUpdateTeamMember={handleUpdateTeamMember}
             isLoggedIn={!!loggedAdmin}
           />
+        )}
+
+        {activeSection === "camera" && (
+          <div className="py-6">
+            <CameraDetectorSection
+              locations={locations}
+              onOpenMap={() => {
+                setActiveSection("campus");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            />
+          </div>
+        )}
+
+        {activeSection === "messages" && (
+          <div className="py-6">
+            <SendMessageSection
+              team={team}
+              onBackToHome={() => {
+                setActiveSection("home");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            />
+          </div>
         )}
 
         {activeSection === "campus" && (
@@ -326,7 +317,6 @@ export default function App() {
               setActiveSection("home");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            onUpdateAdmin={handleUpdateAdmin}
             isLoggedIn={!!loggedAdmin}
             currentAdminId={loggedAdmin?.id}
           />
@@ -373,11 +363,7 @@ export default function App() {
                 ← Back to Home
               </button>
             </div>
-            <OurTeamSection
-              team={team}
-              onUpdateTeamMember={handleUpdateTeamMember}
-              isLoggedIn={!!loggedAdmin}
-            />
+            <OurTeamSection team={team} />
           </div>
         )}
 
@@ -415,8 +401,6 @@ export default function App() {
             onAddLocation={handleAddLocation}
             onDeleteLocation={handleDeleteLocation}
             team={team}
-            onUpdateTeamMember={handleUpdateTeamMember}
-            onUpdateAdmin={handleUpdateAdmin}
             onBack={() => {
               setActiveSection("home");
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -431,6 +415,18 @@ export default function App() {
         aria-label="Quick Action Toolbar"
         className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl shadow-blue-950/15 border border-slate-200/80 flex items-center gap-2 max-w-[calc(100vw-32px)]"
       >
+        <button
+          id="dock-camera-btn"
+          onClick={() => {
+            setActiveSection("camera");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="px-3 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-xl flex items-center gap-1.5 transition-colors border border-emerald-200"
+        >
+          <Camera className="w-4 h-4 text-emerald-600" />
+          <span className="hidden sm:inline">Camera Vision</span>
+        </button>
+
         <button
           id="dock-map-btn"
           onClick={() => setIsSideMapOpen(true)}
@@ -524,7 +520,7 @@ export default function App() {
 
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-blue-300 gap-3 text-center sm:text-left">
             <div>
-              © {new Date().getFullYear()} SRGI Campus Navigator • Built with pride by Suman Kumar (Leader), Vivek Sahani (Co-Leader) & Team.
+              © {new Date().getFullYear()} SRGI Campus Navigator • Built with pride by Er. Suman Kumar (Leader), Er. Vivek Sahani (Co-Leader) & Team.
             </div>
             <div className="flex items-center gap-4">
               <button

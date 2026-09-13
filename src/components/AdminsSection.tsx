@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, Shield, Award, Eye, EyeOff, Edit3, Check, ArrowLeft, Image as ImageIcon } from "lucide-react";
+import { Mail, MapPin, Shield, Award, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { AdminUser } from "../types";
 
 interface AdminsSectionProps {
@@ -34,29 +34,8 @@ export default function AdminsSection({
   onBack,
   showPhotos,
   onTogglePhotos,
-  onUpdateAdmin,
-  isLoggedIn = false,
 }: AdminsSectionProps) {
-  const [editingAdminId, setEditingAdminId] = useState<string | null>(null);
-  const [editEmail, setEditEmail] = useState("");
-  const [editPhotoUrl, setEditPhotoUrl] = useState("");
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
-
-  const startEdit = (admin: AdminUser) => {
-    setEditingAdminId(admin.id);
-    setEditEmail(admin.email);
-    setEditPhotoUrl(admin.avatarUrl || "");
-  };
-
-  const saveEdit = (id: string) => {
-    if (onUpdateAdmin) {
-      onUpdateAdmin(id, {
-        email: editEmail,
-        avatarUrl: editPhotoUrl,
-      });
-    }
-    setEditingAdminId(null);
-  };
 
   const copyToClipboard = (email: string) => {
     navigator.clipboard.writeText(email);
@@ -111,8 +90,8 @@ export default function AdminsSection({
         {admins.map((admin) => {
           const isLeader = admin.role === "Leader";
           const isCoLeader = admin.role === "Co-Leader";
-          const isEditing = editingAdminId === admin.id;
           const photoUrl = admin.avatarUrl || adminDefaultAvatars[admin.id];
+          const displayName = admin.name.startsWith("Er.") ? admin.name : `Er. ${admin.name}`;
 
           return (
             <div
@@ -152,7 +131,7 @@ export default function AdminsSection({
                     <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-slate-100 shadow-md">
                       <img
                         src={photoUrl}
-                        alt={admin.name}
+                        alt={displayName}
                         className="w-full h-full object-cover object-top"
                         referrerPolicy="no-referrer"
                         onError={(e) => {
@@ -165,100 +144,59 @@ export default function AdminsSection({
                 )}
 
                 <h3 className="text-lg font-extrabold text-[#123f73] mt-1">
-                  {admin.name}
+                  {displayName}
                 </h3>
                 <p className="text-xs font-semibold text-slate-500 mt-0.5">
                   Department of Computer Science (CSE A)
                 </p>
               </div>
 
-              {/* Email & Contact Area */}
+              {/* Email & Contact Area (Read-only) */}
               <div className="mt-4 pt-4 border-t border-slate-100 text-left text-xs space-y-2">
-                {isEditing ? (
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-slate-600">Edit Email:</label>
-                    <input
-                      type="email"
-                      value={editEmail}
-                      onChange={(e) => setEditEmail(e.target.value)}
-                      className="w-full p-2 text-xs border border-slate-300 rounded-lg"
-                    />
-                    <label className="text-[11px] font-bold text-slate-600">Edit Photo URL:</label>
-                    <input
-                      type="url"
-                      value={editPhotoUrl}
-                      onChange={(e) => setEditPhotoUrl(e.target.value)}
-                      placeholder="Paste photo URL"
-                      className="w-full p-2 text-xs border border-slate-300 rounded-lg"
-                    />
-                    <div className="flex gap-2 pt-1">
-                      <button
-                        onClick={() => saveEdit(admin.id)}
-                        className="flex-1 py-1.5 bg-emerald-600 text-white rounded-lg font-bold text-xs"
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-400 font-medium">Email:</span>
+                  {admin.email ? (
+                    <div className="flex items-center gap-1">
+                      <a
+                        href={`mailto:${admin.email}`}
+                        className="font-medium text-blue-600 hover:underline truncate max-w-[150px]"
+                        title={admin.email}
                       >
-                        Save
-                      </button>
+                        {admin.email}
+                      </a>
                       <button
-                        onClick={() => setEditingAdminId(null)}
-                        className="px-3 py-1.5 bg-slate-200 text-slate-700 rounded-lg text-xs"
+                        onClick={() => copyToClipboard(admin.email)}
+                        className="text-[10px] px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600"
+                        title="Copy email"
                       >
-                        Cancel
+                        {copiedEmail === admin.email ? "Copied!" : "Copy"}
                       </button>
                     </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 font-medium">Email:</span>
-                      {admin.email ? (
-                        <div className="flex items-center gap-1">
-                          <a
-                            href={`mailto:${admin.email}`}
-                            className="font-medium text-blue-600 hover:underline truncate max-w-[150px]"
-                            title={admin.email}
-                          >
-                            {admin.email}
-                          </a>
-                          <button
-                            onClick={() => copyToClipboard(admin.email)}
-                            className="text-[10px] px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-600"
-                            title="Copy email"
-                          >
-                            {copiedEmail === admin.email ? "Copied!" : "Copy"}
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-slate-400 italic">Not set</span>
-                      )}
-                    </div>
-
-                    {admin.phone && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-400 font-medium">Phone:</span>
-                        <a
-                          href={`tel:${admin.phone}`}
-                          className="font-mono text-slate-700 hover:text-blue-600"
-                        >
-                          {admin.phone}
-                        </a>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-
-              {/* Admin self-edit action */}
-              {isLoggedIn && !isEditing && (
-                <div className="mt-3 pt-2">
-                  <button
-                    onClick={() => startEdit(admin)}
-                    className="w-full py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <Edit3 className="w-3 h-3" />
-                    Edit Email / Photo
-                  </button>
+                  ) : (
+                    <span className="text-slate-400 italic">Not set</span>
+                  )}
                 </div>
-              )}
+
+                {admin.city && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400 font-medium flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-rose-500" />
+                      <span>City:</span>
+                    </span>
+                    <span className="font-semibold text-slate-700">
+                      {admin.city}
+                    </span>
+                  </div>
+                )}
+
+                {/* Verified read-only status badge */}
+                <div className="pt-2 text-center">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                    <Shield className="w-3 h-3 text-emerald-600" />
+                    Verified Admin • Protected
+                  </span>
+                </div>
+              </div>
             </div>
           );
         })}

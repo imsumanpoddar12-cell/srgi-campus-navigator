@@ -12,6 +12,8 @@ import {
   EyeOff,
   UserCheck,
   Compass,
+  Camera,
+  MessageSquare,
 } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
@@ -47,6 +49,20 @@ export default function MenuDropdown({
       subtext: "Blocks A, B, C, D & E Directory",
       icon: MapPin,
       badge: "Main",
+    },
+    {
+      id: "camera",
+      label: "Camera Place Detector & Route",
+      subtext: "Detect landmark via camera or video & get route",
+      icon: Camera,
+      badge: "Vision",
+    },
+    {
+      id: "messages",
+      label: "Send Us a Message",
+      subtext: "Campus inquiries, feedback & suggestions",
+      icon: MessageSquare,
+      badge: "Contact",
     },
     {
       id: "campus",
@@ -93,7 +109,7 @@ export default function MenuDropdown({
     {
       id: "team",
       label: "Our Team",
-      subtext: "Suman Kumar, Vivek Sahani & Core Members",
+      subtext: "Er. Suman Kumar, Er. Vivek Sahani & Core Members",
       icon: Users,
       badge: null,
     },

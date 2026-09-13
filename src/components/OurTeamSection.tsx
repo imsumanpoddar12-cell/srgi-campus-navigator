@@ -1,11 +1,8 @@
-import { useState } from "react";
-import { Mail, Phone, Shield, Award, Edit3, Check } from "lucide-react";
+import { Shield, Award } from "lucide-react";
 import { TeamMember } from "../types";
 
 interface OurTeamSectionProps {
   team: TeamMember[];
-  onUpdateTeamMember?: (id: string, updated: Partial<TeamMember>) => void;
-  isLoggedIn?: boolean;
 }
 
 // Fallback photo portraits with professional styling
@@ -21,29 +18,7 @@ const defaultAvatars: Record<number, string> = {
 
 export default function OurTeamSection({
   team,
-  onUpdateTeamMember,
-  isLoggedIn = false,
 }: OurTeamSectionProps) {
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editPhotoUrl, setEditPhotoUrl] = useState("");
-  const [editEmail, setEditEmail] = useState("");
-
-  const handleStartEdit = (m: TeamMember) => {
-    setEditingId(m.id);
-    setEditPhotoUrl(m.photoUrl || "");
-    setEditEmail(m.email || "");
-  };
-
-  const handleSaveEdit = (id: string) => {
-    if (onUpdateTeamMember) {
-      onUpdateTeamMember(id, {
-        photoUrl: editPhotoUrl,
-        email: editEmail,
-      });
-    }
-    setEditingId(null);
-  };
-
   return (
     <section id="our-team-section" className="w-full max-w-6xl mx-auto my-12 px-4">
       {/* Section Header */}
@@ -65,7 +40,7 @@ export default function OurTeamSection({
         {team.map((member) => {
           const isLeader = member.role === "Leader";
           const isCoLeader = member.role === "Co-Leader";
-          const isEditing = editingId === member.id;
+          const displayName = member.name.startsWith("Er.") ? member.name : `Er. ${member.name}`;
 
           const photoSource =
             member.photoUrl ||
@@ -108,11 +83,10 @@ export default function OurTeamSection({
                 <div className="relative mx-auto w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-slate-100 shadow-inner group">
                   <img
                     src={photoSource}
-                    alt={member.name}
+                    alt={displayName}
                     className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
-                      // Fallback if image URL errors
                       (e.target as HTMLImageElement).src = defaultAvatars[member.order] || "";
                     }}
                   />
@@ -125,89 +99,38 @@ export default function OurTeamSection({
                   #{member.order}
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 leading-tight">
-                  {member.name}
+                  {displayName}
                 </h3>
                 <p className="text-xs text-slate-500 font-medium mt-0.5">
                   {member.department}
                 </p>
               </div>
 
-              {/* Contact / Email Info */}
+              {/* Contact / Email Info (Read-only) */}
               <div className="mt-3 pt-3 border-t border-slate-100 text-left space-y-1.5 text-xs">
-                {isEditing ? (
-                  <div className="space-y-2">
-                    <input
-                      type="email"
-                      value={editEmail}
-                      onChange={(e) => setEditEmail(e.target.value)}
-                      placeholder="Email address"
-                      className="w-full px-2 py-1 text-xs border border-slate-300 rounded-md focus:outline-blue-500"
-                    />
-                    <input
-                      type="url"
-                      value={editPhotoUrl}
-                      onChange={(e) => setEditPhotoUrl(e.target.value)}
-                      placeholder="Photo URL"
-                      className="w-full px-2 py-1 text-xs border border-slate-300 rounded-md focus:outline-blue-500"
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleSaveEdit(member.id)}
-                        className="px-3 py-1 bg-emerald-600 text-white text-xs rounded-md font-semibold flex items-center gap-1"
-                      >
-                        <Check className="w-3 h-3" /> Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="px-2 py-1 bg-slate-200 text-slate-700 text-xs rounded-md"
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                <div className="flex items-center justify-between text-slate-700">
+                  <span className="text-slate-400 font-medium text-[11px]">Email:</span>
+                  {member.email ? (
+                    <a
+                      href={`mailto:${member.email}`}
+                      className="font-medium text-blue-600 hover:underline truncate max-w-[170px] text-[11px]"
+                      title={member.email}
+                    >
+                      {member.email}
+                    </a>
+                  ) : (
+                    <span className="text-slate-400 italic text-[11px]">Available on request</span>
+                  )}
+                </div>
+                {member.city && (
+                  <div className="flex items-center justify-between text-slate-700">
+                    <span className="text-slate-400 font-medium text-[11px]">Location:</span>
+                    <span className="text-[11px] font-semibold text-slate-700 truncate max-w-[160px]" title={member.city}>
+                      📍 {member.city}
+                    </span>
                   </div>
-                ) : (
-                  <>
-                    <div className="flex items-center justify-between text-slate-700">
-                      <span className="text-slate-400 font-medium text-[11px]">Email:</span>
-                      {member.email ? (
-                        <a
-                          href={`mailto:${member.email}`}
-                          className="font-medium text-blue-600 hover:underline truncate max-w-[170px] text-[11px]"
-                          title={member.email}
-                        >
-                          {member.email}
-                        </a>
-                      ) : (
-                        <span className="text-slate-400 italic text-[11px]">Available on request</span>
-                      )}
-                    </div>
-                    {member.phone && (
-                      <div className="flex items-center justify-between text-slate-700">
-                        <span className="text-slate-400 font-medium text-[11px]">Phone:</span>
-                        <a
-                          href={`tel:${member.phone}`}
-                          className="font-mono text-[11px] text-slate-700 hover:text-blue-600"
-                        >
-                          {member.phone}
-                        </a>
-                      </div>
-                    )}
-                  </>
                 )}
               </div>
-
-              {/* Admin Quick Action */}
-              {isLoggedIn && !isEditing && (
-                <div className="mt-3 pt-2">
-                  <button
-                    onClick={() => handleStartEdit(member)}
-                    className="w-full py-1 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <Edit3 className="w-3 h-3 text-blue-600" />
-                    Edit Info / Photo
-                  </button>
-                </div>
-              )}
             </div>
           );
         })}

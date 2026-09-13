@@ -10,7 +10,6 @@ interface HomeSectionProps {
   onAcknowledge: () => void;
   onAdminLogin: () => void;
   team: TeamMember[];
-  onUpdateTeamMember?: (id: string, updated: Partial<TeamMember>) => void;
   isLoggedIn?: boolean;
 }
 
@@ -22,7 +21,6 @@ export default function HomeSection({
   onAcknowledge,
   onAdminLogin,
   team,
-  onUpdateTeamMember,
   isLoggedIn = false,
 }: HomeSectionProps) {
   const blocks = [
@@ -256,11 +254,7 @@ export default function HomeSection({
       </div>
 
       {/* Section: OUR TEAM on the Main Interface */}
-      <OurTeamSection
-        team={team}
-        onUpdateTeamMember={onUpdateTeamMember}
-        isLoggedIn={isLoggedIn}
-      />
+      <OurTeamSection team={team} />
     </section>
   );
 }

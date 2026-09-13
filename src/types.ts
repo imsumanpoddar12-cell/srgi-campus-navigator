@@ -8,7 +8,7 @@ export interface AdminUser {
   role: RoleType;
   username?: string;
   aliasUsernames?: string[];
-  phone?: string;
+  city?: string;
   avatarUrl?: string;
 }
 
@@ -19,8 +19,8 @@ export interface TeamMember {
   role: RoleType;
   email: string;
   department: string;
+  city?: string;
   photoUrl?: string;
-  phone?: string;
   githubOrSocial?: string;
 }
 
@@ -86,4 +86,15 @@ export interface CollegeInfo {
   blockENote: string;
   history: string;
   mission: string;
+}
+
+export interface UserMessage {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  timestamp: string;
+  status?: "unread" | "read" | "resolved";
 }

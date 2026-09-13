@@ -1,4 +1,4 @@
-import { Menu, Sparkles, Image as ImageIcon, Users, Compass } from "lucide-react";
+import { Menu, Sparkles, Image as ImageIcon, Users, Compass, Camera, MessageSquare } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
 interface HeaderProps {
@@ -36,7 +36,7 @@ export default function Header({ onToggleMenu, onNavigate, activeSection }: Head
       </div>
 
       {/* Desktop Quick Nav Links */}
-      <nav className="hidden lg:flex items-center gap-1 bg-white/10 p-1.5 rounded-xl backdrop-blur-xs border border-white/10">
+      <nav className="hidden xl:flex items-center gap-1 bg-white/10 p-1.5 rounded-xl backdrop-blur-xs border border-white/10">
         <button
           id="header-nav-home"
           onClick={() => onNavigate("home")}
@@ -55,6 +55,26 @@ export default function Header({ onToggleMenu, onNavigate, activeSection }: Head
         >
           <Sparkles className="w-3.5 h-3.5" />
           Search Map
+        </button>
+        <button
+          id="header-nav-camera"
+          onClick={() => onNavigate("camera")}
+          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+            activeSection === "camera" ? "bg-white text-[#123f73] shadow-xs" : "text-emerald-300 hover:bg-white/15"
+          }`}
+        >
+          <Camera className="w-3.5 h-3.5" />
+          Camera Detector
+        </button>
+        <button
+          id="header-nav-messages"
+          onClick={() => onNavigate("messages")}
+          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+            activeSection === "messages" ? "bg-white text-[#123f73] shadow-xs" : "text-white hover:bg-white/15"
+          }`}
+        >
+          <MessageSquare className="w-3.5 h-3.5" />
+          Send Message
         </button>
         <button
           id="header-nav-admin-photos"
