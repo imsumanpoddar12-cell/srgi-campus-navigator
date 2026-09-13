@@ -98,3 +98,16 @@ export interface UserMessage {
   timestamp: string;
   status?: "unread" | "read" | "resolved";
 }
+
+export interface CampusVideoRoute {
+  id: string;
+  title: string;
+  hindiTitle: string;
+  videoUrl: string;
+  startLocation: string;
+  endLocation: string;
+  block: string;
+  floor: string;
+  description: string;
+  tags: string[];
+}

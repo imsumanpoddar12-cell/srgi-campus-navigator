@@ -442,13 +442,14 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
   };
 
   const quickPrompts = [
+    "🎥 कैंपस के वीडियो रास्ते दिखाओ",
+    "📍 Main Gate से Block C का रास्ता बताओ",
+    "📍 Block C में 2nd Floor पर CSE Section A कैसे जाएँ?",
+    "👥 कॉलेज एडमिन और टीम के बारे में बताओ",
     "📍 सेमिनार हॉल (Seminar Hall) का रास्ता",
-    "📍 Block B से सेमिनार हॉल कैसे जाएँ?",
-    "📍 CSE Section A कहाँ है?",
     "📚 Central Library कहाँ है?",
-    "🏢 Block D (Girls Hostel) & दवाइयाँ",
-    "🛏️ Boys Hostel कितनी दूर है?",
     "👨‍🏫 CSE फैकल्टी लिस्ट व फोन नंबर",
+    "🏢 Block D (Girls Hostel) & दवाइयाँ",
     "☕ Cafeteria और Gate 2 कैफे",
   ];
 

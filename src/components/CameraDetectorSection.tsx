@@ -18,8 +18,13 @@ import {
   Layers,
   HelpCircle,
   Maximize2,
+  Film,
+  Plus,
+  X,
+  ExternalLink,
 } from "lucide-react";
-import { CampusLocation } from "../types";
+import { CampusLocation, CampusVideoRoute } from "../types";
+import { initialCampusVideos } from "../data/campusVideos";
 
 interface LandmarkPreset {
   id: string;
@@ -28,9 +33,73 @@ interface LandmarkPreset {
   landmark: string;
   description: string;
   badge: string;
+  videoRouteId?: string;
 }
 
 const campusLandmarks: LandmarkPreset[] = [
+  {
+    id: "main-gate",
+    name: "College Main Entrance (Gate 1)",
+    block: "Main Gate",
+    landmark: "Grand entry gate with security checkpoint & campus map display",
+    description: "Primary arrival point for buses, cars, and visitors entering the 65-acre campus.",
+    badge: "Campus Entrance",
+    videoRouteId: "vid-main-gate-entry",
+  },
+  {
+    id: "main-gate-to-c",
+    name: "Campus Roadway to Block C",
+    block: "Campus Grounds",
+    landmark: "Main campus road leading from Gate 1 directly towards Block C",
+    description: "Walking path along sports grounds connecting Main Gate to Block C.",
+    badge: "Connecting Pathway",
+    videoRouteId: "vid-main-gate-to-c-block",
+  },
+  {
+    id: "block-c-main-gate",
+    name: "Block C - Main Entrance & Porch",
+    block: "Block C",
+    landmark: "Front entrance gate & academic porch of Block C",
+    description: "Main entryway to computer laboratories, departments, and central lecture halls.",
+    badge: "Academic Entrance",
+    videoRouteId: "vid-c-block-main-entry",
+  },
+  {
+    id: "block-c-left-stairs",
+    name: "Block C - Left Stairs Gate Entry",
+    block: "Block C",
+    landmark: "Side gate entrance opening directly into the left staircase",
+    description: "Direct side entryway giving rapid access to the left stairs leading to 2nd floor CSE wing.",
+    badge: "Direct Side Entry",
+    videoRouteId: "vid-c-block-left-stairs-entry",
+  },
+  {
+    id: "block-c-ground-floor",
+    name: "Block C - Ground Floor Left Stairs",
+    block: "Block C",
+    landmark: "Ground floor base of left staircase in Block C",
+    description: "Ascending point to reach 1st floor HOD office and 2nd floor CSE Section A, B, C classrooms.",
+    badge: "Staircase Landing",
+    videoRouteId: "vid-c-block-ground-to-second",
+  },
+  {
+    id: "block-c-second-floor",
+    name: "Block C - 2nd Floor Corridor (CSE Wing)",
+    block: "Block C",
+    landmark: "2nd Floor landing — CSE Section A, Section B, Section C & HOD Office",
+    description: "Department corridor housing CSE classrooms, faculty cabins, Bio-Tech and Mechanical branches.",
+    badge: "CSE Department Floor",
+    videoRouteId: "vid-c-block-second-floor",
+  },
+  {
+    id: "block-c-floor-2-right",
+    name: "Block C - Floor 2 Right Wing (Labs & Mech)",
+    block: "Block C",
+    landmark: "Right wing corridor of 2nd Floor, laboratories, and washrooms",
+    description: "Classrooms, agriculture/mech sections, hardware labs, and student washrooms near right staircase.",
+    badge: "Right Wing Corridor",
+    videoRouteId: "vid-c-block-floor-2-right-side",
+  },
   {
     id: "block-a-lobby",
     name: "Block A - Main Lobby & Reception",
@@ -57,10 +126,10 @@ const campusLandmarks: LandmarkPreset[] = [
   },
   {
     id: "block-b-hub",
-    name: "Block B - Department Classes",
+    name: "Block B - Department Classes (MBA)",
     block: "Block B",
     landmark: "Connected via central corridor to Block A",
-    description: "Classrooms, lecture halls, and faculty cabins.",
+    description: "Classrooms, lecture halls, and MBA faculty cabins.",
     badge: "Academic Block",
   },
   {
@@ -70,14 +139,6 @@ const campusLandmarks: LandmarkPreset[] = [
     landmark: "20 metres straight from Seminar Hall",
     description: "Multi-cuisine student dining hall, tea bar, snacks, and seating lounge.",
     badge: "Food & Refreshment",
-  },
-  {
-    id: "block-c-workshops",
-    name: "Block C - Engineering Workshops & Labs",
-    block: "Block C",
-    landmark: "Heavy engineering labs, robotics, and machine shop",
-    description: "Foundry, carpentry, welding, computer hardware, and electrical labs.",
-    badge: "Laboratories",
   },
   {
     id: "block-d-hostel",
@@ -111,14 +172,6 @@ const campusLandmarks: LandmarkPreset[] = [
     description: "Street-side cafes, tea kiosks, beverage bars, and food stalls.",
     badge: "Cafes Hub",
   },
-  {
-    id: "main-gate",
-    name: "College Main Entrance (Gate 1)",
-    block: "Main Gate",
-    landmark: "Grand entry gate with security checkpoint & campus map display",
-    description: "Primary arrival point for buses, cars, and visitors.",
-    badge: "Campus Entrance",
-  },
 ];
 
 interface RouteStep {
@@ -129,26 +182,70 @@ interface RouteStep {
   turn: "straight" | "left" | "right" | "stairs";
 }
 
+interface CalculatedRouteData {
+  distance: string;
+  estTime: string;
+  steps: RouteStep[];
+  matchedVideo?: CampusVideoRoute;
+}
+
 interface CameraDetectorSectionProps {
   locations: CampusLocation[];
   onOpenMap?: () => void;
 }
 
 export default function CameraDetectorSection({ locations }: CameraDetectorSectionProps) {
-  // Mode: "live" | "video"
-  const [activeMode, setActiveMode] = useState<"live" | "video">("live");
+  // Mode: "live" | "video-route" | "upload"
+  const [activeMode, setActiveMode] = useState<"live" | "video-route" | "upload">("live");
+
+  // Video routes state (persisted in localStorage so user additions stay available)
+  const [videoRoutes, setVideoRoutes] = useState<CampusVideoRoute[]>(() => {
+    try {
+      if (typeof window !== "undefined" && window.localStorage) {
+        const saved = window.localStorage.getItem("srgi_video_routes");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // Merge with initialCampusVideos to ensure official ones are present
+            const merged = [...parsed];
+            for (const initVid of initialCampusVideos) {
+              if (!merged.some((v) => v.id === initVid.id)) {
+                merged.push(initVid);
+              }
+            }
+            return merged;
+          }
+        }
+      }
+    } catch {}
+    return initialCampusVideos;
+  });
+
+  // Active selected video walkthrough route
+  const [selectedVideoRoute, setSelectedVideoRoute] = useState<CampusVideoRoute>(
+    videoRoutes[0] || initialCampusVideos[0]
+  );
+
+  // Add new video modal state
+  const [isAddVideoModalOpen, setIsAddVideoModalOpen] = useState(false);
+  const [newVideoUrl, setNewVideoUrl] = useState("");
+  const [newVideoTitle, setNewVideoTitle] = useState("");
+  const [newVideoHindiTitle, setNewVideoHindiTitle] = useState("");
+  const [newVideoStart, setNewVideoStart] = useState("");
+  const [newVideoEnd, setNewVideoEnd] = useState("");
+  const [newVideoDesc, setNewVideoDesc] = useState("");
 
   // Camera stream state
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const uploadedVideoRef = useRef<HTMLVideoElement | null>(null);
+  const routeVideoPlayerRef = useRef<HTMLVideoElement | null>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [facingMode, setFacingMode] = useState<"environment" | "user">("environment");
   const [isScanning, setIsScanning] = useState(false);
 
-  // Uploaded video state (for the user's video feature)
+  // Uploaded video state (for local file test)
   const [videoFileUrl, setVideoFileUrl] = useState<string | null>(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   // Detected place state
   const [detectedPlace, setDetectedPlace] = useState<LandmarkPreset | null>(campusLandmarks[0]);
@@ -156,12 +253,8 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
   const [detectionTimestamp, setDetectionTimestamp] = useState<string>("");
 
   // Route calculation state
-  const [targetDestinationId, setTargetDestinationId] = useState<string>(campusLandmarks[2].id);
-  const [calculatedRoute, setCalculatedRoute] = useState<{
-    distance: string;
-    estTime: string;
-    steps: RouteStep[];
-  } | null>(null);
+  const [targetDestinationId, setTargetDestinationId] = useState<string>("block-c-second-floor");
+  const [calculatedRoute, setCalculatedRoute] = useState<CalculatedRouteData | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   // Start / stop live camera stream
@@ -190,7 +283,7 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
     } catch (err: any) {
       console.warn("Camera stream access issue:", err);
       setCameraError(
-        "Camera access not granted or unavailable in this window. You can still test place detection and route navigation below, or upload a video file!"
+        "Camera permission is blocked or unavailable in this tab. You can use Official Video Route Guide mode above, or choose your location below!"
       );
       setIsCameraActive(false);
     }
@@ -216,31 +309,81 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
     };
   }, [activeMode, facingMode]);
 
+  // Generate initial route on mount
+  useEffect(() => {
+    generateRoute(campusLandmarks[0].id, "block-c-second-floor");
+  }, []);
+
   const handleToggleFacingMode = () => {
     const nextMode = facingMode === "environment" ? "user" : "environment";
     setFacingMode(nextMode);
   };
 
-  // Handle uploaded video
+  // Handle uploaded video file
   const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setVideoFileUrl(url);
-      setActiveMode("video");
+      setActiveMode("upload");
       stopCamera();
     }
   };
 
-  // Place detection simulation / scanner
+  // Find matching video for a given route
+  const findMatchingVideoForRoute = (startId: string, endId: string): CampusVideoRoute | undefined => {
+    // 1. Check if start or end has direct videoRouteId
+    const startObj = campusLandmarks.find((l) => l.id === startId);
+    const endObj = campusLandmarks.find((l) => l.id === endId);
+
+    // Exact matches
+    if (startId === "main-gate" && (endId.includes("block-c") || endId === "block-c-main-gate")) {
+      return videoRoutes.find((v) => v.id === "vid-main-gate-to-c-block");
+    }
+    if (startId === "main-gate") {
+      return videoRoutes.find((v) => v.id === "vid-main-gate-entry");
+    }
+    if (startId === "block-c-main-gate") {
+      return videoRoutes.find((v) => v.id === "vid-c-block-main-entry");
+    }
+    if (startId === "block-c-left-stairs") {
+      return videoRoutes.find((v) => v.id === "vid-c-block-left-stairs-entry");
+    }
+    if (startId === "block-c-ground-floor" && endId === "block-c-second-floor") {
+      return videoRoutes.find((v) => v.id === "vid-c-block-ground-to-second");
+    }
+    if (startId === "block-c-second-floor" && endId === "block-c-ground-floor") {
+      return videoRoutes.find((v) => v.id === "vid-c-block-second-to-ground");
+    }
+    if (endId === "block-c-second-floor") {
+      return videoRoutes.find((v) => v.id === "vid-c-block-second-floor");
+    }
+    if (endId === "block-c-floor-2-right") {
+      return videoRoutes.find((v) => v.id === "vid-c-block-floor-2-right-side");
+    }
+
+    // Secondary match from preset
+    if (startObj?.videoRouteId) {
+      const match = videoRoutes.find((v) => v.id === startObj.videoRouteId);
+      if (match) return match;
+    }
+    if (endObj?.videoRouteId) {
+      const match = videoRoutes.find((v) => v.id === endObj.videoRouteId);
+      if (match) return match;
+    }
+
+    return videoRoutes[0];
+  };
+
+  // Place detection simulation / camera snapshot scanner
   const handleScanLocation = () => {
     setIsScanning(true);
     setTimeout(() => {
-      // Pick or rotate a realistic landmark based on current state
+      // Pick a realistic landmark
       const randomLandmark =
         campusLandmarks[Math.floor(Math.random() * campusLandmarks.length)];
       setDetectedPlace(randomLandmark);
-      setConfidence(Math.floor(92 + Math.random() * 7));
+      setConfidence(Math.floor(93 + Math.random() * 6));
       setDetectionTimestamp(
         new Date().toLocaleTimeString("en-IN", {
           hour: "2-digit",
@@ -249,15 +392,21 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
         })
       );
       setIsScanning(false);
-      // Auto-compute route to current selected destination
+
+      // Auto-compute route and sync video
       generateRoute(randomLandmark.id, targetDestinationId);
-    }, 1200);
+    }, 1100);
   };
 
   // Route Generator between points
   const generateRoute = (startId: string, endId: string) => {
     const startObj = campusLandmarks.find((l) => l.id === startId) || campusLandmarks[0];
-    const endObj = campusLandmarks.find((l) => l.id === endId) || campusLandmarks[2];
+    const endObj = campusLandmarks.find((l) => l.id === endId) || campusLandmarks[5];
+
+    const matchedVideo = findMatchingVideoForRoute(startId, endId);
+    if (matchedVideo) {
+      setSelectedVideoRoute(matchedVideo);
+    }
 
     if (startId === endId) {
       setCalculatedRoute({
@@ -272,23 +421,102 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
             turn: "straight",
           },
         ],
+        matchedVideo,
       });
       return;
     }
 
-    // Specific famous landmark distances
+    // Specific landmark routes with accurate walking steps
     let distance = "85 m";
     let estTime = "1 min";
     let steps: RouteStep[] = [];
 
-    if (startId === "central-cafeteria" && endId === "seminar-hall") {
+    if (startId === "main-gate" && (endId.includes("block-c") || endId === "block-c-main-gate")) {
+      distance = "240 m";
+      estTime = "2.8 mins";
+      steps = [
+        {
+          stepNumber: 1,
+          instruction: "Pass through Gate 1 security checkpoint and step onto the main campus paved roadway (watch Video 1).",
+          hindiInstruction: "कॉलेज के मेन गेट 1 से प्रवेश करें और मुख्य पक्की सड़क पर सीधे आगे बढ़ें।",
+          distance: "40m",
+          turn: "straight",
+        },
+        {
+          stepNumber: 2,
+          instruction: "Walk straight along the green tree-lined boulevard passing the central sports area (watch Video 2).",
+          hindiInstruction: "हरियाली और खेल मैदान के पास से होते हुए मुख्य मार्ग पर सीधे लगभग 120 मीटर चलें।",
+          distance: "120m",
+          turn: "straight",
+        },
+        {
+          stepNumber: 3,
+          instruction: "Turn slightly right towards Block C front porch and main entrance gate.",
+          hindiInstruction: "दाएं मुड़ें और ब्लॉक C के मुख्य द्वार व पोर्च की ओर आगे बढ़ें।",
+          distance: "80m",
+          turn: "right",
+        },
+      ];
+    } else if (startId === "block-c-left-stairs" && endId === "block-c-second-floor") {
+      distance = "45 m";
+      estTime = "40 sec";
+      steps = [
+        {
+          stepNumber: 1,
+          instruction: "Enter through Block C left side gate directly into the staircase lobby (watch Video 4).",
+          hindiInstruction: "ब्लॉक C के बाएं साइड वाले गेट से अंदर प्रवेश करें और सीढ़ियों के पास जाएँ।",
+          distance: "10m",
+          turn: "straight",
+        },
+        {
+          stepNumber: 2,
+          instruction: "Ascend the left staircase up past 1st Floor (HOD office wing) to 2nd Floor (watch Video 5).",
+          hindiInstruction: "बाएं सीढ़ियों से होते हुए 1st फ्लोर पार करके सीधे 2nd फ्लोर पर चढ़ें।",
+          distance: "25m",
+          turn: "stairs",
+        },
+        {
+          stepNumber: 3,
+          instruction: "Turn right onto 2nd floor corridor: CSE Section A, Section B, Section C are directly ahead (watch Video 6).",
+          hindiInstruction: "2nd फ्लोर पर पहुँचकर दाईं ओर मुड़ें: CSE Section A, B, C क्लासरूम्स सामने मौजूद हैं।",
+          distance: "10m",
+          turn: "right",
+        },
+      ];
+    } else if (startId === "block-c-main-gate" && endId === "block-c-second-floor") {
+      distance = "60 m";
+      estTime = "1 min";
+      steps = [
+        {
+          stepNumber: 1,
+          instruction: "Enter Block C via the main porch into the ground floor lobby (watch Video 3).",
+          hindiInstruction: "ब्लॉक C मुख्य पोर्च से प्रवेश करके ग्राउंड फ्लोर लॉबी में आएँ।",
+          distance: "15m",
+          turn: "straight",
+        },
+        {
+          stepNumber: 2,
+          instruction: "Walk down the corridor to the left staircase (watch Video 4 & 5).",
+          hindiInstruction: "कॉरिडोर में बाएं सीढ़ियों की तरफ बढ़ें और 2nd फ्लोर पर जाएँ।",
+          distance: "25m",
+          turn: "stairs",
+        },
+        {
+          stepNumber: 3,
+          instruction: "Arrive at 2nd Floor CSE Section A, B, C classrooms & faculty rooms (watch Video 6).",
+          hindiInstruction: "2nd फ्लोर पर CSE Section A और अन्य क्लासरूम्स में पहुँचें।",
+          distance: "20m",
+          turn: "straight",
+        },
+      ];
+    } else if (startId === "central-cafeteria" && endId === "seminar-hall") {
       distance = "20 m";
       estTime = "25 sec";
       steps = [
         {
           stepNumber: 1,
           instruction: "Exit Central Cafeteria and face straight north towards Block A.",
-          hindiInstruction: "कैफेटेरिया से बाहर निकलें और ब्लॉक ए की तरफ सीधे देखें।",
+          hindiInstruction: "कैफेटेरिया से बाहर निकलें और ब्लॉक A की तरफ सीधे देखें।",
           distance: "5m",
           turn: "straight",
         },
@@ -296,7 +524,7 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
           stepNumber: 2,
           instruction: "Walk straight 20 metres ahead. Seminar Hall entrance will be directly in front of you.",
           hindiInstruction: "सीधे 20 मीटर आगे चलें। सेमिनार हॉल का मुख्य द्वार ठीक आपके सामने होगा।",
-          distance: "20m",
+          distance: "15m",
           turn: "straight",
         },
       ];
@@ -318,13 +546,6 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
           distance: "20m",
           turn: "right",
         },
-        {
-          stepNumber: 3,
-          instruction: "Seminar Hall is on your right side opposite the central cafeteria lawn.",
-          hindiInstruction: "सेमिनार हॉल आपके दाईं ओर स्थित है।",
-          distance: "10m",
-          turn: "straight",
-        },
       ];
     } else if (startId === "main-gate" && endId === "boys-hostel") {
       distance = "300 m";
@@ -332,7 +553,7 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
       steps = [
         {
           stepNumber: 1,
-          instruction: "From College Main Gate (Gate 1), take the inner wide campus pathway.",
+          instruction: "From College Main Gate (Gate 1), take the inner wide campus roadway.",
           hindiInstruction: "कॉलेज मेन गेट से अंदर की ओर चौड़े मुख्य मार्ग पर चलें।",
           distance: "100m",
           turn: "straight",
@@ -352,32 +573,6 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
           turn: "straight",
         },
       ];
-    } else if (endId === "block-d-hostel") {
-      distance = "180 m";
-      estTime = "2.2 mins";
-      steps = [
-        {
-          stepNumber: 1,
-          instruction: `From ${startObj.name}, follow the directional signboards towards the Girls Residential Wing.`,
-          hindiInstruction: `${startObj.name} से गर्ल्स विंग की दिशा में आगे बढ़ें।`,
-          distance: "80m",
-          turn: "straight",
-        },
-        {
-          stepNumber: 2,
-          instruction: "Turn left towards Block D secure gated boundary.",
-          hindiInstruction: "ब्लॉक D के सुरक्षित गेट की ओर बाएं मुड़ें।",
-          distance: "60m",
-          turn: "left",
-        },
-        {
-          stepNumber: 3,
-          instruction: "Block D (Girls Hostel) is here. Note: Medicines dispensary and Store Room are just behind Block D.",
-          hindiInstruction: "ब्लॉक D गर्ल्स हॉस्टल यहाँ है। ध्यान दें: दवाएं व स्टोर रूम ठीक इसके पीछे स्थित हैं।",
-          distance: "40m",
-          turn: "straight",
-        },
-      ];
     } else {
       distance = "110 m";
       estTime = "1.5 mins";
@@ -391,8 +586,8 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
         },
         {
           stepNumber: 2,
-          instruction: `Follow the central campus pathway directly towards ${endObj.block}.`,
-          hindiInstruction: `केंद्रीय मार्ग से सीधे ${endObj.block} की ओर बढ़ें।`,
+          instruction: `Follow the campus pathway directly towards ${endObj.block}.`,
+          hindiInstruction: `कैंपस मार्ग से सीधे ${endObj.block} की ओर बढ़ें।`,
           distance: "50m",
           turn: "straight",
         },
@@ -410,7 +605,46 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
       distance,
       estTime,
       steps,
+      matchedVideo,
     });
+  };
+
+  // Add new video submission
+  const handleAddNewVideo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newVideoUrl.trim() || !newVideoTitle.trim()) return;
+
+    const newRoute: CampusVideoRoute = {
+      id: `vid-custom-${Date.now()}`,
+      title: newVideoTitle.trim(),
+      hindiTitle: newVideoHindiTitle.trim() || newVideoTitle.trim(),
+      videoUrl: newVideoUrl.trim(),
+      startLocation: newVideoStart.trim() || "Campus Landmark",
+      endLocation: newVideoEnd.trim() || "Destination Landmark",
+      block: "SRGI Campus",
+      floor: "Ground",
+      description: newVideoDesc.trim() || "Campus walkthrough video.",
+      tags: ["custom video", "walkthrough", "route"],
+    };
+
+    const updated = [newRoute, ...videoRoutes];
+    setVideoRoutes(updated);
+    setSelectedVideoRoute(newRoute);
+    try {
+      if (typeof window !== "undefined" && window.localStorage) {
+        window.localStorage.setItem("srgi_video_routes", JSON.stringify(updated));
+      }
+    } catch {}
+
+    // Reset form
+    setNewVideoUrl("");
+    setNewVideoTitle("");
+    setNewVideoHindiTitle("");
+    setNewVideoStart("");
+    setNewVideoEnd("");
+    setNewVideoDesc("");
+    setIsAddVideoModalOpen(false);
+    setActiveMode("video-route");
   };
 
   // Text-to-Speech Voice Guidance (Hindi & English)
@@ -445,18 +679,18 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold tracking-wider uppercase mb-2">
           <Camera className="w-3.5 h-3.5 text-emerald-700" />
-          <span>AI Camera Vision & Route Navigator</span>
+          <span>Camera Vision & Video Route Navigator</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-[#102e59] tracking-tight">
-          PLACE DETECTOR & ROUTE GUIDE
+          CAMPUS PLACE DETECTOR & VIDEO WALKTHROUGHS
         </h2>
         <p className="text-slate-600 text-xs sm:text-sm max-w-xl mx-auto mt-1">
-          Detect your current spot via live camera or recorded video, and get instant step-by-step walking directions across SRGI Lucknow.
+          Detect your location via live camera or video walkthroughs, and navigate step-by-step across SRGI Lucknow with 8 official campus route videos.
         </p>
       </div>
 
       {/* Mode Selector */}
-      <div className="flex items-center justify-center gap-2 mb-6">
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
         <button
           onClick={() => setActiveMode("live")}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -465,22 +699,90 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
               : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
           }`}
         >
-          <Camera className="w-4 h-4" />
-          <span>Live Camera View</span>
+          <Camera className="w-4 h-4 text-emerald-500" />
+          <span>Live Camera Scan</span>
         </button>
 
         <button
-          onClick={() => setActiveMode("video")}
+          onClick={() => setActiveMode("video-route")}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-            activeMode === "video"
+            activeMode === "video-route"
               ? "bg-[#102e59] text-white shadow-md"
               : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
           }`}
         >
-          <Video className="w-4 h-4" />
-          <span>Video Detection Mode</span>
+          <Film className="w-4 h-4 text-amber-500" />
+          <span>Official Route Videos ({videoRoutes.length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveMode("upload")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            activeMode === "upload"
+              ? "bg-[#102e59] text-white shadow-md"
+              : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+          }`}
+        >
+          <Upload className="w-4 h-4 text-blue-500" />
+          <span>Upload Walk Video</span>
         </button>
       </div>
+
+      {/* Video Route Selector Strip when in video mode */}
+      {activeMode === "video-route" && (
+        <div className="mb-6 bg-slate-900 text-white rounded-3xl p-4 border border-slate-800 shadow-lg">
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Film className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
+                Select Official Campus Walkthrough Video
+              </span>
+            </div>
+            <button
+              onClick={() => setIsAddVideoModalOpen(true)}
+              className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 transition-colors cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ Add Video</span>
+            </button>
+          </div>
+
+          {/* Video Tabs Grid / Carousel */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {videoRoutes.map((v, idx) => (
+              <button
+                key={v.id}
+                onClick={() => {
+                  setSelectedVideoRoute(v);
+                  // Match landmark if applicable
+                  const matchedLandmark = campusLandmarks.find(
+                    (l) => l.videoRouteId === v.id || l.name.toLowerCase().includes(v.block.toLowerCase())
+                  );
+                  if (matchedLandmark) {
+                    setDetectedPlace(matchedLandmark);
+                    generateRoute(matchedLandmark.id, targetDestinationId);
+                  }
+                }}
+                className={`p-2.5 rounded-xl text-left transition-all border text-xs cursor-pointer ${
+                  selectedVideoRoute?.id === v.id
+                    ? "bg-amber-500/20 border-amber-400 text-white shadow-sm"
+                    : "bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`}
+              >
+                <div className="text-[10px] font-mono text-amber-400 font-bold mb-1">
+                  Video {idx + 1} • {v.block}
+                </div>
+                <div className="font-semibold line-clamp-1 text-slate-100 text-[11px]">
+                  {v.title}
+                </div>
+                <div className="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+                  {v.hindiTitle}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Main Scanner Container */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -503,19 +805,45 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
                     <Camera className="w-12 h-12 text-slate-500 mb-3" />
                     <div className="font-bold text-sm">Live Camera Scanner</div>
                     <p className="text-xs text-slate-400 mt-1 max-w-xs">
-                      {cameraError || "Point camera at campus blocks, hallways, or library."}
+                      {cameraError || "Point camera at campus blocks, hallways, or entry gates."}
                     </p>
-                    <button
-                      onClick={() => startCamera()}
-                      className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                    >
-                      Start Camera
-                    </button>
+                    <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+                      <button
+                        onClick={() => startCamera()}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                      >
+                        Start Camera
+                      </button>
+                      <button
+                        onClick={() => setActiveMode("video-route")}
+                        className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                      >
+                        <Film className="w-3.5 h-3.5" />
+                        <span>Watch Route Video</span>
+                      </button>
+                    </div>
                   </div>
                 )}
               </>
+            ) : activeMode === "video-route" ? (
+              /* Official Campus Route Video Player */
+              <div className="w-full h-full flex flex-col items-center justify-center bg-black relative">
+                {selectedVideoRoute ? (
+                  <video
+                    key={selectedVideoRoute.videoUrl}
+                    ref={routeVideoPlayerRef}
+                    src={selectedVideoRoute.videoUrl}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="text-slate-400 text-xs">No video selected</div>
+                )}
+              </div>
             ) : (
-              /* Video file player */
+              /* User Uploaded Video file player */
               <div className="w-full h-full flex flex-col items-center justify-center bg-black relative">
                 {videoFileUrl ? (
                   <video
@@ -546,14 +874,14 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
               </div>
             )}
 
-            {/* HUD Reticle Overlay */}
-            <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
-              <div className="flex items-center justify-between">
-                <div className="px-2.5 py-1 bg-black/60 backdrop-blur-md rounded-lg text-emerald-400 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-emerald-500/30">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>HUD VISION ACTIVE</span>
-                </div>
-                {activeMode === "live" && (
+            {/* HUD Reticle Overlay (Only in live camera mode) */}
+            {activeMode === "live" && (
+              <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
+                <div className="flex items-center justify-between">
+                  <div className="px-2.5 py-1 bg-black/60 backdrop-blur-md rounded-lg text-emerald-400 text-[10px] font-mono font-bold flex items-center gap-1.5 border border-emerald-500/30">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>HUD VISION ACTIVE</span>
+                  </div>
                   <button
                     onClick={handleToggleFacingMode}
                     className="pointer-events-auto p-2 bg-black/60 backdrop-blur-md rounded-lg text-white hover:bg-black/80 transition-colors text-xs flex items-center gap-1"
@@ -561,25 +889,25 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                   </button>
-                )}
-              </div>
+                </div>
 
-              {/* Targeting Center Frame */}
-              <div className="relative mx-auto w-48 h-32 sm:w-64 sm:h-40 border-2 border-dashed border-emerald-400/70 rounded-2xl flex items-center justify-center">
-                {isScanning && (
-                  <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-bounce" />
-                )}
-                <div className="text-[10px] font-mono text-emerald-300/80 bg-black/40 px-2 py-0.5 rounded">
-                  {isScanning ? "MATCHING CAMPUS LANDMARK..." : "ALIGN LANDMARK HERE"}
+                {/* Targeting Center Frame */}
+                <div className="relative mx-auto w-48 h-32 sm:w-64 sm:h-40 border-2 border-dashed border-emerald-400/70 rounded-2xl flex items-center justify-center">
+                  {isScanning && (
+                    <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-bounce" />
+                  )}
+                  <div className="text-[10px] font-mono text-emerald-300/80 bg-black/40 px-2 py-0.5 rounded">
+                    {isScanning ? "MATCHING CAMPUS LANDMARK..." : "ALIGN LANDMARK HERE"}
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <span className="text-[10px] font-mono text-slate-400 bg-black/60 px-2 py-0.5 rounded">
+                    SRGI LUCKNOW 65-ACRE GRID
+                  </span>
                 </div>
               </div>
-
-              <div className="text-right">
-                <span className="text-[10px] font-mono text-slate-400 bg-black/60 px-2 py-0.5 rounded">
-                  SRGI LUCKNOW 65-ACRE GRID
-                </span>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Action buttons under camera */}
@@ -593,10 +921,10 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
               <span>{isScanning ? "Scanning Location..." : "Detect Place / जगह पहचानें"}</span>
             </button>
 
-            {activeMode === "video" && (
+            {activeMode === "upload" && (
               <label className="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl text-xs flex items-center gap-1.5 cursor-pointer transition-colors border border-slate-300">
                 <Upload className="w-4 h-4" />
-                <span>Upload Walk Video</span>
+                <span>Upload New Video</span>
                 <input
                   type="file"
                   accept="video/*"
@@ -605,10 +933,20 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
                 />
               </label>
             )}
+
+            {activeMode !== "video-route" && (
+              <button
+                onClick={() => setActiveMode("video-route")}
+                className="px-4 py-3 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold rounded-2xl text-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+              >
+                <Film className="w-4 h-4 text-amber-600" />
+                <span>Show Walk Video</span>
+              </button>
+            )}
           </div>
 
           {/* Preset Spot Picker (Instant manual override) */}
-          <div className="bg-white rounded-2xl p-4 border border-slate-200 text-xs">
+          <div className="bg-white rounded-2xl p-4 border border-slate-200 text-xs shadow-xs">
             <div className="font-bold text-slate-800 mb-2 flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-blue-600" />
               <span>Or Choose Detected Starting Point:</span>
@@ -693,6 +1031,46 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
             </button>
           </div>
 
+          {/* Dedicated Route Walkthrough Video Player Card */}
+          {calculatedRoute?.matchedVideo && (
+            <div className="bg-slate-900 text-white rounded-3xl p-4 border border-slate-800 shadow-md space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-amber-400">
+                  <Film className="w-4 h-4" />
+                  <span>रास्ता दिखाने वाला वीडियो (Route Video)</span>
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedVideoRoute(calculatedRoute.matchedVideo!);
+                    setActiveMode("video-route");
+                    window.scrollTo({ top: 120, behavior: "smooth" });
+                  }}
+                  className="text-[11px] text-amber-300 hover:text-white underline cursor-pointer"
+                >
+                  Full Video View
+                </button>
+              </div>
+
+              <div className="aspect-video bg-black rounded-2xl overflow-hidden relative border border-slate-700">
+                <video
+                  src={calculatedRoute.matchedVideo.videoUrl}
+                  controls
+                  playsInline
+                  className="w-full h-full object-contain"
+                />
+              </div>
+
+              <div className="text-xs">
+                <div className="font-bold text-slate-100">
+                  {calculatedRoute.matchedVideo.title}
+                </div>
+                <div className="text-[11px] text-slate-400 mt-0.5">
+                  {calculatedRoute.matchedVideo.hindiTitle}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Turn-by-Turn Directions Guide */}
           {calculatedRoute && (
             <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 space-y-3">
@@ -758,6 +1136,126 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
           )}
         </div>
       </div>
+
+      {/* Add New Video Walkthrough Modal (For future video uploads) */}
+      {isAddVideoModalOpen && (
+        <div
+          id="add-video-modal-backdrop"
+          onClick={() => setIsAddVideoModalOpen(false)}
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 space-y-4"
+          >
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <Film className="w-5 h-5 text-amber-500" />
+                <h3 className="text-base font-black text-slate-900">
+                  Add Campus Route Video
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsAddVideoModalOpen(false)}
+                className="p-1 text-slate-400 hover:text-slate-700 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddNewVideo} className="space-y-3 text-xs">
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">
+                  Video URL (Cloudinary / MP4 link)*
+                </label>
+                <input
+                  type="url"
+                  required
+                  placeholder="https://res.cloudinary.com/.../video.mp4"
+                  value={newVideoUrl}
+                  onChange={(e) => setNewVideoUrl(e.target.value)}
+                  className="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-[11px]"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">
+                  Route Title (English)*
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Block A to Central Cafeteria Walk"
+                  value={newVideoTitle}
+                  onChange={(e) => setNewVideoTitle(e.target.value)}
+                  className="w-full p-2.5 border border-slate-300 rounded-xl"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">
+                  Hindi Title (हिंदी में नाम)
+                </label>
+                <input
+                  type="text"
+                  placeholder="उदा. ब्लॉक A से कैफेटेरिया का रास्ता"
+                  value={newVideoHindiTitle}
+                  onChange={(e) => setNewVideoHindiTitle(e.target.value)}
+                  className="w-full p-2.5 border border-slate-300 rounded-xl"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">
+                    Start Location
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Main Gate"
+                    value={newVideoStart}
+                    onChange={(e) => setNewVideoStart(e.target.value)}
+                    className="w-full p-2 border border-slate-300 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">
+                    End Location
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Block C"
+                    value={newVideoEnd}
+                    onChange={(e) => setNewVideoEnd(e.target.value)}
+                    className="w-full p-2 border border-slate-300 rounded-xl"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">
+                  Walkthrough Description
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="Brief steps or landmark notes..."
+                  value={newVideoDesc}
+                  onChange={(e) => setNewVideoDesc(e.target.value)}
+                  className="w-full p-2 border border-slate-300 rounded-xl"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#102e59] hover:bg-[#0c2447] text-white font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-2"
+              >
+                <Plus className="w-4 h-4 text-amber-400" />
+                <span>Save & Activate Video Route</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
