@@ -28,6 +28,7 @@ export const initialAdmins: AdminUser[] = [
     email: "imsumanpoddar12@gmail.com",
     role: "Leader",
     phone: "9296724873",
+    avatarUrl: "https://i.postimg.cc/HW8tZbHx/Whats-App-Image-2026-09-12-at-10-06-35-PM.jpg",
   },
   {
     id: "vivek93",
@@ -38,6 +39,7 @@ export const initialAdmins: AdminUser[] = [
     email: "sahvds9416@gmal.com",
     role: "Co-Leader",
     phone: "7267040438",
+    avatarUrl: "https://i.postimg.cc/XYWS7Vxc/Whats-App-Image-2026-09-12-at-6-51-25-PM.jpg",
   },
   {
     id: "pranjal94",
@@ -48,6 +50,7 @@ export const initialAdmins: AdminUser[] = [
     email: "pranjalmaurya@gmail.com",
     role: "Core Member",
     phone: "9235544155",
+    avatarUrl: "https://i.postimg.cc/RZgs59YN/Whats-App-Image-2026-09-12-at-6-54-20-PM.jpg",
   },
   {
     id: "roshan95",
@@ -58,6 +61,7 @@ export const initialAdmins: AdminUser[] = [
     email: "roshankumar11102007@gmail.com",
     role: "Core Member",
     phone: "8542895998",
+    avatarUrl: "https://i.postimg.cc/pd0gZKvB/Whats-App-Image-2026-09-12-at-6-58-55-PM.jpg",
   },
   {
     id: "rijawan96",
@@ -68,6 +72,7 @@ export const initialAdmins: AdminUser[] = [
     email: "rijawankhan@gmail.com",
     role: "Core Member",
     phone: "9076762742",
+    avatarUrl: "https://i.postimg.cc/mDvpXw5y/Whats-App-Image-2026-09-12-at-7-02-15-PM.jpg",
   },
   {
     id: "avinash97",
@@ -78,6 +83,7 @@ export const initialAdmins: AdminUser[] = [
     email: "avinashprajapati7598@gmail.com",
     role: "Core Member",
     phone: "8175980662",
+    avatarUrl: "https://i.postimg.cc/3NGVY6G3/Whats-App-Image-2026-09-12-at-6-53-26-PM.jpg",
   },
   {
     id: "viveksaroj98",
@@ -88,6 +94,7 @@ export const initialAdmins: AdminUser[] = [
     email: "viveksaroj7598@gmail.com",
     role: "Core Member",
     phone: "7460981984",
+    avatarUrl: "https://i.postimg.cc/QddmqwMj/file-000000004a18820893d71e8d32dd2ff5.png",
   },
 ];
 
@@ -100,6 +107,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "imsumanpoddar12@gmail.com",
     department: "B.Tech CSE - Section A",
     phone: "9296724873",
+    photoUrl: "https://i.postimg.cc/HW8tZbHx/Whats-App-Image-2026-09-12-at-10-06-35-PM.jpg",
   },
   {
     id: "team-2",
@@ -109,6 +117,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "sahvds9416@gmal.com",
     department: "B.Tech CSE - Section A",
     phone: "7267040438",
+    photoUrl: "https://i.postimg.cc/XYWS7Vxc/Whats-App-Image-2026-09-12-at-6-51-25-PM.jpg",
   },
   {
     id: "team-3",
@@ -118,6 +127,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "pranjalmaurya@gmail.com",
     department: "B.Tech CSE - Section A",
     phone: "9235544155",
+    photoUrl: "https://i.postimg.cc/RZgs59YN/Whats-App-Image-2026-09-12-at-6-54-20-PM.jpg",
   },
   {
     id: "team-4",
@@ -127,6 +137,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "roshankumar11102007@gmail.com",
     department: "B.Tech CSE - Section A",
     phone: "8542895998",
+    photoUrl: "https://i.postimg.cc/pd0gZKvB/Whats-App-Image-2026-09-12-at-6-58-55-PM.jpg",
   },
   {
     id: "team-5",
@@ -136,6 +147,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "rijawankhan@gmail.com",
     department: "B.Tech CSE - Section A",
     phone: "9076762742",
+    photoUrl: "https://i.postimg.cc/mDvpXw5y/Whats-App-Image-2026-09-12-at-7-02-15-PM.jpg",
   },
   {
     id: "team-6",
@@ -145,6 +157,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "avinashprajapati7598@gmail.com",
     department: "B.Tech CSE - Section A",
     phone: "8175980662",
+    photoUrl: "https://i.postimg.cc/3NGVY6G3/Whats-App-Image-2026-09-12-at-6-53-26-PM.jpg",
   },
   {
     id: "team-7",
@@ -154,6 +167,7 @@ export const initialTeamMembers: TeamMember[] = [
     email: "viveksaroj7598@gmail.com",
     department: "B.Tech CSE - Section A",
     phone: "7460981984",
+    photoUrl: "https://i.postimg.cc/QddmqwMj/file-000000004a18820893d71e8d32dd2ff5.png",
   },
 ];
 

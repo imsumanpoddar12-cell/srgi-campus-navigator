@@ -23,6 +23,23 @@ interface AdminPhotosSectionProps {
   currentAdminId?: string;
 }
 
+const defaultAdminAvatars: Record<string, string> = {
+  suman92: "https://i.postimg.cc/HW8tZbHx/Whats-App-Image-2026-09-12-at-10-06-35-PM.jpg",
+  suman01: "https://i.postimg.cc/HW8tZbHx/Whats-App-Image-2026-09-12-at-10-06-35-PM.jpg",
+  vivek93: "https://i.postimg.cc/XYWS7Vxc/Whats-App-Image-2026-09-12-at-6-51-25-PM.jpg",
+  vivek01: "https://i.postimg.cc/XYWS7Vxc/Whats-App-Image-2026-09-12-at-6-51-25-PM.jpg",
+  pranjal94: "https://i.postimg.cc/RZgs59YN/Whats-App-Image-2026-09-12-at-6-54-20-PM.jpg",
+  pranjal01: "https://i.postimg.cc/RZgs59YN/Whats-App-Image-2026-09-12-at-6-54-20-PM.jpg",
+  roshan95: "https://i.postimg.cc/pd0gZKvB/Whats-App-Image-2026-09-12-at-6-58-55-PM.jpg",
+  roshan01: "https://i.postimg.cc/pd0gZKvB/Whats-App-Image-2026-09-12-at-6-58-55-PM.jpg",
+  rijawan96: "https://i.postimg.cc/mDvpXw5y/Whats-App-Image-2026-09-12-at-7-02-15-PM.jpg",
+  rijawan01: "https://i.postimg.cc/mDvpXw5y/Whats-App-Image-2026-09-12-at-7-02-15-PM.jpg",
+  avinash97: "https://i.postimg.cc/3NGVY6G3/Whats-App-Image-2026-09-12-at-6-53-26-PM.jpg",
+  avinash01: "https://i.postimg.cc/3NGVY6G3/Whats-App-Image-2026-09-12-at-6-53-26-PM.jpg",
+  viveksaroj98: "https://i.postimg.cc/QddmqwMj/file-000000004a18820893d71e8d32dd2ff5.png",
+  vivek02: "https://i.postimg.cc/QddmqwMj/file-000000004a18820893d71e8d32dd2ff5.png",
+};
+
 export default function AdminPhotosSection({
   admins,
   onBack,
@@ -134,7 +151,8 @@ export default function AdminPhotosSection({
       {/* Admins Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {admins.map((admin) => {
-          const hasPhoto = Boolean(admin.avatarUrl && admin.avatarUrl.trim());
+          const avatarSrc = (admin.avatarUrl && admin.avatarUrl.trim()) || defaultAdminAvatars[admin.id] || "";
+          const hasPhoto = Boolean(avatarSrc);
 
           return (
             <div
@@ -148,7 +166,7 @@ export default function AdminPhotosSection({
                   {hasPhoto ? (
                     <div className="relative w-28 h-28 rounded-2xl overflow-hidden border-2 border-blue-500 shadow-md bg-slate-100">
                       <img
-                        src={admin.avatarUrl}
+                        src={avatarSrc}
                         alt={admin.name}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"

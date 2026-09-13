@@ -82,11 +82,27 @@ export default function App() {
       safeSetItem("srgi_admins", JSON.stringify(initialAdmins));
       return initialAdmins;
     }
-    return saved;
+    // Automatically update admins with official photo URLs if missing or previous unsplash placeholder
+    const updated = saved.map((admin) => {
+      const match = initialAdmins.find((init) => init.id === admin.id);
+      if (match && (!admin.avatarUrl || admin.avatarUrl.includes("unsplash.com"))) {
+        return { ...admin, avatarUrl: match.avatarUrl };
+      }
+      return admin;
+    });
+    return updated;
   });
 
   const [team, setTeam] = useState<TeamMember[]>(() => {
-    return safeParse(safeGetItem("srgi_team"), initialTeamMembers);
+    const saved = safeParse<TeamMember[]>(safeGetItem("srgi_team"), initialTeamMembers);
+    const updated = saved.map((member) => {
+      const match = initialTeamMembers.find((init) => init.id === member.id);
+      if (match && (!member.photoUrl || member.photoUrl.includes("unsplash.com"))) {
+        return { ...member, photoUrl: match.photoUrl };
+      }
+      return member;
+    });
+    return updated;
   });
 
   const [locations, setLocations] = useState<CampusLocation[]>(() => {
