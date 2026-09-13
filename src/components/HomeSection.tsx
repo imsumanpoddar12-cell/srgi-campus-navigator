@@ -201,7 +201,7 @@ export default function HomeSection({
                   <b>Store Room & First-Aid Medicines</b> are located <b className="text-rose-900">just behind Block D</b> (Girls Hostel).
                 </p>
                 <p className="mt-1.5 text-slate-600 leading-relaxed">
-                  <b>Seminar Hall</b> is <b className="text-slate-900">20 metres straight</b> from the campus cafeteria.
+                  <b>Seminar Hall (Block A Ground Floor)</b>: <b className="text-slate-900">20 metres straight</b> from the campus cafeteria, and from Block B: 20m left jaane par 20m right.
                 </p>
               </div>
             </div>

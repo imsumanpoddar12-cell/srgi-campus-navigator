@@ -447,7 +447,7 @@ export default function App() {
                 <b>Boys Hostel:</b> 300m from Main Gate • <b>Cafes:</b> 2nd Gate of College
               </div>
               <div>
-                <b>Medicines & Store:</b> Behind Block D • <b>Seminar Hall:</b> 20m from Cafeteria
+                <b>Medicines & Store:</b> Behind Block D • <b>Seminar Hall:</b> 20m from Cafeteria (Block B se 20m left, 20m right)
               </div>
             </div>
           </div>
