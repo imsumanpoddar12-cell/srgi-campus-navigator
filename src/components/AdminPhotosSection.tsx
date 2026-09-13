@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useState, type FormEvent } from "react";
 import {
   ArrowLeft,
   Mail,
@@ -6,7 +6,6 @@ import {
   Shield,
   Edit3,
   Check,
-  Upload,
   User,
   X,
   Camera,
@@ -83,17 +82,6 @@ export default function AdminPhotosSection({
       setEditingAdmin(null);
       setSavedSuccess(false);
     }, 600);
-  };
-
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarInput(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const copyEmail = (id: string, email: string) => {
@@ -206,14 +194,14 @@ export default function AdminPhotosSection({
                   </span>
                 </div>
 
-                {/* Admin Name & Username */}
+                {/* Admin Name & Designation (login ID is hidden for security) */}
                 <div className="text-center mt-3">
                   <h3 className="text-base font-bold text-slate-900 tracking-tight">
                     {admin.name}
                   </h3>
                   <div className="mt-1 flex items-center justify-center gap-1.5">
-                    <span className="text-[11px] font-mono font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-100">
-                      @{admin.username || admin.id}
+                    <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/80">
+                      SRGI Administrator
                     </span>
                   </div>
                 </div>
@@ -332,21 +320,11 @@ export default function AdminPhotosSection({
                   )}
 
                   <div className="flex-1 space-y-2">
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg font-bold cursor-pointer transition-colors">
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>Upload from Device</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                    </label>
                     <input
                       type="url"
                       value={avatarInput}
                       onChange={(e) => setAvatarInput(e.target.value)}
-                      placeholder="Or paste photo URL..."
+                      placeholder="Photo link/URL (e.g. Cloudinary / PostImage)..."
                       className="w-full p-2 bg-slate-50 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-600 text-slate-800"
                     />
                   </div>

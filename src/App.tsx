@@ -13,6 +13,8 @@ import FacultiesScheduleSection from "./components/FacultiesScheduleSection";
 import OurTeamSection from "./components/OurTeamSection";
 import AboutSection from "./components/AboutSection";
 import AdminPanelSection from "./components/AdminPanelSection";
+import WhereIsSRGISection from "./components/WhereIsSRGISection";
+import SideMapDrawer from "./components/SideMapDrawer";
 import AdminLoginModal from "./components/AdminLoginModal";
 import AIAssistantModal from "./components/AIAssistantModal";
 import AcknowledgementModal from "./components/AcknowledgementModal";
@@ -106,11 +108,28 @@ export default function App() {
   });
 
   const [locations, setLocations] = useState<CampusLocation[]>(() => {
-    return safeParse(safeGetItem("srgi_locations"), initialCampusLocations);
+    const saved = safeParse<CampusLocation[]>(safeGetItem("srgi_locations"), initialCampusLocations);
+    // Sanitize any outdated unsplash placeholder photos from saved locations
+    const sanitized = saved.map((loc) => {
+      const match = initialCampusLocations.find((init) => init.id === loc.id);
+      if (loc.photoUrl && loc.photoUrl.includes("unsplash.com")) {
+        return { ...loc, photoUrl: match?.photoUrl };
+      }
+      return loc;
+    });
+    // Ensure all new official locations from initialCampusLocations are present
+    for (const initLoc of initialCampusLocations) {
+      if (!sanitized.some((l) => l.id === initLoc.id)) {
+        sanitized.unshift(initLoc);
+      }
+    }
+    return sanitized;
   });
 
   const [customPhotos, setCustomPhotos] = useState<CampusPhotoItem[]>(() => {
-    return safeParse(safeGetItem("srgi_photos"), []);
+    const saved = safeParse<CampusPhotoItem[]>(safeGetItem("srgi_photos"), []);
+    // Ensure no third-party/unsplash photos linger in customPhotos cache
+    return saved.filter((p) => p.imageUrl && !p.imageUrl.includes("unsplash.com"));
   });
 
   // Admin photos toggle state (requested by user to be able to show admin photos in menu / admin section)
@@ -127,8 +146,9 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>("home");
   const [selectedBlock, setSelectedBlock] = useState<string>("Block A");
 
-  // Modals
+  // Modals & Drawers
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isSideMapOpen, setIsSideMapOpen] = useState<boolean>(false);
   const [isAIModalOpen, setIsAIModalOpen] = useState<boolean>(false);
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState<boolean>(false);
   const [isAckModalOpen, setIsAckModalOpen] = useState<boolean>(false);
@@ -228,7 +248,12 @@ export default function App() {
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         onSelectSection={(sec) => {
-          setActiveSection(sec);
+          if (sec === "where-is-srgi") {
+            setIsSideMapOpen(true);
+            setActiveSection("where-is-srgi");
+          } else {
+            setActiveSection(sec);
+          }
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         activeSection={activeSection}
@@ -353,6 +378,23 @@ export default function App() {
           </div>
         )}
 
+        {activeSection === "where-is-srgi" && (
+          <div className="py-6">
+            <div className="max-w-6xl mx-auto px-4 mb-4">
+              <button
+                onClick={() => {
+                  setActiveSection("home");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="px-4 py-2 bg-[#123f73] text-white rounded-xl text-xs font-bold hover:bg-[#0e315b] transition-colors flex items-center gap-1.5"
+              >
+                ← Back to Home
+              </button>
+            </div>
+            <WhereIsSRGISection />
+          </div>
+        )}
+
         {activeSection === "about" && (
           <AboutSection
             collegeInfo={collegeInfo}
@@ -386,6 +428,15 @@ export default function App() {
         aria-label="Quick Action Toolbar"
         className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl shadow-blue-950/15 border border-slate-200/80 flex items-center gap-2 max-w-[calc(100vw-32px)]"
       >
+        <button
+          id="dock-map-btn"
+          onClick={() => setIsSideMapOpen(true)}
+          className="px-3 py-2 text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 rounded-xl flex items-center gap-1.5 transition-colors border border-amber-200"
+        >
+          <Compass className="w-4 h-4 text-amber-600" />
+          <span className="hidden sm:inline">SRGI Map</span>
+        </button>
+
         <button
           id="dock-explore-btn"
           onClick={() => {
@@ -474,6 +525,12 @@ export default function App() {
             </div>
             <div className="flex items-center gap-4">
               <button
+                onClick={() => setIsSideMapOpen(true)}
+                className="hover:text-amber-300 underline cursor-pointer font-semibold text-amber-200"
+              >
+                📍 Find SRGI Map
+              </button>
+              <button
                 onClick={() => setIsAckModalOpen(true)}
                 className="hover:text-white underline cursor-pointer"
               >
@@ -506,7 +563,17 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Modals */}
+      {/* Modals & Drawers */}
+      <SideMapDrawer
+        isOpen={isSideMapOpen}
+        onOpen={() => setIsSideMapOpen(true)}
+        onClose={() => setIsSideMapOpen(false)}
+        onOpenFullPage={() => {
+          setActiveSection("where-is-srgi");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      />
+
       <AIAssistantModal
         isOpen={isAIModalOpen}
         onClose={() => setIsAIModalOpen(false)}

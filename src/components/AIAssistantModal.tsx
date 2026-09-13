@@ -39,25 +39,34 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
   const [speakingMsgId, setSpeakingMsgId] = useState<string | null>(null);
   const [autoSpeak, setAutoSpeak] = useState(true);
   const [speechNotice, setSpeechNotice] = useState<string | null>(null);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const speechIntervalRef = useRef<any>(null);
 
   // Auto scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  // Pre-load speech synthesis voices (fixes Chrome voice list delay)
+  // Pre-load and track speech synthesis voices reliably
   useEffect(() => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-      const onVoicesChanged = () => {
-        window.speechSynthesis.getVoices();
+      const loadVoices = () => {
+        try {
+          const list = window.speechSynthesis.getVoices();
+          if (list && list.length > 0) {
+            setAvailableVoices(list);
+          }
+        } catch {}
       };
-      window.speechSynthesis.addEventListener("voiceschanged", onVoicesChanged);
+
+      loadVoices();
+      window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
       return () => {
-        window.speechSynthesis.removeEventListener("voiceschanged", onVoicesChanged);
+        window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
       };
     }
   }, []);
@@ -124,6 +133,11 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
           window.speechSynthesis.cancel();
         }
       } catch {}
+      if (speechIntervalRef.current) {
+        clearInterval(speechIntervalRef.current);
+        speechIntervalRef.current = null;
+      }
+      activeUtteranceRef.current = null;
     };
   }, []);
 
@@ -140,6 +154,11 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
           window.speechSynthesis.cancel();
         }
       } catch {}
+      if (speechIntervalRef.current) {
+        clearInterval(speechIntervalRef.current);
+        speechIntervalRef.current = null;
+      }
+      activeUtteranceRef.current = null;
       setIsListening(false);
       setIsSpeaking(false);
       setSpeakingMsgId(null);
@@ -165,6 +184,11 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
         // Stop speech if speaking
         if (typeof window !== "undefined" && "speechSynthesis" in window) {
           window.speechSynthesis.cancel();
+          if (speechIntervalRef.current) {
+            clearInterval(speechIntervalRef.current);
+            speechIntervalRef.current = null;
+          }
+          activeUtteranceRef.current = null;
           setIsSpeaking(false);
           setSpeakingMsgId(null);
         }
@@ -190,7 +214,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       .trim();
   };
 
-  // Speaks text aloud directly in Hindi
+  // Speaks text aloud directly in natural Hindi
   const handleSpeakText = (text: string, msgId?: string) => {
     try {
       if (typeof window === "undefined" || !("speechSynthesis" in window)) {
@@ -201,63 +225,126 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       // If already speaking this exact message, toggle to stop
       if (isSpeaking && speakingMsgId === msgId) {
         window.speechSynthesis.cancel();
+        if (speechIntervalRef.current) {
+          clearInterval(speechIntervalRef.current);
+          speechIntervalRef.current = null;
+        }
+        activeUtteranceRef.current = null;
         setIsSpeaking(false);
         setSpeakingMsgId(null);
         return;
       }
 
+      // Cancel previous speech first
       window.speechSynthesis.cancel();
+      if (speechIntervalRef.current) {
+        clearInterval(speechIntervalRef.current);
+        speechIntervalRef.current = null;
+      }
+      activeUtteranceRef.current = null;
 
       const speechText = cleanForSpeech(text);
       if (!speechText) return;
 
-      const utterance = new SpeechSynthesisUtterance(speechText);
+      // Small async timeout ensures Chrome processes cancel() before queuing new utterance
+      setTimeout(() => {
+        try {
+          // If browser paused speech synthesis, resume it
+          if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+          }
 
-      // Look for the best Hindi or Indian voice
-      const voices = window.speechSynthesis.getVoices();
-      const hindiVoice = voices.find(
-        (v) =>
-          v.lang.toLowerCase().startsWith("hi") ||
-          v.name.toLowerCase().includes("hindi") ||
-          v.name.toLowerCase().includes("lekha") ||
-          v.name.toLowerCase().includes("kalpana")
-      );
-      const indianVoice = voices.find(
-        (v) =>
-          v.lang.toLowerCase().includes("in") ||
-          v.name.toLowerCase().includes("india")
-      );
+          const utterance = new SpeechSynthesisUtterance(speechText);
 
-      if (hindiVoice) {
-        utterance.voice = hindiVoice;
-        utterance.lang = hindiVoice.lang;
-      } else if (indianVoice) {
-        utterance.voice = indianVoice;
-        utterance.lang = indianVoice.lang;
-      } else {
-        utterance.lang = "hi-IN";
-      }
+          // CRITICAL: Anchor utterance reference so Chrome V8 Garbage Collector doesn't abort speech
+          activeUtteranceRef.current = utterance;
+          (window as any).__srgiActiveUtterance = utterance;
 
-      utterance.rate = 0.96; // Smooth, natural pacing
-      utterance.pitch = 1.05; // Friendly warm tone
+          // Pick best available voice
+          const voices = window.speechSynthesis.getVoices().length > 0
+            ? window.speechSynthesis.getVoices()
+            : availableVoices;
 
-      utterance.onstart = () => {
-        setIsSpeaking(true);
-        setSpeakingMsgId(msgId || null);
-      };
+          const hindiVoice = voices.find(
+            (v) =>
+              v.lang.toLowerCase().startsWith("hi") ||
+              v.name.toLowerCase().includes("hindi") ||
+              v.name.toLowerCase().includes("lekha") ||
+              v.name.toLowerCase().includes("kalpana") ||
+              v.name.toLowerCase().includes("swara") ||
+              v.name.toLowerCase().includes("madhur")
+          );
 
-      utterance.onend = () => {
-        setIsSpeaking(false);
-        setSpeakingMsgId(null);
-      };
+          const indianVoice = voices.find(
+            (v) =>
+              v.lang.toLowerCase().includes("en-in") ||
+              v.lang.toLowerCase().includes("en_in") ||
+              v.name.toLowerCase().includes("india") ||
+              v.name.toLowerCase().includes("ravi") ||
+              v.name.toLowerCase().includes("heera") ||
+              v.name.toLowerCase().includes("sangeeta")
+          );
 
-      utterance.onerror = (e) => {
-        console.warn("Speech synthesis playback error:", e);
-        setIsSpeaking(false);
-        setSpeakingMsgId(null);
-      };
+          if (hindiVoice) {
+            utterance.voice = hindiVoice;
+            utterance.lang = hindiVoice.lang;
+          } else if (indianVoice) {
+            utterance.voice = indianVoice;
+            utterance.lang = indianVoice.lang;
+          } else if (voices.length > 0) {
+            const defaultVoice = voices.find((v) => v.default) || voices[0];
+            utterance.voice = defaultVoice;
+            utterance.lang = defaultVoice.lang;
+          } else {
+            utterance.lang = "hi-IN";
+          }
 
-      window.speechSynthesis.speak(utterance);
+          utterance.rate = 0.95; // Gentle, clear pacing
+          utterance.pitch = 1.05; // Warm, friendly tone
+
+          utterance.onstart = () => {
+            setIsSpeaking(true);
+            setSpeakingMsgId(msgId || null);
+
+            // Chrome bug workaround: keep-alive resume heartbeat during playback
+            if (speechIntervalRef.current) clearInterval(speechIntervalRef.current);
+            speechIntervalRef.current = setInterval(() => {
+              if (typeof window !== "undefined" && "speechSynthesis" in window) {
+                if (window.speechSynthesis.speaking && window.speechSynthesis.paused) {
+                  window.speechSynthesis.resume();
+                }
+              }
+            }, 3000);
+          };
+
+          utterance.onend = () => {
+            setIsSpeaking(false);
+            setSpeakingMsgId(null);
+            activeUtteranceRef.current = null;
+            if (speechIntervalRef.current) {
+              clearInterval(speechIntervalRef.current);
+              speechIntervalRef.current = null;
+            }
+          };
+
+          utterance.onerror = (e) => {
+            console.warn("Speech synthesis error:", e);
+            setIsSpeaking(false);
+            setSpeakingMsgId(null);
+            activeUtteranceRef.current = null;
+            if (speechIntervalRef.current) {
+              clearInterval(speechIntervalRef.current);
+              speechIntervalRef.current = null;
+            }
+          };
+
+          window.speechSynthesis.speak(utterance);
+        } catch (innerErr) {
+          console.warn("Speech dispatch error:", innerErr);
+          setIsSpeaking(false);
+          setSpeakingMsgId(null);
+        }
+      }, 50);
     } catch (err) {
       console.warn("Speech synthesis trigger error:", err);
       setIsSpeaking(false);
@@ -268,6 +355,15 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
   const handleSendMessage = async (textToSend?: string) => {
     const query = (textToSend || inputValue).trim();
     if (!query || isLoading) return;
+
+    // Immediate user-gesture audio unlock so browser won't block speech synthesis later
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      try {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
+      } catch {}
+    }
 
     if (isListening && recognitionRef.current) {
       try {
@@ -389,6 +485,21 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Quick Voice Tester Button */}
+            <button
+              onClick={() =>
+                handleSpeakText(
+                  "नमस्ते! मैं एसआरजीआई कैंपस साथी हूँ। मेरी आवाज़ अब बिल्कुल चालू है!",
+                  "test-voice-header"
+                )
+              }
+              className="flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-bold bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/30 transition-all cursor-pointer"
+              title="क्लिक करके आवाज़ टेस्ट करें"
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">आवाज़ टेस्ट</span>
+            </button>
+
             {/* Auto-Speak Direct Voice Toggle */}
             <button
               onClick={() => {

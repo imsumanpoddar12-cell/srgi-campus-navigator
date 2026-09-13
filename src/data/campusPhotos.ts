@@ -2,200 +2,270 @@ import { CampusPhotoItem } from "../types";
 
 /**
  * Campus Photo Catalog
- * This file allows students, staff and admins to register photos of campus locations.
- * When anyone searches for a place like "library" or "seminar hall" or browses the
- * Campus Gallery, the matching photos will automatically appear.
+ * Contains exclusively the verified campus photos provided for SRGI Lucknow.
+ * All placeholder/third-party images have been removed.
  */
 export const defaultCampusPhotos: CampusPhotoItem[] = [
+  // ==================== 1. MAIN GATE (2 PHOTOS) ====================
   {
-    id: "photo-srgi-central-library-entrance",
-    title: "Central Library Grand Entrance & Reading Lounge",
-    locationName: "Central Library",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "/images/central_library_entrance_1789234918818.jpg",
-    caption: "Block A Second Floor: Glass double doors entrance to Central Library featuring the signature wooden crescent bookshelf and circular art installation.",
-    tags: ["library", "central library", "entrance", "books", "reading", "block a", "bookshelf", "study", "srgi"]
+    id: "photo-main-gate-1",
+    title: "SRGI Main Gate Entrance (Photo 1)",
+    locationName: "Main Gate",
+    block: "Main Campus",
+    category: "Campus Grounds",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290314/WhatsApp_Image_2026-09-13_at_2.32.02_PM.jpg",
+    caption: "SRGI Lucknow Main Entrance Gate on Sitapur Road (NH-24, Bakshi Ka Talab).",
+    tags: ["main gate", "gate", "entrance", "campus grounds", "main entrance", "sitapur road", "bkt"]
   },
   {
-    id: "photo-srgi-library-neon-sign",
-    title: "You Belong at the SR Library - Book Stacks & Reading Nooks",
-    locationName: "Central Library",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "/images/library_belong_sign_1789235006575.jpg",
-    caption: "Block A Central Library: Multi-tier book stacks with illuminated 'YOU BELONG AT THE SR LIBRARY' sign and integrated quiet study alcoves.",
-    tags: ["library", "central library", "sr library", "you belong at the sr library", "books", "stacks", "study", "alcove", "block a"]
+    id: "photo-main-gate-2",
+    title: "Main Gate of the Campus (Photo 2)",
+    locationName: "Main Gate",
+    block: "Main Campus",
+    category: "Campus Grounds",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290298/WhatsApp_Image_2026-09-12_at_11.07.56_PM.jpg",
+    caption: "Grand entrance boulevard of the 65-acre SR Group of Institutions campus.",
+    tags: ["main gate", "gate of the campus", "gate", "campus entrance", "security", "avenue"]
+  },
+
+  // ==================== 2. CENTRAL CAMPUS & MAIN CAMPUS (4 PHOTOS) ====================
+  {
+    id: "photo-central-campus-1",
+    title: "Central Campus Grounds (Photo 1)",
+    locationName: "Central Campus",
+    block: "Main Campus",
+    category: "Campus Grounds",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290318/WhatsApp_Image_2026-09-12_at_11.07.43_PM.jpg",
+    caption: "Central campus walkway and academic grounds of SRGI Lucknow.",
+    tags: ["central campus", "centeral campus", "main campus", "walkway", "grounds", "greenery"]
   },
   {
-    id: "photo-srgi-library-reading-lounge",
-    title: "Executive Library Reading Lounge & Discussion Area",
-    locationName: "Central Library Lounge",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "/images/library_reading_lounge_1789235046991.jpg",
-    caption: "Spacious library relaxation and reading lounge with warm LED back-lit wooden shelving, plush sofa seating, and low coffee tables.",
-    tags: ["library", "central library", "lounge", "sofa", "reading lounge", "bookshelf", "armchair", "block a", "study"]
+    id: "photo-central-campus-2",
+    title: "Central Campus Courtyard (Photo 2)",
+    locationName: "Central Campus",
+    block: "Main Campus",
+    category: "Campus Grounds",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290308/WhatsApp_Image_2026-09-12_at_11.07.40_PM.jpg",
+    caption: "Lush green central campus quad connecting academic blocks and cafeteria.",
+    tags: ["central campus", "centeral campus", "campus", "courtyard", "quad", "main campus"]
   },
   {
-    id: "photo-srgi-library-digital-study-hall",
-    title: "Digital Research Hall & Reading Cubicles",
-    locationName: "Central Library",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "/images/library_study_hall_1789235080137.jpg",
-    caption: "Modern digital reading hall with partitioned computer study tables, high-speed campus Wi-Fi, and reference textbook access.",
-    tags: ["library", "central library", "digital library", "study hall", "computers", "laptops", "cubicles", "reading room", "block a"]
+    id: "photo-main-campus-3",
+    title: "Main Campus Academic Complex",
+    locationName: "Main Campus",
+    block: "Main Campus",
+    category: "Campus Grounds",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789291170/1751570876173-1555409362phpeGIjna.jpg",
+    caption: "Panoramic view of SRGI Lucknow main campus infrastructure and facilities.",
+    tags: ["main campus", "campus", "srgi lucknow", "infrastructure", "central campus"]
   },
   {
-    id: "photo-srgi-library-reception-counter",
-    title: "Central Library Circulation & Help Desk",
-    locationName: "Central Library Help Desk",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "/images/library_help_desk_1789235107646.jpg",
-    caption: "Book issue & return counter, library card registration, and digital catalog query desk located at Central Library entrance.",
-    tags: ["library", "central library", "circulation", "help desk", "reception", "counter", "issue", "books", "block a"]
-  },
-  {
-    id: "photo-library-1",
-    title: "Central Library Reading & Reference Hall",
-    locationName: "Library",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block A Second Floor: Sprawling digital & reference collection with quiet reading cubicles.",
-    tags: ["library", "books", "study", "block a", "reading", "second floor", "reference", "journals"]
-  },
-  {
-    id: "photo-library-2",
-    title: "Library Digital Resource Section",
-    locationName: "Library",
-    block: "Block A",
-    category: "Library",
-    imageUrl: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80",
-    caption: "High-speed internet terminals for online research papers and e-journals.",
-    tags: ["library", "digital", "computers", "e-books", "journals"]
-  },
-  {
-    id: "photo-seminar-hall",
-    title: "Auditorium & Seminar Hall",
-    locationName: "Seminar Hall",
-    block: "Block A",
-    category: "Facilities",
-    imageUrl: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block A Ground Floor (20m straight from campus cafeteria): Venue for guest lectures, seminars, and tech symposiums.",
-    tags: ["seminar", "seminar hall", "hall", "auditorium", "cafeteria", "block a"]
-  },
-  {
-    id: "photo-computer-lab",
-    title: "Advanced Computer Laboratory",
-    locationName: "Computer Lab",
-    block: "Block C",
-    category: "Labs",
-    imageUrl: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block C Ground Floor: Equipped with modern workstations, dual monitors, and high-speed LAN.",
-    tags: ["computer lab", "lab", "cse", "coding", "workstations", "block c"]
-  },
-  {
-    id: "photo-chemistry-lab",
-    title: "Applied Chemistry & Mechanics Lab",
-    locationName: "Chemistry Lab",
-    block: "Block A",
-    category: "Labs",
-    imageUrl: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block A Ground Floor: Hands-on experimental lab for first-year engineering students.",
-    tags: ["chemistry lab", "lab", "mechanics lab", "science", "block a"]
-  },
-  {
-    id: "photo-block-a",
-    title: "Block A - Administrative & Academic Hub",
-    locationName: "Block A",
-    block: "Block A",
-    category: "Blocks",
-    imageUrl: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block A: Housing the Director & Chairman Offices, Registrar, Central Library, and Seminar Hall.",
-    tags: ["block a", "administration", "director", "chairman", "offices", "registrar"]
-  },
-  {
-    id: "photo-block-b",
-    title: "Block B - Management & MBA Wing",
-    locationName: "Block B",
-    block: "Block B",
-    category: "Blocks",
-    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block B: Dedicated classrooms, conference rooms, and case study halls for MBA students.",
-    tags: ["block b", "mba", "management", "business"]
-  },
-  {
-    id: "photo-block-c",
-    title: "Block C - Engineering & Technology Complex",
-    locationName: "Block C",
-    block: "Block C",
-    category: "Blocks",
-    imageUrl: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block C: The tech hub for CSE, IT, EC, EN, AIML, DS, Biotechnology, and SRIMT programs.",
-    tags: ["block c", "cse", "engineering", "it", "hod office", "cse a"]
-  },
-  {
-    id: "photo-block-d",
-    title: "Block D - Girls Hostel & Health Center",
-    locationName: "Block D (Girls Hostel)",
-    block: "Block D",
-    category: "Hostels",
-    imageUrl: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block D: Secure, comfortable Girls Hostel. Note: Store room and First-Aid medicines are located just behind Block D.",
-    tags: ["block d", "girls hostel", "hostel", "medicines", "store room", "girls"]
-  },
-  {
-    id: "photo-block-e",
-    title: "Block E - Senior Academic Classes",
-    locationName: "Block E (Seniors Classes)",
-    block: "Block E",
-    category: "Blocks",
-    imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
-    caption: "Block E: Dedicated lectures and smart classrooms for 2nd Year, 3rd Year, and 4th Year senior students.",
-    tags: ["block e", "seniors", "senior classes", "2nd year", "3rd year", "4th year"]
-  },
-  {
-    id: "photo-boys-hostel",
-    title: "SRGI Boys Hostel",
-    locationName: "Boys Hostel",
-    block: "Boys Hostel Campus",
-    category: "Hostels",
-    imageUrl: "https://images.unsplash.com/photo-1590402494682-cd3fb53b1f70?auto=format&fit=crop&w=1200&q=80",
-    caption: "Located 300 metres away from the college Main Gate inside the lush 65-acre campus.",
-    tags: ["boys hostel", "hostel", "boys", "main gate", "residential"]
-  },
-  {
-    id: "photo-cafeteria",
-    title: "Campus Cafeteria & 2nd Gate Cafes",
-    locationName: "Campus Cafes & Cafeteria",
-    block: "Gate 2 & Central Campus",
-    category: "Cafeteria",
-    imageUrl: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80",
-    caption: "Lively hangout spots with quick snacks, teas, and beverages at Gate 2 and central cafeteria (20m from Seminar Hall).",
-    tags: ["cafe", "cafes", "cafeteria", "canteen", "food", "gate 2", "second gate"]
-  },
-  {
-    id: "photo-medicines",
-    title: "Campus Dispensary & Medicine Store",
-    locationName: "Medicine Store & Dispensary",
-    block: "Behind Block D",
-    category: "Facilities",
-    imageUrl: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80",
-    caption: "Store room and first-aid medical support located immediately behind Block D (Girls Hostel).",
-    tags: ["medicine", "medicines", "dispensary", "first aid", "store room", "block d"]
-  },
-  {
-    id: "photo-campus-ground",
-    title: "65-Acre Lush Green Campus Grounds",
+    id: "photo-campus-view-4",
+    title: "SR Group of Institutions Campus",
     locationName: "Campus Grounds",
     block: "Main Campus",
     category: "Campus Grounds",
-    imageUrl: "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1200&q=80",
-    caption: "Beautiful wide avenues, tree-lined walkways, sports arena, and modern academic architecture.",
-    tags: ["campus", "grounds", "65 acre", "main gate", "greenery"]
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789291167/s-r-group-of-institution-lucknow-305380.webp",
+    caption: "SR Group of Institutions (SRGI) Lucknow campus academic buildings.",
+    tags: ["campus", "sr group of institution", "srgi", "lucknow", "main campus", "campus grounds"]
+  },
+
+  // ==================== 3. BLOCK A / MAIN BLOCK (4 PHOTOS) ====================
+  {
+    id: "photo-block-a-1",
+    title: "Block A - Main Block (Photo 1)",
+    locationName: "Block A",
+    block: "Block A",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290312/WhatsApp_Image_2026-09-13_at_2.32.01_PM.jpg",
+    caption: "Block A (Main Block): Housing the Central Library, Seminar Hall, Director Office, and Registrar.",
+    tags: ["a block", "block a", "main block", "blocks", "director office", "administration"]
+  },
+  {
+    id: "photo-block-a-2",
+    title: "Block A / Main Block (Photo 2)",
+    locationName: "Block A",
+    block: "Block A",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290305/WhatsApp_Image_2026-09-12_at_11.07.57_PM.jpg",
+    caption: "Main Block administrative and academic wing at SRGI Lucknow.",
+    tags: ["a block", "block a", "main block", "administration", "blocks", "academic block"]
+  },
+  {
+    id: "photo-block-a-3",
+    title: "Block A Exterior Facade (Photo 3)",
+    locationName: "Block A",
+    block: "Block A",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290296/WhatsApp_Image_2026-09-12_at_11.07.55_PM.jpg",
+    caption: "Front corridor and entrance perspective of Block A.",
+    tags: ["a block", "block a", "main block", "corridor", "blocks"]
+  },
+  {
+    id: "photo-block-a-4",
+    title: "Block A Academic Complex (Photo 4)",
+    locationName: "Block A",
+    block: "Block A",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290294/WhatsApp_Image_2026-09-12_at_11.07.54_PM.jpg",
+    caption: "View of Block A near the central cafeteria and landscaped gardens.",
+    tags: ["a block", "block a", "main block", "blocks", "srgi"]
+  },
+
+  // ==================== 4. SEMINAR HALL (3 PHOTOS) ====================
+  {
+    id: "photo-seminar-hall-1",
+    title: "Seminar Hall - Auditorium & Stage (Photo 1)",
+    locationName: "Seminar Hall",
+    block: "Block A",
+    category: "Facilities",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290302/WhatsApp_Image_2026-09-13_at_2.31.59_PM.jpg",
+    caption: "Seminar Hall (Block A Ground Floor, 20m straight from cafeteria): Stage, presentation screen, and podium.",
+    tags: ["seminar hall", "seminar", "auditorium", "hall", "block a", "stage", "cafeteria"]
+  },
+  {
+    id: "photo-seminar-hall-2",
+    title: "Seminar Hall - Conference Seating (Photo 2)",
+    locationName: "Seminar Hall",
+    block: "Block A",
+    category: "Facilities",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290581/gggggggggg.jpg",
+    caption: "Air-conditioned Seminar Hall with tiered seating for conferences, workshops, and guest lectures.",
+    tags: ["seminar hall", "seminar", "hall", "seating", "conference", "block a"]
+  },
+  {
+    id: "photo-seminar-hall-3",
+    title: "Seminar Hall - Event Auditorium (Photo 3)",
+    locationName: "Seminar Hall",
+    block: "Block A",
+    category: "Facilities",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789291164/1781176797php8vFyWL.jpg",
+    caption: "Official SRGI Lucknow Seminar Hall venue for technical symposiums and college events.",
+    tags: ["seminar hall", "seminar", "auditorium", "facilities", "block a", "events"]
+  },
+
+  // ==================== 5. SMART CLASS (2 PHOTOS) ====================
+  {
+    id: "photo-smart-class-1",
+    title: "Smart Class - Digital Interactive Board (Photo 1)",
+    locationName: "Smart Classroom",
+    block: "Block C",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789291083/1782281228phpLfTbOg.jpg",
+    caption: "Modern smart classroom equipped with interactive digital screen, high-definition projector, and comfortable benches.",
+    tags: ["smart class", "smart classroom", "class", "classroom", "block c", "digital board", "smart"]
+  },
+  {
+    id: "photo-smart-class-2",
+    title: "Smart Classroom - Lecture Session (Photo 2)",
+    locationName: "Smart Classroom",
+    block: "Block C",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789291160/images.jpg",
+    caption: "Interactive multimedia lecture hall for engineering and advanced technical learning.",
+    tags: ["smart class", "smart classroom", "class", "lecture hall", "block c", "presentation"]
+  },
+
+  // ==================== 6. CENTRAL LIBRARY (10 PHOTOS) ====================
+  {
+    id: "photo-srgi-library-1",
+    title: "Central Library - Reading Hall & Study Stacks (Photo 1)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288370/WhatsApp_Image_2026-09-12_at_11.07.23_PM_1.jpg",
+    caption: "SRGI Central Library (Block A, 2nd Floor): View of the spacious study hall, book stacks, and reading tables.",
+    tags: ["library", "central library", "reading room", "study", "books", "block a", "srgi library"]
+  },
+  {
+    id: "photo-srgi-library-2",
+    title: "Central Library - Reference Section & Bookshelves (Photo 2)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288371/WhatsApp_Image_2026-09-12_at_11.07.24_PM.jpg",
+    caption: "SRGI Central Library: Engineering, Management, and Humanities reference book aisle.",
+    tags: ["library", "central library", "books", "reference", "bookshelves", "block a", "srgi"]
+  },
+  {
+    id: "photo-srgi-library-3",
+    title: "Central Library - Quiet Study Space & Seating (Photo 3)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288337/WhatsApp_Image_2026-09-12_at_11.07.25_PM_1.jpg",
+    caption: "SRGI Central Library: Dedicated student seating section for focused reading and exam preparation.",
+    tags: ["library", "central library", "seating", "study", "quiet zone", "block a"]
+  },
+  {
+    id: "photo-srgi-library-4",
+    title: "Central Library - Digital Research & Textbook Section (Photo 4)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288336/WhatsApp_Image_2026-09-12_at_11.07.22_PM.jpg",
+    caption: "SRGI Central Library: Digital catalog and student textbook borrowing section.",
+    tags: ["library", "central library", "textbooks", "digital", "research", "block a"]
+  },
+  {
+    id: "photo-srgi-library-5",
+    title: "Central Library - Main Circulation & Corridor (Photo 5)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288326/WhatsApp_Image_2026-09-12_at_11.07.24_PM_1.jpg",
+    caption: "SRGI Central Library: Wide aisle between book racks and circulation access corridor.",
+    tags: ["library", "central library", "aisle", "corridor", "books", "block a"]
+  },
+  {
+    id: "photo-srgi-library-6",
+    title: "Central Library - Academic Journal & Periodicals Rack (Photo 6)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288318/WhatsApp_Image_2026-09-12_at_11.07.22_PM_1.jpg",
+    caption: "SRGI Central Library: Journals, magazines, and competitive examination reference collection.",
+    tags: ["library", "central library", "journals", "periodicals", "magazines", "block a"]
+  },
+  {
+    id: "photo-srgi-library-7",
+    title: "Central Library - Student Reading Area (Photo 7)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288324/WhatsApp_Image_2026-09-12_at_11.07.23_PM.jpg",
+    caption: "SRGI Central Library: Natural lighting study desks for group discussion and individual study.",
+    tags: ["library", "central library", "desks", "reading", "study area", "block a"]
+  },
+  {
+    id: "photo-srgi-library-8",
+    title: "Central Library - Comprehensive Stacks Row (Photo 8)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288316/WhatsApp_Image_2026-09-12_at_11.07.20_PM_1.jpg",
+    caption: "SRGI Central Library: Extensive stacks housing thousands of technical volumes.",
+    tags: ["library", "central library", "stacks", "volumes", "engineering", "block a"]
+  },
+  {
+    id: "photo-srgi-library-9",
+    title: "Central Library - Departmental Archive & Reference (Photo 9)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288377/WhatsApp_Image_2026-09-12_at_11.07.23_PM_2.jpg",
+    caption: "SRGI Central Library: Departmental project reports, previous year question papers, and archives.",
+    tags: ["library", "central library", "archives", "projects", "pyq", "block a"]
+  },
+  {
+    id: "photo-srgi-library-10",
+    title: "Central Library - Wide Angle Reading & Stacks View (Photo 10)",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288380/WhatsApp_Image_2026-09-12_at_11.07.25_PM.jpg",
+    caption: "SRGI Central Library (Block A, 2nd Floor): Full panoramic perspective of the modern campus library.",
+    tags: ["library", "central library", "panorama", "reading", "block a", "srgi"]
   }
 ];
 
@@ -203,26 +273,10 @@ export const defaultCampusPhotos: CampusPhotoItem[] = [
  * Searches for matching photos given a location name or search term
  */
 export function getPhotosForQuery(query: string, customPhotos: CampusPhotoItem[] = []): CampusPhotoItem[] {
-  // Check if user has uploaded real library photos
-  const userLibraryPhotos = customPhotos.filter(
-    (p) =>
-      p.category.toLowerCase() === "library" ||
-      p.locationName.toLowerCase().includes("library") ||
-      p.tags.some((t) => t.toLowerCase().includes("library"))
+  // Combine customPhotos and defaultCampusPhotos, filtering out any third-party/placeholder images
+  const pool = [...customPhotos, ...defaultCampusPhotos].filter(
+    (p) => p.imageUrl && !p.imageUrl.includes("unsplash.com")
   );
-
-  let pool = [...customPhotos, ...defaultCampusPhotos];
-
-  // If user uploaded their exact library photos, eliminate AI generated placeholder images
-  // so ONLY the user's exact real photos are shown!
-  if (userLibraryPhotos.length > 0) {
-    pool = [
-      ...customPhotos,
-      ...defaultCampusPhotos.filter(
-        (p) => !p.id.startsWith("photo-srgi-central-library") && !p.id.startsWith("photo-srgi-library")
-      ),
-    ];
-  }
 
   if (!query || !query.trim()) return pool;
 

@@ -100,7 +100,7 @@ export default function AdminLoginModal({
                 required
                 value={adminIdOrEmail}
                 onChange={(e) => setAdminIdOrEmail(e.target.value)}
-                placeholder="e.g. suman92 or imsumanpoddar12@gmail.com"
+                placeholder="Enter authorized admin ID or email"
                 className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-blue-600 font-medium"
               />
             </div>
@@ -118,7 +118,7 @@ export default function AdminLoginModal({
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password (e.g. a@12, a@13, etc.)"
+                placeholder="Enter secure admin password"
                 className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-blue-600 font-medium"
               />
             </div>
@@ -134,7 +134,7 @@ export default function AdminLoginModal({
         </form>
 
         <div className="mt-4 p-3 bg-slate-50 rounded-xl text-[11px] text-slate-500 border border-slate-100 text-center">
-          Available to registered admins: SUMAN KUMAR (suman92), Vivek Sahani (vivek93), Pranjal Maurya (pranjal94), Roshan Kumar Bharti (roshan95), Rijawan Khan (rijawan96), Avinash Prajapati (avinash97), Vivek Saroj (viveksaroj98).
+          Restricted Portal: Access is permitted only to authorized SRGI institutional administrators.
         </div>
       </div>
     </div>

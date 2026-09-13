@@ -1,5 +1,5 @@
-import { useState, type ChangeEvent } from "react";
-import { Mail, Phone, Shield, Award, Edit3, Image as ImageIcon, Check } from "lucide-react";
+import { useState } from "react";
+import { Mail, Phone, Shield, Award, Edit3, Check } from "lucide-react";
 import { TeamMember } from "../types";
 
 interface OurTeamSectionProps {
@@ -44,18 +44,6 @@ export default function OurTeamSection({
     setEditingId(null);
   };
 
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>, id: string) => {
-    const file = e.target.files?.[0];
-    if (file && onUpdateTeamMember) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result as string;
-        onUpdateTeamMember(id, { photoUrl: base64 });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   return (
     <section id="our-team-section" className="w-full max-w-6xl mx-auto my-12 px-4">
       {/* Section Header */}
@@ -82,7 +70,7 @@ export default function OurTeamSection({
           const photoSource =
             member.photoUrl ||
             defaultAvatars[member.order] ||
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+            "https://api.dicebear.com/7.x/bottts/svg?seed=" + member.name;
 
           return (
             <div
@@ -128,24 +116,6 @@ export default function OurTeamSection({
                       (e.target as HTMLImageElement).src = defaultAvatars[member.order] || "";
                     }}
                   />
-                  {/* Photo Edit button for admin or user */}
-                  {isLoggedIn && (
-                    <label
-                      htmlFor={`file-input-${member.id}`}
-                      className="absolute inset-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-xs font-semibold"
-                      title="Upload new photo"
-                    >
-                      <ImageIcon className="w-4 h-4 mb-1" />
-                      <span>Change Photo</span>
-                      <input
-                        id={`file-input-${member.id}`}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => handleFileUpload(e, member.id)}
-                      />
-                    </label>
-                  )}
                 </div>
               </div>
 

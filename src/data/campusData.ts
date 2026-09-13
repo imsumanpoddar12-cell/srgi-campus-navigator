@@ -172,7 +172,39 @@ export const initialTeamMembers: TeamMember[] = [
 ];
 
 export const initialCampusLocations: CampusLocation[] = [
+  // Campus Entrance & Grounds
+  {
+    id: "loc-0",
+    name: "Main Gate of Campus",
+    block: "Main Campus Entrance",
+    floor: "Ground",
+    department: "Security & Main Entry",
+    direction: "Located on Sitapur Road (NH-24, Bakshi Ka Talab). Grand main entrance into the 65-acre campus.",
+    category: "Facility",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290314/WhatsApp_Image_2026-09-13_at_2.32.02_PM.jpg",
+  },
+  {
+    id: "loc-00",
+    name: "Central Campus Grounds",
+    block: "Main Campus",
+    floor: "Ground",
+    department: "Campus Walkway & Quad",
+    direction: "Central open green lawns and academic boulevards connecting Block A, B, C, and cafeteria.",
+    category: "Facility",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290318/WhatsApp_Image_2026-09-12_at_11.07.43_PM.jpg",
+  },
+
   // Block A
+  {
+    id: "loc-000",
+    name: "Block A (Main Block)",
+    block: "Block A",
+    floor: "Ground to 2nd Floor",
+    department: "Administration & Central Library",
+    direction: "Main Block housing Central Library, Seminar Hall, Director Office, and Chairman Office.",
+    category: "Facility",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290312/WhatsApp_Image_2026-09-13_at_2.32.01_PM.jpg",
+  },
   {
     id: "loc-1",
     name: "Seminar Hall",
@@ -181,7 +213,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Auditorium & Events",
     direction: "Block A Ground Floor. It is 20m straight to cafeteria. Block B se 20m left jaane par 20m right.",
     category: "Hall",
-    photoUrl: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1000&q=80",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789290302/WhatsApp_Image_2026-09-13_at_2.31.59_PM.jpg",
   },
   {
     id: "loc-2",
@@ -200,7 +232,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Applied Chemistry",
     direction: "Block A Ground Floor, east corridor.",
     category: "Lab",
-    photoUrl: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=80",
   },
   {
     id: "loc-4",
@@ -273,7 +304,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Library & Information Science",
     direction: "Block A Second Floor. Complete digital and physical reference library.",
     category: "Facility",
-    photoUrl: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1000&q=80",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288370/WhatsApp_Image_2026-09-12_at_11.07.23_PM_1.jpg",
   },
 
   // Block B
@@ -283,20 +314,20 @@ export const initialCampusLocations: CampusLocation[] = [
     block: "Block B",
     floor: "All Floors",
     department: "Department of Management Studies",
-    direction: "Block B is the dedicated MBA Students Block with management seminar halls and smart classrooms.",
+    direction: "Block B is the dedicated MBA Students Block with management seminar halls and classrooms.",
     category: "Classroom",
-    photoUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80",
   },
 
   // Block C
   {
     id: "loc-13",
-    name: "CSE Advanced Class",
+    name: "Smart Classroom / CSE Class",
     block: "Block C",
     floor: "Ground Floor",
     department: "Computer Science & Engineering",
-    direction: "Block C Ground Floor, left wing.",
+    direction: "Block C Ground Floor. Equipped with digital interactive board and multimedia projector.",
     category: "Classroom",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789291083/1782281228phpLfTbOg.jpg",
   },
   {
     id: "loc-14",
@@ -315,7 +346,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "IT Infrastructure",
     direction: "Block C Ground Floor. Fully air-conditioned terminal lab.",
     category: "Lab",
-    photoUrl: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=80",
   },
   {
     id: "loc-16",
@@ -444,7 +474,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Hostel Administration & Residence",
     direction: "Block D is the Girls Hostel inside campus with 24x7 security, dining hall, and warden office.",
     category: "Hostel",
-    photoUrl: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1000&q=80",
   },
   {
     id: "loc-30",
@@ -454,7 +483,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Campus Health & Inventory",
     direction: "Located directly behind Block D (Girls Hostel). Medicines, first-aid, emergency nurse, and store supplies are available here.",
     category: "Facility",
-    photoUrl: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1000&q=80",
   },
 
   // Block E - Seniors Classes
@@ -466,7 +494,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Senior Engineering Academics",
     direction: "Block E is exclusively for Seniors (2nd Year, 3rd Year, and 4th Year B.Tech and degree batches).",
     category: "Classroom",
-    photoUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80",
   },
 
   // Campus Grounds & Amenities
@@ -478,7 +505,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Student Residential Complex",
     direction: "The Boys Hostel is located 300 metres away from the college Main Gate inside the same 65-acre campus.",
     category: "Hostel",
-    photoUrl: "https://images.unsplash.com/photo-1590402494682-cd3fb53b1f70?auto=format&fit=crop&w=1000&q=80",
   },
   {
     id: "loc-33",
@@ -488,7 +514,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Food & Refreshment",
     direction: "Located at the 2nd Gate of the college. Features food stalls, cafes, tea points, and fast bites.",
     category: "Food",
-    photoUrl: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80",
   },
   {
     id: "loc-34",
@@ -498,7 +523,6 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Dining & Food Court",
     direction: "Central Campus cafeteria. Note: Seminar Hall is 20 metres straight from this cafeteria!",
     category: "Food",
-    photoUrl: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80",
   },
 ];
 

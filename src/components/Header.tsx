@@ -1,4 +1,4 @@
-import { Menu, Sparkles, Image as ImageIcon, Users } from "lucide-react";
+import { Menu, Sparkles, Image as ImageIcon, Users, Compass } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
 interface HeaderProps {
@@ -87,6 +87,16 @@ export default function Header({ onToggleMenu, onNavigate, activeSection }: Head
         >
           <ImageIcon className="w-3.5 h-3.5" />
           Photos
+        </button>
+        <button
+          id="header-nav-map"
+          onClick={() => onNavigate("where-is-srgi")}
+          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+            activeSection === "where-is-srgi" ? "bg-white text-[#123f73] shadow-xs" : "text-amber-300 hover:bg-white/15"
+          }`}
+        >
+          <Compass className="w-3.5 h-3.5" />
+          SRGI Map
         </button>
       </nav>
 

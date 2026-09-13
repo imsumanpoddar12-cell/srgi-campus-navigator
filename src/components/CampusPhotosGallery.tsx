@@ -1,5 +1,5 @@
-import { useState, type FormEvent, type ChangeEvent } from "react";
-import { ArrowLeft, Search, Image as ImageIcon, Plus, X, Tag, Upload, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { ArrowLeft, Search, Image as ImageIcon, Plus, X, Tag, Trash2, CheckCircle2 } from "lucide-react";
 import { CampusPhotoItem } from "../types";
 import { defaultCampusPhotos } from "../data/campusPhotos";
 
@@ -24,11 +24,6 @@ export default function CampusPhotosGallery({
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [lightboxPhoto, setLightboxPhoto] = useState<CampusPhotoItem | null>(null);
 
-  // Batch upload state
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadSuccessMsg, setUploadSuccessMsg] = useState("");
-  const [hideAiPlaceholders, setHideAiPlaceholders] = useState(true);
-
   // Form state for adding photo
   const [showAddModal, setShowAddModal] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -39,26 +34,7 @@ export default function CampusPhotosGallery({
   const [newCaption, setNewCaption] = useState("");
   const [newTags, setNewTags] = useState("");
 
-  const userLibraryPhotos = customPhotos.filter(
-    (p) =>
-      p.category.toLowerCase() === "library" ||
-      p.locationName.toLowerCase().includes("library") ||
-      p.tags.some((t) => t.toLowerCase().includes("library"))
-  );
-
-  // If user uploaded real library photos, eliminate AI generated placeholder images
-  // so ONLY the user's exact real photos are shown!
-  const basePool =
-    userLibraryPhotos.length > 0 || hideAiPlaceholders
-      ? [
-          ...customPhotos,
-          ...defaultCampusPhotos.filter(
-            (p) =>
-              !p.id.startsWith("photo-srgi-central-library") &&
-              !p.id.startsWith("photo-srgi-library")
-          ),
-        ]
-      : [...customPhotos, ...defaultCampusPhotos];
+  const basePool = [...customPhotos, ...defaultCampusPhotos];
 
   const categories = ["All", "Library", "Blocks", "Labs", "Hostels", "Cafeteria", "Facilities", "Campus Grounds"];
 
@@ -77,79 +53,6 @@ export default function CampusPhotosGallery({
       p.tags.some((t) => t.toLowerCase().includes(q))
     );
   });
-
-  const handleBatchLibraryUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    setIsUploading(true);
-    setUploadSuccessMsg("");
-
-    const newItems: CampusPhotoItem[] = [];
-    const payloadForServer: Array<{
-      filename: string;
-      dataBase64: string;
-      title: string;
-      locationName: string;
-      block: string;
-      category: "Library";
-    }> = [];
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const dataUrl = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.readAsDataURL(file);
-      });
-
-      const cleanTitle = `Central Library - Photo ${i + 1}`;
-
-      const photoItem: CampusPhotoItem = {
-        id: `exact-library-${Date.now()}-${i}`,
-        title: cleanTitle,
-        locationName: "Central Library",
-        block: "Block A",
-        category: "Library",
-        imageUrl: dataUrl,
-        caption: `Original verified photo of SRGI Central Library (Block A, 2nd Floor). File: ${file.name}`,
-        tags: ["library", "central library", "srgi", "block a", "reading room", "study", "books", "exact photo"],
-      };
-
-      newItems.push(photoItem);
-      payloadForServer.push({
-        filename: file.name,
-        dataBase64: dataUrl,
-        title: photoItem.title,
-        locationName: "Central Library",
-        block: "Block A",
-        category: "Library",
-      });
-    }
-
-    if (onAddMultiplePhotos) {
-      onAddMultiplePhotos(newItems);
-    } else {
-      newItems.forEach((p) => onAddPhoto(p));
-    }
-
-    // Persist to server public/images directory
-    try {
-      await fetch("/api/upload-photos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ photos: payloadForServer }),
-      });
-    } catch (err) {
-      console.warn("Could not save to disk, stored in localStorage", err);
-    }
-
-    setIsUploading(false);
-    setUploadSuccessMsg(`🎉 Successfully loaded ${newItems.length} exact Library photos! AI placeholders have been removed.`);
-    setSelectedCategory("Library");
-
-    e.target.value = "";
-  };
 
   const handleCreatePhoto = (e: FormEvent) => {
     e.preventDefault();
@@ -183,17 +86,6 @@ export default function CampusPhotosGallery({
     setNewImageUrl("");
     setNewCaption("");
     setNewTags("");
-  };
-
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   return (
@@ -235,75 +127,6 @@ export default function CampusPhotosGallery({
         <p className="text-slate-500 text-xs sm:text-sm mt-1 max-w-xl mx-auto">
           Official verified photographs of SRGI Central Library, academic blocks, labs, and student facilities.
         </p>
-      </div>
-
-      {/* Exact Library Photos Batch Upload Callout */}
-      <div className="bg-gradient-to-r from-[#102e59] to-[#123f73] text-white rounded-3xl p-6 mb-8 shadow-lg border border-blue-800/40">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 shadow-inner">
-              <Upload className="w-6 h-6 text-blue-200" />
-            </div>
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-base sm:text-lg font-black text-white">
-                  Upload Exact Library Photos
-                </h3>
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold">
-                  Zero AI • 100% Original
-                </span>
-                {userLibraryPhotos.length > 0 && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-blue-400/20 text-blue-200 text-[10px] font-semibold">
-                    {userLibraryPhotos.length} exact photos loaded
-                  </span>
-                )}
-              </div>
-              <p className="text-xs sm:text-sm text-blue-100/90 mt-1 max-w-xl leading-relaxed">
-                Aapne jo 10 WhatsApp library photos bheji hain, unhe ek sath yahan select karein. Upload hote hi sari AI-generated placeholder images automatically remove ho jayengi aur exact original photos set ho jayengi!
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 shrink-0 w-full md:w-auto">
-            <label
-              id="batch-upload-library-btn"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white hover:bg-blue-50 text-[#102e59] rounded-2xl text-xs font-black shadow-md cursor-pointer transition-all active:scale-95"
-            >
-              <Upload className="w-4 h-4 text-[#102e59]" />
-              <span>{isUploading ? "Uploading Exact Photos..." : "Select All 10 Library Photos (Batch)"}</span>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleBatchLibraryUpload}
-                disabled={isUploading}
-                className="hidden"
-              />
-            </label>
-
-            {userLibraryPhotos.length > 0 && (
-              <button
-                onClick={() => {
-                  userLibraryPhotos.forEach((p) => onDeletePhoto && onDeletePhoto(p.id));
-                  setUploadSuccessMsg("Cleared custom library photos. Reverted to initial state.");
-                }}
-                className="px-3 py-2.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 rounded-2xl text-xs font-bold transition-colors cursor-pointer"
-              >
-                Clear Uploaded
-              </button>
-            )}
-          </div>
-        </div>
-
-        {uploadSuccessMsg && (
-          <div className="mt-4 p-3 rounded-xl bg-emerald-500/25 border border-emerald-400/40 text-xs text-emerald-100 flex items-center justify-between animate-in fade-in">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-              <span>{uploadSuccessMsg}</span>
-            </div>
-            <button onClick={() => setUploadSuccessMsg("")} className="text-emerald-200 hover:text-white font-bold ml-2">✕</button>
-          </div>
-        )}
       </div>
 
       {/* Search Input */}
@@ -625,28 +448,16 @@ export default function CampusPhotosGallery({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Photo Source *
+                  Photo URL / Link *
                 </label>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <label className="flex-1 px-3 py-2 bg-blue-50 border border-blue-200 rounded-xl text-xs font-semibold text-blue-800 text-center cursor-pointer hover:bg-blue-100 transition-colors">
-                      <span>Choose File from Device</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-                  <input
-                    type="text"
-                    value={newImageUrl}
-                    onChange={(e) => setNewImageUrl(e.target.value)}
-                    placeholder="Or paste an Image URL (https://...)"
-                    className="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-600 focus:outline-none"
-                  />
-                </div>
+                <input
+                  type="url"
+                  required
+                  value={newImageUrl}
+                  onChange={(e) => setNewImageUrl(e.target.value)}
+                  placeholder="Paste direct Image URL (e.g. Cloudinary, PostImages, Imgur)"
+                  className="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-blue-600 focus:outline-none font-medium"
+                />
               </div>
 
               {newImageUrl && (

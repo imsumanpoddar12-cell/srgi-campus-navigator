@@ -11,6 +11,7 @@ import {
   Eye,
   EyeOff,
   UserCheck,
+  Compass,
 } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
@@ -69,9 +70,16 @@ export default function MenuDropdown({
       badge: null,
     },
     {
+      id: "where-is-srgi",
+      label: "SRGI Map (बाहर से रास्ता)",
+      subtext: "GPS Distance, routes & Google Maps navigation",
+      icon: Compass,
+      badge: "Map",
+    },
+    {
       id: "photos",
       label: "Campus Photos",
-      subtext: "Central library, hostels, cafes & upload",
+      subtext: "Central library, hostels, cafes & gallery",
       icon: ImageIcon,
       badge: "Gallery",
     },

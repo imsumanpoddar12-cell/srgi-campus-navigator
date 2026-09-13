@@ -1,6 +1,17 @@
-import { useState, type FormEvent, type ChangeEvent } from "react";
-import { ArrowLeft, Plus, Trash2, Edit3, ShieldCheck, Check, Image as ImageIcon, MapPin, Users } from "lucide-react";
+import { useState, useEffect, type FormEvent } from "react";
+import { ArrowLeft, Plus, Trash2, Edit3, ShieldCheck, Check, Image as ImageIcon, MapPin, Users, MessageSquare, Mail, Phone, Clock } from "lucide-react";
 import { AdminUser, CampusLocation, TeamMember } from "../types";
+
+interface SuggestionItem {
+  id: string;
+  name: string;
+  contact: string;
+  department?: string;
+  category: string;
+  message: string;
+  createdAt: string;
+  status: "unread" | "reviewed";
+}
 
 interface AdminPanelSectionProps {
   currentAdmin: AdminUser;
@@ -25,12 +36,38 @@ export default function AdminPanelSection({
   onBack,
   onLogout,
 }: AdminPanelSectionProps) {
-  const [activeTab, setActiveTab] = useState<"profile" | "locations" | "team">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "locations" | "team" | "suggestions">("profile");
 
   // Profile Edit state
   const [myEmail, setMyEmail] = useState(currentAdmin.email);
   const [myPhoto, setMyPhoto] = useState(currentAdmin.avatarUrl || "");
   const [profileSaved, setProfileSaved] = useState(false);
+
+  // Suggestions state
+  const [suggestions, setSuggestions] = useState<SuggestionItem[]>([]);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("srgi_suggestions");
+      if (raw) {
+        setSuggestions(JSON.parse(raw));
+      }
+    } catch {}
+  }, [activeTab]);
+
+  const handleDeleteSuggestion = (id: string) => {
+    const updated = suggestions.filter((s) => s.id !== id);
+    setSuggestions(updated);
+    localStorage.setItem("srgi_suggestions", JSON.stringify(updated));
+  };
+
+  const handleToggleSuggestionStatus = (id: string) => {
+    const updated: SuggestionItem[] = suggestions.map((s) =>
+      s.id === id ? { ...s, status: s.status === "unread" ? "reviewed" : "unread" } : s
+    );
+    setSuggestions(updated);
+    localStorage.setItem("srgi_suggestions", JSON.stringify(updated));
+  };
 
   // New location state
   const [locName, setLocName] = useState("");
@@ -59,17 +96,6 @@ export default function AdminPanelSection({
     }
     setProfileSaved(true);
     setTimeout(() => setProfileSaved(false), 2500);
-  };
-
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setMyPhoto(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleCreateLocation = (e: FormEvent) => {
@@ -131,7 +157,7 @@ export default function AdminPanelSection({
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center justify-center gap-2 mb-8">
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
         <button
           onClick={() => setActiveTab("profile")}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -161,6 +187,22 @@ export default function AdminPanelSection({
           }`}
         >
           Team Photos & Emails
+        </button>
+        <button
+          onClick={() => setActiveTab("suggestions")}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            activeTab === "suggestions"
+              ? "bg-[#123f73] text-white shadow-xs"
+              : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+          }`}
+        >
+          <MessageSquare className="w-3.5 h-3.5" />
+          <span>Suggestions Inbox</span>
+          {suggestions.filter((s) => s.status === "unread").length > 0 && (
+            <span className="px-1.5 py-0.2 bg-red-500 text-white text-[10px] rounded-full font-bold">
+              {suggestions.filter((s) => s.status === "unread").length}
+            </span>
+          )}
         </button>
       </div>
 
@@ -205,23 +247,14 @@ export default function AdminPanelSection({
             </div>
 
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Profile Photo (URL or File)</label>
+              <label className="font-bold text-slate-700 block mb-1">Profile Photo (Direct URL)</label>
               <input
                 type="url"
                 value={myPhoto}
                 onChange={(e) => setMyPhoto(e.target.value)}
-                placeholder="https://example.com/photo.jpg"
+                placeholder="https://res.cloudinary.com/... or https://i.postimg.cc/..."
                 className="w-full p-2.5 border border-slate-300 rounded-xl focus:outline-blue-600 mb-2 font-medium"
               />
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] text-slate-400">or upload:</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="text-[11px] text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                />
-              </div>
 
               {myPhoto && (
                 <div className="mt-3 flex items-center gap-3">
@@ -391,7 +424,7 @@ export default function AdminPanelSection({
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-300 shrink-0">
                     <img
-                      src={member.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"}
+                      src={member.photoUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${member.name}`}
                       alt={member.name}
                       className="w-full h-full object-cover"
                     />
@@ -431,6 +464,104 @@ export default function AdminPanelSection({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Tab 4: Suggestions & Messages Inbox */}
+      {activeTab === "suggestions" && (
+        <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-4xl mx-auto space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-blue-700" />
+                <span>विद्यार्थी सुझाव व संदेश (Suggestions Inbox)</span>
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Received from students, faculty & campus visitors via the Suggestion Box.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+              {suggestions.length} Total Messages
+            </span>
+          </div>
+
+          {suggestions.length === 0 ? (
+            <div className="text-center py-12 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+              <MessageSquare className="w-10 h-10 mx-auto mb-2 text-slate-300" />
+              <div className="text-xs font-bold text-slate-600">कोई नया सुझाव या संदेश नहीं है</div>
+              <p className="text-[11px] text-slate-400 mt-1">
+                New submissions from the Suggestion Box will appear here.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {suggestions.map((item) => (
+                <div
+                  key={item.id}
+                  className={`p-4 rounded-2xl border transition-all ${
+                    item.status === "unread"
+                      ? "bg-blue-50/40 border-blue-200 shadow-2xs"
+                      : "bg-slate-50/60 border-slate-200"
+                  }`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-200/60">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-black text-slate-900">{item.name}</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">
+                        {item.category}
+                      </span>
+                      {item.department && (
+                        <span className="text-[11px] text-slate-500 font-medium">
+                          • {item.department}
+                        </span>
+                      )}
+                      {item.status === "unread" && (
+                        <span className="px-1.5 py-0.2 bg-red-500 text-white rounded-md text-[9px] font-bold">
+                          NEW
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-slate-400" />
+                        <span>{item.createdAt}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal whitespace-pre-wrap">
+                    {item.message}
+                  </p>
+
+                  <div className="mt-3 pt-2.5 flex flex-wrap items-center justify-between gap-3 text-xs border-t border-slate-200/40">
+                    <div className="flex items-center gap-3 text-slate-600 font-medium">
+                      <span className="flex items-center gap-1">
+                        <Mail className="w-3.5 h-3.5 text-slate-400" />
+                        <span>{item.contact}</span>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleToggleSuggestionStatus(item.id)}
+                        className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors cursor-pointer"
+                      >
+                        {item.status === "unread" ? "Mark Reviewed" : "Mark Unread"}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteSuggestion(item.id)}
+                        className="p-1 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                        title="Delete message"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </section>

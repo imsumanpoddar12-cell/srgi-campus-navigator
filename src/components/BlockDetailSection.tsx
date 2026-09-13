@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, MapPin, Navigation, Info, Image as ImageIcon, X, Upload } from "lucide-react";
+import { ArrowLeft, MapPin, Navigation, Info, Image as ImageIcon, X } from "lucide-react";
 import { CampusLocation, CampusPhotoItem } from "../types";
 import { getPhotosForQuery } from "../data/campusPhotos";
 
@@ -124,12 +124,12 @@ export default function BlockDetailSection({
             </div>
             {onNavigateToPhotos && (
               <button
-                id="block-detail-upload-photos-btn"
+                id="block-detail-view-photos-btn"
                 onClick={onNavigateToPhotos}
                 className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-bold transition-colors cursor-pointer"
               >
-                <Upload className="w-3.5 h-3.5" />
-                <span>Upload Photos</span>
+                <ImageIcon className="w-3.5 h-3.5" />
+                <span>View Photos</span>
               </button>
             )}
           </div>
