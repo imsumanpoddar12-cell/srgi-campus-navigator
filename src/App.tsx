@@ -256,6 +256,15 @@ export default function App() {
             }}
             team={team}
             isLoggedIn={!!loggedAdmin}
+            customPhotos={customPhotos}
+            onNavigateToPhotos={() => {
+              setActiveSection("photos");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onNavigateToCamera={() => {
+              setActiveSection("camera");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           />
         )}
 

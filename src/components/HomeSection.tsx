@@ -1,6 +1,8 @@
-import { ArrowRight, Sparkles, MapPin, Coffee, Home as HomeIcon, Pill, BookOpen, Layers } from "lucide-react";
-import { CollegeInfo, TeamMember } from "../types";
+import { ArrowRight, Sparkles, MapPin, Coffee, Home as HomeIcon, Pill, BookOpen, Layers, Video, Image as ImageIcon } from "lucide-react";
+import { CollegeInfo, TeamMember, CampusPhotoItem } from "../types";
 import OurTeamSection from "./OurTeamSection";
+import HomeVideoSection from "./HomeVideoSection";
+import HomeGallerySection from "./HomeGallerySection";
 
 interface HomeSectionProps {
   collegeInfo: CollegeInfo;
@@ -11,6 +13,9 @@ interface HomeSectionProps {
   onAdminLogin: () => void;
   team: TeamMember[];
   isLoggedIn?: boolean;
+  customPhotos?: CampusPhotoItem[];
+  onNavigateToPhotos?: () => void;
+  onNavigateToCamera?: () => void;
 }
 
 export default function HomeSection({
@@ -22,6 +27,9 @@ export default function HomeSection({
   onAdminLogin,
   team,
   isLoggedIn = false,
+  customPhotos = [],
+  onNavigateToPhotos = () => {},
+  onNavigateToCamera = () => {},
 }: HomeSectionProps) {
   const blocks = [
     {
@@ -109,11 +117,35 @@ export default function HomeSection({
               </button>
 
               <button
+                id="hero-videos-shortcut-btn"
+                onClick={() => {
+                  const el = document.getElementById("home-video-walkthroughs-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 font-bold text-sm border border-blue-200/80 transition-colors cursor-pointer"
+              >
+                <Video className="w-4 h-4 text-blue-600" />
+                <span>Route Videos</span>
+              </button>
+
+              <button
+                id="hero-gallery-shortcut-btn"
+                onClick={() => {
+                  const el = document.getElementById("home-campus-gallery-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-sm border border-emerald-200/80 transition-colors cursor-pointer"
+              >
+                <ImageIcon className="w-4 h-4 text-emerald-600" />
+                <span>Photo Gallery</span>
+              </button>
+
+              <button
                 id="ai-guide-hero-btn"
                 onClick={onOpenAI}
                 className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm border border-slate-200/80 transition-colors cursor-pointer"
               >
-                <span>🤖 Ask Gemini AI Guide</span>
+                <span>🤖 Ask Gemini AI</span>
               </button>
             </div>
           </div>
@@ -252,6 +284,15 @@ export default function HomeSection({
           </button>
         ))}
       </div>
+
+      {/* Campus Video Walkthroughs Section on Main Interface */}
+      <HomeVideoSection onNavigateToCamera={onNavigateToCamera} />
+
+      {/* Campus Photo Gallery Section on Main Interface */}
+      <HomeGallerySection
+        customPhotos={customPhotos}
+        onNavigateToPhotos={onNavigateToPhotos}
+      />
 
       {/* Section: OUR TEAM on the Main Interface */}
       <OurTeamSection team={team} />
