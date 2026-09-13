@@ -159,87 +159,234 @@ async function generateGeminiContentWithFallback(
 function getCampusOfflineAnswer(queryRaw: string): string {
   const q = queryRaw.toLowerCase().trim();
 
-  if (q.includes("seminar hall") || q.includes("seminar") || q.includes("सेमिनार") || q.includes("hall") || q.includes("auditorium")) {
-    return "🎤 **Seminar Hall (सेमिनार हॉल) की जानकारी:**\n- **लोकेशन:** Block A के Ground Floor पर स्थित है।\n- **Cafeteria से रास्ता:** Cafeteria से बिलकुल सीधे 20 metre की दूरी पर है (it is 20m straight to cafeteria)।\n- **Block B से रास्ता:** Block B से 20 metre left जाने पर, फिर 20 metre right मुड़ें (Block B se 20m left jaane par 20m right)।";
+  // 1. CSE Section A and classrooms
+  if (
+    q.includes("cse a") ||
+    q.includes("section a") ||
+    q.includes("cse section a") ||
+    q.includes("cse section-a") ||
+    q.includes("सी एस ई") ||
+    q.includes("सेक्शन ए") ||
+    q.includes("सेक्शन a") ||
+    (q.includes("cse") && (q.includes("class") || q.includes("room") || q.includes("floor") || q.includes("kahan") || q.includes("rasta") || q.includes("jaana")))
+  ) {
+    return "💻 **CSE Section A (कंप्यूटर साइंस इंजीनियरिंग - सेक्शन A):**\n• **लोकेशन:** Block C के **2nd Floor (दूसरे तल)** पर स्थित है।\n• **पहुँचने का सटीक रास्ता:** Block C के मुख्य द्वार (या बाएं सीढ़ियों वाले गेट) से प्रवेश करें और बाईं (Left) सीढ़ियों से सीधे 2nd Floor पर जाएँ। सीढ़ियों से निकलते ही दाईं ओर मुड़ें: आगे HOD Office, Bio-Tech, Mechanical, Agriculture, CSE Section C और Section B आते हैं। इनके आगे बढ़ते ही बाईं सीढ़ियों के नजदीक ही आपका **CSE Section A** क्लासरूम मिल जाएगा!\n• **सुविधाएँ:** स्मार्ट डिजिटल बोर्ड, मल्टीमीडिया प्रोजेक्टर और हाई-स्पीड इंटरनेट।\n• **विभागाध्यक्ष:** CSE HOD आदरणीय प्रशांत बाजपेयी सर (Block C 1st व 2nd Floor)।";
   }
 
-  if (q.includes("cse a") || q.includes("cse section a") || q.includes("section a")) {
-    return "📍 **CSE Section A का रास्ता:**\n- **ब्लॉक:** Block C\n- **फ्लोर:** 2nd Floor\n- **कैसे पहुँचे:** Block C के मुख्य द्वार से प्रवेश करें और बाईं (left) सीढ़ियों से सीधे 2nd Floor पर जाएँ। सीढ़ियों से निकलते ही दाईं ओर मुड़ें: HOD ऑफिस, Bio-Tech, Mechanical, Agriculture, CSE Section C और B के आगे बढ़ते ही CSE Section A कॉरिडोर में बाईं सीढ़ियों के पास ही मिल जाएगा!";
+  // 2. Schedule, Timetable, Timings, Breaks
+  if (
+    q.includes("schedule") ||
+    q.includes("timetable") ||
+    q.includes("time table") ||
+    q.includes("timing") ||
+    q.includes("time") ||
+    q.includes("break") ||
+    q.includes("lunch") ||
+    q.includes("water") ||
+    q.includes("क्लास का समय") ||
+    q.includes("शेड्यूल") ||
+    q.includes("टाइम टेबल") ||
+    q.includes("लंच") ||
+    q.includes("वॉटर ब्रेक") ||
+    q.includes("कब होती है")
+  ) {
+    return "⏰ **CSE Section A कॉलेज शेड्यूल व टाइमिंग:**\n• **क्लास टाइमिंग:** सुबह 09:00 AM से शाम 04:30 PM (सोमवार से शनिवार)।\n• **वॉटर ब्रेक्स (Water Breaks):**\n  1. पहला ब्रेक: सुबह 11:00 AM से 11:10 AM (10 मिनट)\n  2. दूसरा ब्रेक: दोपहर 02:10 PM से 02:20 PM (10 मिनट)\n  3. तीसरा ब्रेक: शाम 03:20 PM से 03:30 PM (10 मिनट)\n• **लंच ब्रेक (Lunch Break):** दोपहर 12:10 PM से 01:00 PM (50 मिनट का भोजन अवकाश सेंट्रल कैफेटेरिया व गेट 2 कैफे पर)।\n• **पीरियड्स:** रोजाना 6 लेक्चर्स व प्रैक्टिकल लैब्स (Chemistry, Electronics, Mechanics, Language Lab) आयोजित होती हैं।";
   }
 
-  if (q.includes("cse b") || q.includes("cse section b")) {
-    return "📍 **CSE Section B का रास्ता:** Block C के 2nd Floor पर, CSE Section C और Section A के पास स्थित है।";
+  // 3. Admin & Leadership Team (All Er., Cities, Updated Emails)
+  if (
+    q.includes("team") ||
+    q.includes("creator") ||
+    q.includes("admin") ||
+    q.includes("suman") ||
+    q.includes("vivek") ||
+    q.includes("pranjal") ||
+    q.includes("roshan") ||
+    q.includes("rijawan") ||
+    q.includes("avinash") ||
+    q.includes("saroj") ||
+    q.includes("एडमिन") ||
+    q.includes("टीम") ||
+    q.includes("किसने बनाया") ||
+    q.includes("इंजीनियर")
+  ) {
+    return "👥 **SRGI एडमिन व क्रिएटर टीम (सभी इंजीनियर्स - Official Records):**\n1. **Er. सुमन कुमार (Leader - B.Tech CSE A)** - बेगूसराय, बिहार (Email: imsumanpoddar12@gmail.com / suman@srgi.ac.in)\n2. **Er. विवेक साहनी (Co-Leader - B.Tech CSE A)** - कुशीनगर, उत्तर प्रदेश (Email: vivek@srgi.ac.in)\n3. **Er. प्रांजल मौर्या (Core Member - B.Tech CSE A)** - वाराणसी, उत्तर प्रदेश (Email: pranjalmaurya1120@gmail.com)\n4. **Er. रोशन कुमार भारती (Core Member - B.Tech CSE A)** - मऊ, उत्तर प्रदेश (Email: roshan@srgi.ac.in)\n5. **Er. रिजवान खान (Core Member - B.Tech CSE A)** - महराजगंज, उत्तर प्रदेश (Email: rijawan5657@gmail.com)\n6. **Er. अविनाश प्रजापति (Core Member - B.Tech CSE A)** - महराजगंज, उत्तर प्रदेश (Email: avinash@srgi.ac.in)\n7. **Er. विवेक सरोज (Core Member - B.Tech CSE A)** - प्रतापगंज, उत्तर प्रदेश (Email: viveksaroj@srgi.ac.in)\n\n🔒 सभी एडमिन्स की प्रोफाइल आधिकारिक व सुरक्षित है और फोन नंबर की जगह उनके गृह नगर प्रदर्शित हैं।";
   }
 
-  if (q.includes("cse c") || q.includes("cse section c")) {
-    return "📍 **CSE Section C का रास्ता:** Block C के 2nd Floor पर Mechanical और Bio-Tech डिपार्टमेंट के नजदीक स्थित है।";
+  // 4. All 5 Blocks Overview
+  if (
+    q.includes("5 block") ||
+    q.includes("five block") ||
+    q.includes("all block") ||
+    q.includes("paanch block") ||
+    q.includes("5 ब्लॉक") ||
+    q.includes("पांच ब्लॉक") ||
+    q.includes("sab block") ||
+    q.includes("blocks") ||
+    (q.includes("block") && (q.includes("kitne") || q.includes("kya hai") || q.includes("batao") || q.includes("kahan")))
+  ) {
+    return "🏛️ **SRGI कैंपस के सभी 5 प्रमुख ब्लॉक्स (Complete 5 Blocks Guide):**\n1. **Block A (प्रशासनिक एवं मुख्य ब्लॉक):** ग्राउंड पर सेमिनार हॉल व लैब्स; 1st Floor पर एडमिशन, रजिस्ट्रार, डायरेक्टर व चेयरमैन ऑफिस; 2nd Floor पर सेंट्रल लाइब्रेरी।\n2. **Block B (मैनेजमेंट ब्लॉक):** एमबीए (MBA) डिपार्टमेंट, मैनेजमेंट सेमिनार हॉल्स व लेक्चर रूम्स।\n3. **Block C (इंजीनियरिंग कोर एकेडमिक ब्लॉक):** Ground Floor (कंप्यूटर व बायोटेक लैब्स), 1st Floor (HOD ऑफिस, EN, IT, EC, DS, AIML), 2nd Floor (CSE Section A, Section B, Section C, Bio-Tech, ME, Agriculture), 3rd Floor (SRIMT क्लासेस)।\n4. **Block D (गर्ल्स हॉस्टल एवं स्वास्थ्य केंद्र):** छात्राओं के लिए सुरक्षित हॉस्टल। इसके ठीक पीछे कैंपस का **Store Room** और **Medical Dispensary (दवाइयाँ व First-Aid)** स्थित है।\n5. **Block E (सीनियर क्लासेस):** 2nd Year, 3rd Year और Final 4th Year सीनियर छात्रों की कक्षाएं।";
   }
 
-  if (q.includes("library") || q.includes("central library") || q.includes("books") || q.includes("किताब")) {
-    return "📚 **Central Library (केंद्रीय पुस्तकालय):**\n- **ब्लॉक:** Block A\n- **फ्लोर:** 2nd Floor\n- **विवरण:** यहाँ हजारों इंजीनियरिंग, मैनेजमेंट और रिसर्च बुक्स, शांत स्टडी रूम और डिजिटल जर्नल्स उपलब्ध हैं। Block A की मुख्य सीढ़ियों या लिफ्ट से पहुँच सकते हैं।";
+  // Block A
+  if (q.includes("block a") || q.includes("ब्लॉक ए") || q.includes("ब्लॉक a") || q.includes("main block")) {
+    return "🏛️ **Block A (Main Administration Block):**\n• **Ground Floor:** सेमिनार हॉल (Seminar Hall), प्ले एरिया, केमिस्ट्री लैब, मैकेनिक्स लैब, ट्रांसपोर्ट ऑफिस।\n• **1st Floor:** एडमिशन सेल, रजिस्ट्रार ऑफिस, एकाउंट ऑफिस, डायरेक्टर ऑफिस, और चेयरमैन ऑफिस।\n• **2nd Floor:** भव्य सेंट्रल लाइब्रेरी (Central Library) जहाँ शांतिपूर्वक अध्ययन करने की व्यवस्था है।";
   }
 
-  if (q.includes("hod") || q.includes("head of department") || q.includes("prashant")) {
-    return "👔 **Head of Department (CSE):**\n- **HOD:** आदरणीय प्रशांत बाजपेयी सर (Phone: 7617000030)\n- **ऑफिस लोकेशन:** Block C के 1st और 2nd Floor पर। 1st Floor पर बाईं सीढ़ी से दाईं तरफ लगभग 50 मीटर, और 2nd Floor पर बाईं सीढ़ी से दाईं तरफ 25-30 मीटर पर।";
+  // Block B
+  if (q.includes("block b") || q.includes("ब्लॉक बी") || q.includes("ब्लॉक b") || q.includes("mba block")) {
+    return "🏢 **Block B (MBA & Management Studies):**\n• यह ब्लॉक पूरी तरह से एमबीए (MBA) के विद्यार्थियों के लिए समर्पित है।\n• यहाँ मैनेजमेंट क्लासरूम्स, कॉन्फ्रेंस रूम्स और बिजनेस सेमिनार रूम्स स्थित हैं।";
   }
 
-  if (q.includes("block d") || q.includes("girls hostel") || q.includes("girl hostel") || q.includes("female hostel")) {
-    return "🏢 **Block D (Girls Hostel):**\n- **उद्देश्य:** छात्राओं के लिए सुरक्षित हॉस्टल।\n- **ज़रूरी जानकारी:** Block D के ठीक पीछे कैंपस का **Store Room** और **Medical Dispensary (दवाइयाँ व First-Aid)** स्थित है!";
+  // Block C
+  if (q.includes("block c") || q.includes("ब्लॉक सी") || q.includes("ब्लॉक c")) {
+    return "🏢 **Block C (इंजीनियरिंग एकेडमिक हब):**\n• **Ground Floor:** सेंट्रल कंप्यूटर लैब्स, बायोटेक सेक्शन, प्रोग्रामिंग लैब।\n• **1st Floor:** CSE HOD ऑफिस, EN (इलेक्ट्रिकल), IT, EC (इलेक्ट्रॉनिक्स), DS (डेटा साइंस), AIML व AI।\n• **2nd Floor:** CSE Section A, CSE Section B, CSE Section C, Bio-Tech, Mechanical, Agriculture।\n• **3rd Floor:** SRIMT डिपार्टमेंट व उच्च स्तरीय लैब्स।\n• **वॉशरूम:** हर फ्लोर पर दाईं (Right) सीढ़ियों के पास स्थित हैं।";
   }
 
-  if (q.includes("block e") || q.includes("senior") || q.includes("2nd year") || q.includes("3rd year") || q.includes("4th year")) {
-    return "🏛️ **Block E (Senior Classes):**\n- **उद्देश्य:** 2nd Year, 3rd Year और Final 4th Year सीनियर इंजीनियरिंग छात्रों की क्लास का ब्लॉक।";
+  // Block D
+  if (
+    q.includes("block d") ||
+    q.includes("ब्लॉक डी") ||
+    q.includes("ब्लॉक d") ||
+    q.includes("girls hostel") ||
+    q.includes("girl hostel") ||
+    q.includes("लड़कियों का हॉस्टल") ||
+    q.includes("गर्ल्स हॉस्टल")
+  ) {
+    return "🏢 **Block D (Girls Hostel):**\n• **उद्देश्य:** छात्राओं के लिए पूर्ण सुरक्षित आवासीय ब्लॉक (24 घंटे महिला वार्डन, सुरक्षा गार्ड्स, मेस सुविधा)।\n• **जरूरी लोकेशन:** Block D के ठीक पीछे कैंपस का **Store Room** और **Medical Dispensary (दवाइयाँ व प्राथमिक चिकित्सा)** स्थित है। आपातकाल में तुरंत स्वास्थ्य सहायता मिलती है।";
   }
 
-  if (q.includes("boy") || q.includes("boys hostel") || q.includes("hostel")) {
-    return "🛏️ **Boys Hostel:**\n- **लोकेशन:** कॉलेज के मेन गेट से अंदर आते ही लगभग 300 मीटर की दूरी पर कैंपस के अंदर स्थित है।";
+  // Block E
+  if (
+    q.includes("block e") ||
+    q.includes("ब्लॉक ई") ||
+    q.includes("ब्लॉक e") ||
+    q.includes("senior") ||
+    q.includes("सीनियर") ||
+    q.includes("2nd year") ||
+    q.includes("3rd year") ||
+    q.includes("4th year")
+  ) {
+    return "🏛️ **Block E (Senior Students Block):**\n• यहाँ बी.टेक सेकंड ईयर (2nd Year), थर्ड ईयर (3rd Year) और फाइनल फोर्थ ईयर (4th Year) के सीनियर छात्रों की कक्षाएं लगती हैं।";
   }
 
-  if (q.includes("medicine") || q.includes("first aid") || q.includes("doctor") || q.includes("medical") || q.includes("store") || q.includes("दवा")) {
-    return "💊 **दवाइयाँ (Medicines), First-Aid और Store Room:**\n- **लोकेशन:** यह **Block D (Girls Hostel)** के ठीक पीछे स्थित है। यहाँ प्राथमिक चिकित्सा व ज़रूरत का सामान उपलब्ध है।";
+  // Boys Hostel
+  if (
+    q.includes("boy") ||
+    q.includes("boys hostel") ||
+    q.includes("boy hostel") ||
+    q.includes("लड़कों का हॉस्टल") ||
+    q.includes("बॉयज हॉस्टल")
+  ) {
+    return "🛏️ **Boys Hostel (बॉयज हॉस्टल):**\n• **लोकेशन:** कॉलेज के मुख्य द्वार (Main Gate 1) से अंदर आते ही सीधे लगभग 300 मीटर की दूरी पर कैंपस के अंदर स्थित है।\n• यहाँ वाई-फाई, डाइनिंग हॉल, कॉमन रूम और स्पोर्ट्स की सुविधा उपलब्ध है।";
   }
 
-  if (q.includes("cafe") || q.includes("canteen") || q.includes("cafeteria") || q.includes("food") || q.includes("eat") || q.includes("gate 2")) {
-    return "☕ **कैफेटेरिया और कैफे:**\n1. **सेंट्रल कैफेटेरिया:** कैंपस के बीच में स्थित है (यहाँ से सीधे 20 मीटर जाने पर सेमिनार हॉल है)।\n2. **Gate 2 कैफे:** कॉलेज के दूसरे गेट पर चाय, कॉफी और स्नैक्स के कई लोकप्रिय कैफे मौजूद हैं!";
+  // Central Library
+  if (
+    q.includes("library") ||
+    q.includes("central library") ||
+    q.includes("books") ||
+    q.includes("किताब") ||
+    q.includes("लाइब्रेरी") ||
+    q.includes("पुस्तकालय")
+  ) {
+    return "📚 **Central Library (केंद्रीय पुस्तकालय):**\n• **लोकेशन:** Block A के **2nd Floor (दूसरे तल)** पर स्थित है।\n• **सुविधाएँ:** हजारों राष्ट्रीय व अंतरराष्ट्रीय इंजीनियरिंग एवं मैनेजमेंट पुस्तकें, डिजिटल ई-जर्नल्स, प्रोजेक्ट थीसिस और पूर्णतः वातानुकूलित शांत स्टडी हॉल।";
   }
 
-  if (q.includes("toilet") || q.includes("washroom") || q.includes("restroom") || q.includes("शौचालय")) {
+  // Seminar Hall
+  if (q.includes("seminar hall") || q.includes("seminar") || q.includes("सेमिनार") || q.includes("auditorium")) {
+    return "🎤 **Seminar Hall (सेमिनार हॉल):**\n• **लोकेशन:** Block A के Ground Floor पर स्थित है।\n• **Cafeteria से रास्ता:** कैफेटेरिया से बिलकुल सीधे 20 metre जाने पर मुख्य प्रवेश द्वार है।\n• **Block B से रास्ता:** Block B से 20 metre left जाने पर, फिर 20 metre right मुड़ें।\n• यहाँ कॉलेज के सभी प्रमुख सेमिनार, वर्कशॉप और तकनीकी कार्यक्रम आयोजित होते हैं।";
+  }
+
+  // Faculties
+  if (
+    q.includes("faculty") ||
+    q.includes("teacher") ||
+    q.includes("sir") ||
+    q.includes("ma'am") ||
+    q.includes("professor") ||
+    q.includes("phone") ||
+    q.includes("शिक्षक") ||
+    q.includes("फैकल्टी")
+  ) {
+    return "👨‍🏫 **CSE Section A फैकल्टी लिस्ट व आधिकारिक फोन नंबर:**\n• **प्रशांत बाजपेयी सर (HOD - CSE):** 7617000030 (Office: Block C, 1st व 2nd Floor)\n• **बृजेश सिंह सर (Language Lab / PCTW):** 7617000079\n• **संतोष कुमार माथुर सर (Electronics / EC):** 9455500244\n• **प्रीति चौधरी मैम (Personality Development / PD):** 7988499219\n• **मनीष कुमार मिश्रा सर (Engineering Chemistry):** 9793000017\n• **लक्ष्मीकांत सर (Engineering Mathematics):** 9451910027\n• **मनीष मिश्रा सर (Mechanical Engineering / ME):** 9793000055";
+  }
+
+  // Videos & Routes
+  if (
+    q.includes("video") ||
+    q.includes("वीडियो") ||
+    q.includes("walkthrough") ||
+    q.includes("walk") ||
+    q.includes("camera") ||
+    q.includes("कैमरा") ||
+    q.includes("रास्ते का वीडियो")
+  ) {
+    return "🎥 **SRGI के 8 ऑफिशियल कैंपस वीडियो वॉकथ्रू:**\n1. **गेट 1 से मेन कैंपस एंट्री:** Gate 1 से कॉलेज का मुख्य मार्ग।\n2. **मेन गेट से ब्लॉक C मुख्य गेट:** Gate 1 से सीधे Block C तक का वॉकथ्रू।\n3. **ब्लॉक C मुख्य प्रवेश द्वार व लॉबी:** फ्रंट पोर्च और ग्राउंड फ्लोर।\n4. **ब्लॉक C बाईं सीढ़ियों वाले गेट से एंट्री:** Side gate से बाईं सीढ़ी का शॉर्टकट।\n5. **ब्लॉक C ग्राउंड फ्लोर से 2nd फ्लोर (बाएं सीढ़ियों से):** CSE कक्षाओं तक जाने का वीडियो।\n6. **ब्लॉक C 2nd फ्लोर कॉरिडोर:** CSE Section A, B, C, Bio-Tech, Mechanical और HOD Office।\n7. **ब्लॉक C 2nd फ्लोर राइट साइड विंग:** क्लासरूम्स और लैब्स का कॉरिडोर।\n8. **ब्लॉक C 2nd फ्लोर से ग्राउंड फ्लोर नीचे जाने का वीडियो।**\n\n👉 यह सभी वीडियो आप मेन स्क्रीन (Home) और **'Camera Detector & Videos'** सेक्शन में सीधे देख सकते हैं!";
+  }
+
+  // Medical, First Aid, Medicines, Store Room
+  if (
+    q.includes("medicine") ||
+    q.includes("first aid") ||
+    q.includes("doctor") ||
+    q.includes("medical") ||
+    q.includes("store") ||
+    q.includes("दवा") ||
+    q.includes("इलाज")
+  ) {
+    return "💊 **कैंपस मेडिकल डिस्पेंसरी व स्टोर रूम:**\n• **सटीक लोकेशन:** यह **Block D (Girls Hostel)** के ठीक पीछे स्थित है।\n• यहाँ प्राथमिक चिकित्सा (First Aid), आवश्यक दवाइयाँ, आपातकालीन स्वास्थ्य सहायता और कॉलेज स्टोर रूम का सामान उपलब्ध रहता है।";
+  }
+
+  // Cafeteria & Food
+  if (
+    q.includes("cafe") ||
+    q.includes("canteen") ||
+    q.includes("cafeteria") ||
+    q.includes("food") ||
+    q.includes("eat") ||
+    q.includes("gate 2") ||
+    q.includes("खाना") ||
+    q.includes("कैंटीन")
+  ) {
+    return "☕ **कैफेटेरिया व कैफे सुविधा:**\n1. **Central Cafeteria:** कैंपस के बीच में स्थित है (यहाँ से ठीक 20 मीटर पर सेमिनार हॉल है)।\n2. **Gate 2 Cafes:** कॉलेज के गेट नंबर 2 पर विद्यार्थियों के पसंदीदा टी-पॉइंट्स, फास्ट फूड और स्नैक्स कैफे मौजूद हैं।";
+  }
+
+  // Washrooms
+  if (q.includes("toilet") || q.includes("washroom") || q.includes("restroom") || q.includes("शौचालय") || q.includes("वॉशरूम")) {
     return "🚻 **Washrooms:** Block C में हर फ्लोर पर दाईं सीढ़ियों के पास साफ़-सुथरे वॉशरूम हैं। Block A में भी प्रत्येक विंग में शौचालय उपलब्ध हैं।";
   }
 
-  if (q.includes("faculty") || q.includes("teacher") || q.includes("sir") || q.includes("ma'am") || q.includes("phone")) {
-    return "👨‍🏫 **CSE Section A फैकल्टी व कांटेक्ट नंबर:**\n- प्रशांत बाजपेयी (HOD): 7617000030\n- बृजेश सिंह (Language Lab / PCTW): 7617000079\n- संतोष कुमार माथुर (EC): 9455500244\n- प्रीति चौधरी (PD): 7988499219\n- मनीष कुमार मिश्रा (Chemistry): 9793000017\n- लक्ष्मीकांत (Maths): 9451910027\n- मनीष मिश्रा (ME): 9793000055";
+  // College info, address, history
+  if (
+    q.includes("history") ||
+    q.includes("established") ||
+    q.includes("founder") ||
+    q.includes("chairman") ||
+    q.includes("pawan") ||
+    q.includes("college") ||
+    q.includes("srgi") ||
+    q.includes("lucknow") ||
+    q.includes("address") ||
+    q.includes("कॉलेज") ||
+    q.includes("कहाँ है") ||
+    q.includes("पता")
+  ) {
+    return "🎓 **SR Group of Institutions (SRGI), लखनऊ का संपूर्ण परिचय:**\n• **स्थापना:** वर्ष 2009 में माननीय चेयरमैन श्री पवन सिंह चौहान जी द्वारा स्व. सूबेदार सिंह और स्व. राज देवी जी की पावन स्मृति में।\n• **कैंपस:** 65 एकड़ का विशाल, आधुनिक एवं हरा-भरा कैंपस।\n• **पता:** NH-24, सीतापुर रोड, बख्शी का तालाब (BKT), लखनऊ, उत्तर प्रदेश 226201 (सेवा हॉस्पिटल के पास)।\n• **दूरी:** चारबाग रेलवे स्टेशन से 25 किमी, अमौसी एयरपोर्ट से 35 किमी, और इंजीनियरिंग कॉलेज चौराहा से 18 किमी।\n• **कोर्सेज:** B.Tech (CSE, AIML, Data Science, IT, EC, EN, Bio-Tech, ME, Civil, Agri), MBA, Pharmacy और Medical Sciences।";
   }
 
-  if (q.includes("schedule") || q.includes("timetable") || q.includes("time") || q.includes("class time") || q.includes("break")) {
-    return "⏰ **CSE Section A क्लास टाइमिंग:**\n- **समय:** सुबह 09:00 AM से शाम 04:30 PM (सोमवार से शनिवार)\n- **वॉटर ब्रेक:** 11:00-11:10 AM | 02:10-02:20 PM | 03:20-03:30 PM\n- **लंच ब्रेक:** 12:10 PM से 01:00 PM";
-  }
-
-  if (q.includes("video") || q.includes("वीडियो") || q.includes("walkthrough") || q.includes("walk") || q.includes("camera") || q.includes("कैमरा")) {
-    return "🎥 **SRGI कैंपस वीडियो नेविगेशन वॉकथ्रू गाइड (8 ऑफिशियल वीडियो):**\n1. **मेन गेट 1 से कैंपस एंट्री:** Gate 1 से कॉलेज के मुख्य मार्ग का वॉकथ्रू।\n2. **मेन गेट से ब्लॉक C मुख्य गेट:** Gate 1 से सीधे Block C तक का पूरा रास्ता।\n3. **ब्लॉक C मुख्य प्रवेश द्वार:** Block C का फ्रंट गेट और ग्राउंड फ्लोर लॉबी।\n4. **ब्लॉक C बाएं सीढ़ियों वाले गेट से एंट्री:** Side gate से बाएं सीढ़ियों का सीधा रास्ता।\n5. **ब्लॉक C ग्राउंड फ्लोर से 2nd फ्लोर (बाएं सीढ़ियों से):** CSE Section A, B, C तक पहुँचने का वीडियो।\n6. **ब्लॉक C सेकंड फ्लोर कॉरिडोर:** CSE Sections A, B, C, Bio-Tech, Mechanical और HOD Office।\n7. **ब्लॉक C सेकंड फ्लोर राइट साइड:** क्लासरूम्स और लैब्स का कॉरिडोर।\n8. **ब्लॉक C सेकंड फ्लोर से ग्राउंड फ्लोर नीचे जाने का रास्ता।**\n\n👉 यह सभी वीडियो आप मेन्यू या बॉटम बार के **'Camera Vision / Camera Place Detector'** में लाइव देख सकते हैं और रास्ता नेविगेट कर सकते हैं!";
-  }
-
-  if (q.includes("team") || q.includes("creator") || q.includes("admin") || q.includes("suman") || q.includes("vivek") || q.includes("pranjal") || q.includes("roshan") || q.includes("rijawan") || q.includes("avinash") || q.includes("saroj")) {
-    return "👥 **SRGI एडमिन व क्रिएटर टीम (सभी इंजीनियर्स - Official Records):**\n- **Er. सुमन कुमार** (Leader - B.Tech CSE A) - बेगूसराय, बिहार (suman@srgi.ac.in)\n- **Er. विवेक साहनी** (Co-Leader - B.Tech CSE A) - कुशीनगर, उत्तर प्रदेश (vivek@srgi.ac.in)\n- **Er. प्रांजल मौर्या** (Core Member) - वाराणसी, उत्तर प्रदेश (pranjalmaurya1120@gmail.com)\n- **Er. रोशन कुमार भारती** (Core Member) - मऊ, उत्तर प्रदेश (roshan@srgi.ac.in)\n- **Er. रिजवान खान** (Core Member) - महराजगंज, उत्तर प्रदेश (rijawan5657@gmail.com)\n- **Er. अविनाश प्रजापति** (Core Member) - महराजगंज, उत्तर प्रदेश (avinash@srgi.ac.in)\n- **Er. विवेक सरोज** (Core Member) - प्रतापगंज, उत्तर प्रदेश (viveksaroj@srgi.ac.in)\n\nसभी एडमिन्स की जानकारी सुरक्षित और आधिकारिक है।";
-  }
-
-  if (q.includes("where is") || q.includes("location") || q.includes("kahan") || q.includes("lucknow") || q.includes("address") || q.includes("पता") || q.includes("रास्ता")) {
-    return "📍 **SRGI लखनऊ का पता और लोकेशन:**\n- **पता:** NH-24, सीतापुर रोड, बख्शी का तालाब (BKT), लखनऊ, उत्तर प्रदेश 226201 (सेवा हॉस्पिटल के पास)।\n- **दूरी:** चारबाग रेलवे स्टेशन से लगभग 25 किमी, अमौसी एयरपोर्ट से 35 किमी, और इंजीनियरिंग कॉलेज चौराहे से 18 किमी।\n- **परिवहन:** लखनऊ के सभी प्रमुख इलाकों से कॉलेज बसें चलती हैं; इंजीनियरिंग कॉलेज और बीकेटी से ऑटो व ई-रिक्शा भी उपलब्ध रहते हैं।";
-  }
-
+  // Holidays
   if (q.includes("holiday") || q.includes("chhutti") || q.includes("छुट्टी") || q.includes("vacation")) {
-    return "📅 **SRGI प्रमुख छुट्टियाँ 2026 (Academic Holidays):**\n- 26 Jan: गणतंत्र दिवस\n- 15 Feb: महाशिवरात्रि\n- 3-5 Mar: होली अवकाश\n- 20 Mar: ईद-उल-फ़ित्र\n- 27 Mar: राम नवमी\n- 14 Apr: डॉ. आंबेडकर जयंती\n- 15 Aug: स्वतंत्रता दिवस\n- 28 Aug: रक्षा बंधन\n- 4 Sep: जन्माष्टमी\n- 2 Oct: गाँधी जयंती\n- 19-20 Oct: दशहरा\n- 8-11 Nov: दिवाली महा-अवकाश\n- 25 Dec: क्रिसमस। पूरा हॉलिडे कैलेंडर आप मेन्यू के 'Holidays 2026' में भी देख सकते हैं!";
+    return "📅 **SRGI प्रमुख छुट्टियाँ 2026:**\n• 26 Jan: गणतंत्र दिवस\n• 15 Feb: महाशिवरात्रि\n• 3-5 Mar: होली अवकाश\n• 20 Mar: ईद-उल-फ़ित्र\n• 27 Mar: राम नवमी\n• 15 Aug: स्वतंत्रता दिवस\n• 28 Aug: रक्षा बंधन\n• 4 Sep: जन्माष्टमी\n• 2 Oct: गाँधी जयंती\n• 19-20 Oct: दशहरा\n• 8-11 Nov: दिवाली महा-अवकाश। पूरा कैलेंडर 'Holidays 2026' में देखें!";
   }
 
+  // Feedback & Message
   if (q.includes("suggest") || q.includes("feedback") || q.includes("message") || q.includes("शिकायत") || q.includes("सुझाव")) {
-    return "✍️ **सुझाव और मैसेज (Suggestion Box):**\nआप मेन्यू में दिए गए **'Send Suggestion / Message'** ऑप्शन पर क्लिक करके कॉलेज टीम और एडमिन्स को सीधे अपना सुझाव, फीडबैक या समस्या भेज सकते हैं!";
+    return "✍️ **सुझाव और संदेश (Send Us a Message):**\nआप मेन्यू बार में दिए गए **'Send Suggestion / Message'** ऑप्शन पर जाकर कॉलेज एडमिन्स व फैकल्टी को सीधे अपना संदेश, फीडबैक या सुझाव भेज सकते हैं!";
   }
 
-  if (q.includes("chairman") || q.includes("pawan") || q.includes("director") || q.includes("founder")) {
-    return "🌟 **चेयरमैन:** माननीय श्री पवन सिंह चौहान जी ने 2009 में स्व. सूबेदार सिंह और स्व. राज देवी जी की पावन स्मृति में SRGI की स्थापना की थी। यह 65 एकड़ का हरा-भरा विशाल कैंपस है।";
-  }
-
-  return "🏛️ **SRGI कैंपस मुख्य स्थान:**\n- **सेमिनार हॉल:** Block A Ground Floor पर (Cafeteria से 20m सीधे, और Block B से 20m left जाने पर 20m right)।\n- **Block A:** एडमिनिस्ट्रेशन, सेंट्रल लाइब्रेरी (2nd Floor), सेमिनार हॉल (Ground Floor)।\n- **Block B:** MBA स्टूडेंट्स ब्लॉक।\n- **Block C:** CSE (Section A 2nd Floor), IT, EC, EN, Bio-Tech, HOD ऑफिस।\n- **Block D:** Girls Hostel (पीछे Store Room व दवाइयाँ)।\n- **Block E:** सीनियर क्लासेस (2nd, 3rd, 4th Year)।\n- **Boys Hostel:** मेन गेट से 300 मीटर।";
+  // Default multi-point answer covering ALL major highlights of the college
+  return "🏛️ **SRGI कैंपस गाइड — मुख्य जानकारी:**\n• **CSE Section A:** Block C के 2nd Floor पर (बाएं सीढ़ियों से ऊपर जाकर दाईं ओर मुड़ें)।\n• **क्लास टाइमिंग:** सुबह 09:00 AM से शाम 04:30 PM (वॉटर ब्रेक: 11:00 AM, 2:10 PM, 3:20 PM | लंच: 12:10 - 1:00 PM)।\n• **5 ब्लॉक्स:** Block A (Admin, Library, Seminar Hall), Block B (MBA), Block C (B.Tech Engg), Block D (Girls Hostel + Medical Store), Block E (Senior Classes)।\n• **सेंट्रल लाइब्रेरी:** Block A के 2nd Floor पर।\n• **सेमिनार हॉल:** Block A Ground Floor पर (Cafeteria से 20m सीधे)।\n• **एडमिन टीम:** Er. सुमन कुमार, Er. विवेक साहनी, Er. प्रांजल मौर्या, Er. रोशन कुमार भारती, Er. रिजवान खान, Er. अविनाश प्रजापति, Er. विवेक सरोज।\n• **8 कैंपस वीडियो वॉकथ्रू:** होमपेज व Camera Detector में लाइव उपलब्ध हैं।\n\nआप किसी भी ब्लॉक, क्लास, फैकल्टी या टाइमिंग के बारे में विस्तार से पूछ सकते हैं!";
 }
 
 // API Routes

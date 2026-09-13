@@ -14,6 +14,7 @@ import {
   Volume1,
 } from "lucide-react";
 import { ChatMessage } from "../types";
+import { getComprehensiveCampusAnswer } from "../data/campusKnowledge";
 
 interface AIAssistantModalProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ interface AIAssistantModalProps {
 }
 
 const INITIAL_WELCOME_TEXT =
-  "नमस्ते! मैं SRGI की स्मार्ट कैंपस AI असिस्टेंट हूँ।\n\nआप मुझसे किसी भी ब्लॉक, क्लासरूम, सेमिनार हॉल, लाइब्रेरी या फैकल्टी का रास्ता पूछ सकते हैं। मैं बोलकर भी बताऊँगी!\n\n📍 सेमिनार हॉल (Seminar Hall): Block A के Ground Floor पर स्थित है — Cafeteria से बिलकुल सीधे 20 metre, और Block B से 20 metre left जाने पर 20 metre right मुड़ें!";
+  "नमस्ते! मैं SRGI कैंपस की स्मार्ट AI असिस्टेंट साथी हूँ। 🎓\n\nआप मुझसे कॉलेज के बारे में कुछ भी पूछ सकते हैं, जैसे:\n• 💻 CSE Section A का रास्ता व फैकल्टी\n• ⏰ क्लास टाइमिंग व वॉटर/लंच ब्रेक शेड्यूल\n• 🏛️ कैंपस के सभी 5 ब्लॉक्स (Block A, B, C, D, E)\n• 👥 एडमिन्स व इंजीनियर्स टीम (Er. सुमन कुमार व अन्य)\n• 🎥 8 कैंपस वीडियो वॉकथ्रू रास्ते\n• 📚 सेंट्रल लाइब्रेरी, सेमिनार हॉल व दवाइयां\n\nआप जो भी सवाल पूछेंगे, मैं तुरंत बोलकर अपने-आप उत्तर दूँगी!";
 
 export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -203,12 +204,43 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
     }
   };
 
-  // Clean formatted text into fluent, human-sounding speech
+  // Clean formatted text into fluent, human-sounding speech with Hindi phonetics
   const cleanForSpeech = (raw: string): string => {
     return raw
       .replace(/https?:\/\/\S+/g, "")
-      .replace(/[*_#`~>]/g, "")
-      .replace(/•/g, " ")
+      .replace(/[*_#`~>]/g, " ")
+      .replace(/[•–—]/g, ", ")
+      .replace(/\s*\|\s*/g, ", ")
+      .replace(/CSE Section A/gi, "सी एस ई सेक्शन ए")
+      .replace(/CSE Section B/gi, "सी एस ई सेक्शन बी")
+      .replace(/CSE Section C/gi, "सी एस ई सेक्शन सी")
+      .replace(/CSE/gi, "सी एस ई")
+      .replace(/B\.Tech/gi, "बी टेक")
+      .replace(/HOD/gi, "एच ओ डी")
+      .replace(/Ground Floor/gi, "ग्राउंड फ्लोर")
+      .replace(/1st Floor/gi, "फर्स्ट फ्लोर")
+      .replace(/2nd Floor/gi, "सेकंड फ्लोर")
+      .replace(/3rd Floor/gi, "थर्ड फ्लोर")
+      .replace(/4th Floor/gi, "फोर्थ फ्लोर")
+      .replace(/Block A/gi, "ब्लॉक ए")
+      .replace(/Block B/gi, "ब्लॉक बी")
+      .replace(/Block C/gi, "ब्लॉक सी")
+      .replace(/Block D/gi, "ब्लॉक डी")
+      .replace(/Block E/gi, "ब्लॉक ई")
+      .replace(/Er\./g, "इंजीनियर")
+      .replace(/Gate 1/gi, "गेट एक")
+      .replace(/Gate 2/gi, "गेट दो")
+      .replace(/20m/gi, "20 मीटर")
+      .replace(/300m/gi, "300 मीटर")
+      .replace(/09:00 AM/gi, "सुबह 9 बजे")
+      .replace(/04:30 PM/gi, "शाम साढ़े 4 बजे")
+      .replace(/11:00 AM/gi, "सुबह 11 बजे")
+      .replace(/12:10 PM/gi, "दोपहर 12 बजकर 10 मिनट")
+      .replace(/01:00 PM/gi, "दोपहर 1 बजे")
+      .replace(/02:10 PM/gi, "दोपहर 2 बजकर 10 मिनट")
+      .replace(/03:20 PM/gi, "दोपहर 3 बजकर 20 मिनट")
+      .replace(/AM/gi, "सुबह")
+      .replace(/PM/gi, "शाम")
       .replace(/[\u{1F300}-\u{1FAFF}]/gu, "") // strip emojis
       .replace(/\s+/g, " ")
       .trim();
@@ -249,7 +281,6 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       // Small async timeout ensures Chrome processes cancel() before queuing new utterance
       setTimeout(() => {
         try {
-          // If browser paused speech synthesis, resume it
           if (window.speechSynthesis.paused) {
             window.speechSynthesis.resume();
           }
@@ -299,8 +330,8 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
             utterance.lang = "hi-IN";
           }
 
-          utterance.rate = 0.95; // Gentle, clear pacing
-          utterance.pitch = 1.05; // Warm, friendly tone
+          utterance.rate = 0.96; // Fluent, natural pacing
+          utterance.pitch = 1.05; // Friendly warm tone
 
           utterance.onstart = () => {
             setIsSpeaking(true);
@@ -314,7 +345,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
                   window.speechSynthesis.resume();
                 }
               }
-            }, 3000);
+            }, 1500);
           };
 
           utterance.onend = () => {
@@ -344,7 +375,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
           setIsSpeaking(false);
           setSpeakingMsgId(null);
         }
-      }, 50);
+      }, 70);
     } catch (err) {
       console.warn("Speech synthesis trigger error:", err);
       setIsSpeaking(false);
@@ -356,13 +387,17 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
     const query = (textToSend || inputValue).trim();
     if (!query || isLoading) return;
 
-    // Immediate user-gesture audio unlock so browser won't block speech synthesis later
+    // Direct synchronous user-gesture audio unlock so browser won't block speech synthesis after async fetch
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       try {
-        if (window.speechSynthesis.paused) {
-          window.speechSynthesis.resume();
-        }
-      } catch {}
+        window.speechSynthesis.resume();
+        const unlock = new SpeechSynthesisUtterance(" ");
+        unlock.volume = 0.01;
+        unlock.rate = 10;
+        window.speechSynthesis.speak(unlock);
+      } catch (e) {
+        console.warn("Audio unlock error:", e);
+      }
     }
 
     if (isListening && recognitionRef.current) {
@@ -393,14 +428,16 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Server returned ${response.status}`);
+      let botReply = "";
+      if (response.ok) {
+        const data = await response.json();
+        botReply = data?.reply || "";
       }
 
-      const data = await response.json();
-      const botReply =
-        data.reply ||
-        "नमस्ते! मैं आपका प्रश्न समझ गई हूँ। कृपया बताएं कि आप SRGI कैंपस में किस ब्लॉक या कमरे में जाना चाहते हैं?";
+      // If server returned empty or failed, use rich client-side knowledge engine
+      if (!botReply || botReply.trim().length === 0) {
+        botReply = getComprehensiveCampusAnswer(query);
+      }
 
       const botMessageId = `bot-${Date.now()}`;
       const botMessage: ChatMessage = {
@@ -412,16 +449,15 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
 
       setMessages((prev) => [...prev, botMessage]);
 
-      // Direct Speech: If Auto-Speak is enabled, speak out loud immediately!
+      // Direct Auto-Speech: AI immediately speaks the reply aloud without touching!
       if (autoSpeak) {
         setTimeout(() => {
           handleSpeakText(botReply, botMessageId);
-        }, 150);
+        }, 100);
       }
     } catch (err) {
-      console.warn("Chat error:", err);
-      const fallbackReply =
-        "नमस्ते! सेमिनार हॉल (Seminar Hall) Block A के Ground Floor पर स्थित है — Cafeteria से 20 metre सीधे, और Block B से 20m left जाने पर 20m right मुड़ें। Central Library Block A के 2nd Floor पर है, और CSE Section A Block C के 2nd Floor पर है!";
+      console.warn("Chat error, using comprehensive campus knowledge engine:", err);
+      const fallbackReply = getComprehensiveCampusAnswer(query);
       const botMessageId = `bot-${Date.now()}`;
       const fallbackMessage: ChatMessage = {
         id: botMessageId,
@@ -431,10 +467,11 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       };
       setMessages((prev) => [...prev, fallbackMessage]);
 
+      // Direct Auto-Speech for fallback response too
       if (autoSpeak) {
         setTimeout(() => {
           handleSpeakText(fallbackReply, botMessageId);
-        }, 150);
+        }, 100);
       }
     } finally {
       setIsLoading(false);
@@ -442,15 +479,17 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
   };
 
   const quickPrompts = [
-    "🎥 कैंपस के वीडियो रास्ते दिखाओ",
-    "📍 Main Gate से Block C का रास्ता बताओ",
-    "📍 Block C में 2nd Floor पर CSE Section A कैसे जाएँ?",
-    "👥 कॉलेज एडमिन और टीम के बारे में बताओ",
-    "📍 सेमिनार हॉल (Seminar Hall) का रास्ता",
-    "📚 Central Library कहाँ है?",
+    "💻 CSE Section A का रास्ता व क्लास",
+    "⏰ क्लास टाइमिंग व ब्रेक शेड्यूल बताओ",
+    "👥 कॉलेज एडमिन्स व इंजीनियर्स टीम",
+    "🏛️ कैंपस के 5 ब्लॉक्स के बारे में बताओ",
     "👨‍🏫 CSE फैकल्टी लिस्ट व फोन नंबर",
-    "🏢 Block D (Girls Hostel) & दवाइयाँ",
-    "☕ Cafeteria और Gate 2 कैफे",
+    "🎥 कैंपस के 8 वीडियो रास्ते दिखाओ",
+    "📚 Central Library (लाइब्रेरी) कहाँ है?",
+    "💊 दवाइयाँ, First-Aid व Store Room",
+    "🎤 सेमिनार हॉल (Seminar Hall) का रास्ता",
+    "☕ Central Cafeteria व Gate 2 कैफे",
+    "🎓 कॉलेज का इतिहास व चेयरमैन",
   ];
 
   if (!isOpen) return null;
@@ -744,7 +783,7 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
               placeholder={
                 isListening
                   ? "सुन रही हूँ... बोलिए"
-                  : "यहाँ हिंदी में पूछें... (जैसे: सेमिनार हॉल कैसे जाएँ?)"
+                  : "यहाँ कॉलेज के बारे में कुछ भी पूछें... (जैसे: CSE Section A, शेड्यूल, ब्लॉक्स)"
               }
               className="flex-1 px-4 py-3 bg-slate-100 rounded-2xl text-xs sm:text-sm border border-transparent focus:border-blue-500 focus:bg-white focus:outline-none transition-all"
             />
