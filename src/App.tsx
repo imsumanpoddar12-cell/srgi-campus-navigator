@@ -124,6 +124,16 @@ export default function App() {
     return saved !== null ? safeParse(saved, true) : true;
   });
 
+  // Dark Theme state with persistence
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const saved = safeGetItem("srgi_theme");
+    if (saved) return saved === "dark";
+    if (typeof window !== "undefined" && window.matchMedia) {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
+
   const [loggedAdmin, setLoggedAdmin] = useState<AdminUser | null>(() => {
     return safeParse(safeGetItem("srgi_logged_admin"), null);
   });
@@ -138,6 +148,17 @@ export default function App() {
   const [isAIModalOpen, setIsAIModalOpen] = useState<boolean>(false);
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState<boolean>(false);
   const [isAckModalOpen, setIsAckModalOpen] = useState<boolean>(false);
+
+  // Theme effect
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      safeSetItem("srgi_theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      safeSetItem("srgi_theme", "light");
+    }
+  }, [isDarkMode]);
 
   // Persistence effects
   useEffect(() => {
@@ -203,8 +224,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f0f4f9] text-slate-800 font-sans selection:bg-blue-600 selection:text-white">
-      {/* Main App Header with Official SRGI Logo */}
+    <div
+      className={`min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200 ${
+        isDarkMode ? "bg-slate-950 text-slate-100 dark" : "bg-[#f0f4f9] text-slate-800"
+      }`}
+    >
+      {/* Main App Header with Official SRGI Logo & Theme Toggle */}
       <Header
         onToggleMenu={() => setIsMenuOpen((prev) => !prev)}
         onNavigate={(sec) => {
@@ -212,13 +237,19 @@ export default function App() {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         activeSection={activeSection}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode((prev) => !prev)}
       />
 
-      {/* Navigation Menu Dropdown */}
+      {/* Navigation Menu Dropdown with Dark Theme & ConnectSR Portal */}
       <MenuDropdown
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         onSelectSection={(sec) => {
+          if (sec === "connectsr") {
+            window.open("https://connectsr.in", "_blank", "noopener,noreferrer");
+            return;
+          }
           if (sec === "where-is-srgi") {
             setIsSideMapOpen(true);
             setActiveSection("where-is-srgi");
@@ -233,6 +264,8 @@ export default function App() {
         onLogout={handleLogout}
         showAdminPhotos={showAdminPhotos}
         onToggleAdminPhotos={() => setShowAdminPhotos((prev) => !prev)}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode((prev) => !prev)}
       />
 
       {/* Main Content Area */}

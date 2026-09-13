@@ -1,13 +1,15 @@
-import { Menu, Sparkles, Image as ImageIcon, Users, Compass, Camera, MessageSquare } from "lucide-react";
+import { Menu, Sparkles, Image as ImageIcon, Users, Compass, Camera, MessageSquare, Moon, Sun } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
 interface HeaderProps {
   onToggleMenu: () => void;
   onNavigate: (section: string) => void;
   activeSection: string;
+  isDarkMode?: boolean;
+  onToggleDarkMode?: () => void;
 }
 
-export default function Header({ onToggleMenu, onNavigate, activeSection }: HeaderProps) {
+export default function Header({ onToggleMenu, onNavigate, activeSection, isDarkMode, onToggleDarkMode }: HeaderProps) {
   return (
     <header
       id="main-app-header"
@@ -120,12 +122,29 @@ export default function Header({ onToggleMenu, onNavigate, activeSection }: Head
         </button>
       </nav>
 
-      {/* Menu Toggle Button */}
-      <div className="flex items-center gap-2.5">
+      {/* Header Actions */}
+      <div className="flex items-center gap-2 sm:gap-2.5">
+        {onToggleDarkMode && (
+          <button
+            id="header-toggle-dark-mode-btn"
+            onClick={onToggleDarkMode}
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/10 flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {isDarkMode ? (
+              <Sun className="w-5 h-5 text-amber-300" />
+            ) : (
+              <Moon className="w-5 h-5 text-blue-200" />
+            )}
+          </button>
+        )}
+
+        {/* Menu Toggle Button */}
         <button
           id="open-menu-btn"
           onClick={onToggleMenu}
-          className="w-11 h-11 rounded-xl bg-white text-[#123f73] hover:bg-blue-50 shadow-md font-bold text-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white text-[#123f73] hover:bg-blue-50 shadow-md font-bold text-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer"
           aria-label="Open Navigation Menu"
         >
           <Menu className="w-6 h-6" />

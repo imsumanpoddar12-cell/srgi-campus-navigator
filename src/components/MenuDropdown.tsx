@@ -14,6 +14,10 @@ import {
   Compass,
   Camera,
   MessageSquare,
+  Moon,
+  Sun,
+  Globe,
+  ExternalLink,
 } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
@@ -27,6 +31,8 @@ interface MenuDropdownProps {
   onLogout: () => void;
   showAdminPhotos: boolean;
   onToggleAdminPhotos: () => void;
+  isDarkMode?: boolean;
+  onToggleDarkMode?: () => void;
 }
 
 export default function MenuDropdown({
@@ -39,8 +45,15 @@ export default function MenuDropdown({
   onLogout,
   showAdminPhotos,
   onToggleAdminPhotos,
+  isDarkMode = false,
+  onToggleDarkMode,
 }: MenuDropdownProps) {
   if (!isOpen) return null;
+
+  const handleOpenConnectSR = () => {
+    window.open("https://connectsr.in", "_blank", "noopener,noreferrer");
+    onClose();
+  };
 
   const menuItems = [
     {
@@ -56,6 +69,14 @@ export default function MenuDropdown({
       subtext: "Detect landmark via camera or video & get route",
       icon: Camera,
       badge: "Vision",
+    },
+    {
+      id: "connectsr",
+      label: "ConnectSR Portal (connectsr.in)",
+      subtext: "कॉलेज आधिकारिक पोर्टल • डायरेक्ट लिंक",
+      icon: Globe,
+      badge: "Direct Link",
+      isExternal: true,
     },
     {
       id: "messages",
@@ -121,13 +142,13 @@ export default function MenuDropdown({
       <div
         id="menu-backdrop"
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 transition-opacity"
+        className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 transition-opacity"
       />
 
-      {/* Slide-in / Popup Menu with clean, modern aesthetics */}
+      {/* Slide-in / Popup Menu with clean, modern aesthetics & dark mode support */}
       <div
         id="app-navigation-menu"
-        className="fixed right-3 top-20 sm:right-6 w-[calc(100vw-24px)] max-w-sm bg-white rounded-2xl shadow-2xl border border-slate-200/90 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+        className="fixed right-3 top-20 sm:right-6 w-[calc(100vw-24px)] max-w-sm bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200/90 dark:border-slate-800 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150 transition-colors"
       >
         {/* Menu Header with refined gradient */}
         <div className="bg-gradient-to-r from-[#0d2e54] via-[#123f73] to-[#1261a0] p-4 text-white flex items-center justify-between border-b border-blue-400/20">
@@ -152,36 +173,113 @@ export default function MenuDropdown({
           </button>
         </div>
 
-        {/* Quick Admin Photo Visibility Preference */}
-        <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {showAdminPhotos ? (
-              <Eye className="w-3.5 h-3.5 text-blue-600" />
-            ) : (
-              <EyeOff className="w-3.5 h-3.5 text-slate-400" />
-            )}
-            <span className="text-[11px] font-semibold text-slate-700">
-              Admin Photos Display
-            </span>
+        {/* Quick Preferences: Dark Mode & Admin Photos */}
+        <div className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-100 dark:border-slate-700/60 divide-y divide-slate-100 dark:divide-slate-700/60">
+          {/* Dark Mode Toggle */}
+          <div className="px-4 py-2.5 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center">
+                {isDarkMode ? (
+                  <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                ) : (
+                  <Sun className="w-3.5 h-3.5 text-amber-500" />
+                )}
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                  Dark Theme
+                </span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 ml-1.5 font-medium">
+                  {isDarkMode ? "डार्क मोड सक्रिय" : "लाइट मोड"}
+                </span>
+              </div>
+            </div>
+            <button
+              id="toggle-dark-mode-menu-btn"
+              onClick={onToggleDarkMode}
+              className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer focus:outline-hidden ${
+                isDarkMode ? "bg-indigo-600" : "bg-slate-300 dark:bg-slate-700"
+              }`}
+              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-xs transition-transform ${
+                  isDarkMode ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
           </div>
-          <button
-            id="toggle-admin-photos-menu-btn"
-            onClick={onToggleAdminPhotos}
-            className={`px-2.5 py-0.5 text-[11px] font-bold rounded-full transition-colors cursor-pointer ${
-              showAdminPhotos
-                ? "bg-blue-600 text-white shadow-2xs"
-                : "bg-slate-200 text-slate-600 hover:bg-slate-300"
-            }`}
+
+          {/* Admin Photos Display Toggle */}
+          <div className="px-4 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-6 h-6 rounded-md bg-blue-100 dark:bg-blue-950/60 flex items-center justify-center">
+                {showAdminPhotos ? (
+                  <Eye className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                ) : (
+                  <EyeOff className="w-3.5 h-3.5 text-slate-400" />
+                )}
+              </div>
+              <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+                Admin Photos Display
+              </span>
+            </div>
+            <button
+              id="toggle-admin-photos-menu-btn"
+              onClick={onToggleAdminPhotos}
+              className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full transition-colors cursor-pointer ${
+                showAdminPhotos
+                  ? "bg-blue-600 text-white shadow-2xs"
+                  : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-300"
+              }`}
+            >
+              {showAdminPhotos ? "Enabled" : "Disabled"}
+            </button>
+          </div>
+        </div>
+
+        {/* Featured Direct Option: connectsr.in */}
+        <div className="p-2 pb-1 bg-gradient-to-r from-blue-50/70 to-indigo-50/70 dark:from-blue-950/30 dark:to-indigo-950/30 border-b border-slate-100 dark:border-slate-800">
+          <a
+            id="menu-featured-connectsr-btn"
+            href="https://connectsr.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              e.preventDefault();
+              handleOpenConnectSR();
+            }}
+            className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-slate-800/90 hover:bg-blue-50/80 dark:hover:bg-slate-800 border border-blue-200/90 dark:border-blue-700/50 shadow-xs hover:shadow-md transition-all cursor-pointer group"
           >
-            {showAdminPhotos ? "Enabled" : "Disabled"}
-          </button>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                <Globe className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="text-xs font-black text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                  <span>connectsr.in</span>
+                  <span className="px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-blue-600 text-white">
+                    Direct Portal
+                  </span>
+                </div>
+                <div className="text-[11px] text-blue-700 dark:text-blue-300 font-medium">
+                  डायरेक्ट connectsr.in खोलें ↗
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400 text-xs font-bold shrink-0">
+              <span className="text-[11px] hidden sm:inline">Open</span>
+              <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </div>
+          </a>
         </div>
 
         {/* Menu Items List */}
-        <div className="p-2 max-h-[62vh] overflow-y-auto divide-y divide-slate-100">
+        <div className="p-2 max-h-[58vh] overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
           <div className="space-y-1 pb-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
+              const isExternal = item.isExternal;
               const isActive =
                 activeSection === item.id ||
                 (item.id === "admin-photos" && activeSection === "admins") ||
@@ -193,21 +291,27 @@ export default function MenuDropdown({
                   key={item.id}
                   id={`menu-item-${item.id}`}
                   onClick={() => {
+                    if (isExternal && item.id === "connectsr") {
+                      handleOpenConnectSR();
+                      return;
+                    }
                     onSelectSection(item.id);
                     onClose();
                   }}
                   className={`w-full flex items-center justify-between p-2.5 rounded-xl transition-all text-left cursor-pointer ${
                     isActive
-                      ? "bg-blue-50/90 text-[#123f73] font-bold border border-blue-200/80 shadow-2xs"
-                      : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                      ? "bg-blue-50/90 dark:bg-blue-950/60 text-[#123f73] dark:text-blue-300 font-bold border border-blue-200/80 dark:border-blue-800 shadow-2xs"
+                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                         isActive
-                          ? "bg-[#123f73] text-white shadow-2xs"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-[#123f73] dark:bg-blue-600 text-white shadow-2xs"
+                          : isExternal
+                          ? "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300"
+                          : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
                       }`}
                     >
                       <Icon className="w-4 h-4" />
@@ -219,20 +323,26 @@ export default function MenuDropdown({
                           <span
                             className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
                               item.badge === "New"
-                                ? "bg-amber-100 text-amber-800"
-                                : "bg-blue-100 text-blue-800"
+                                ? "bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300"
+                                : item.badge === "Direct Link"
+                                ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300"
+                                : "bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300"
                             }`}
                           >
                             {item.badge}
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-slate-500 font-normal mt-0.5">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 font-normal mt-0.5">
                         {item.subtext}
                       </div>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                  {isExternal ? (
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
+                  )}
                 </button>
               );
             })}
@@ -241,10 +351,10 @@ export default function MenuDropdown({
           {/* Admin Section in Menu */}
           <div className="pt-2">
             {isLoggedIn ? (
-              <div className="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
+              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800 flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  <div className="text-xs font-bold text-emerald-800 dark:text-emerald-200 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     Logged in as {loggedAdminName}
                   </div>
                   <button
@@ -253,7 +363,7 @@ export default function MenuDropdown({
                       onSelectSection("admin");
                       onClose();
                     }}
-                    className="text-[11px] text-emerald-700 underline font-medium hover:text-emerald-900 cursor-pointer"
+                    className="text-[11px] text-emerald-700 dark:text-emerald-300 underline font-medium hover:text-emerald-900 dark:hover:text-emerald-100 cursor-pointer"
                   >
                     Open Management Dashboard
                   </button>
@@ -276,9 +386,9 @@ export default function MenuDropdown({
                   onSelectSection("admin");
                   onClose();
                 }}
-                className="w-full flex items-center justify-center gap-2 p-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 p-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-colors cursor-pointer"
               >
-                <ShieldCheck className="w-4 h-4 text-blue-700" />
+                <ShieldCheck className="w-4 h-4 text-blue-700 dark:text-blue-400" />
                 <span>Admin Login (Manage Locations & Content)</span>
               </button>
             )}
@@ -288,3 +398,4 @@ export default function MenuDropdown({
     </>
   );
 }
+

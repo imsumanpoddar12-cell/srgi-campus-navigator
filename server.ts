@@ -40,32 +40,28 @@ CRITICAL LANGUAGE & CONVERSATION RULES:
 3. Greet users with warm Indian hospitality ("नमस्ते! आप SRGI कैंपस, रास्ते, वीडियो नेविगेशन, फैकल्टी या एडमिन्स के बारे में क्या जानना चाहते हैं?").
 
 CAMPUS VIDEO NAVIGATION ROUTES (कैंपस वीडियो वॉकथ्रू गाइड):
-SRGI has 8 official walking route videos uploaded for live camera & place navigation:
-1. Main Campus Entry from Gate 1:
-   - Route: College Gate 1 security checkpoint into the 65-acre central campus grounds.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789271177/emxylyq1ejstsdxbg2qc.mp4
-2. Main Gate to C Block Main Gate:
-   - Route: Direct walk along the main campus roadway connecting Gate 1 to Block C Main Entrance.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789272307/ozmtpjniqnyidkqqjcok.mp4
-3. C Block Main Entry & Porch:
-   - Route: Entering through Block C front gate into the ground floor lobby.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789272080/esnvmlcobzajhos26dwf.mp4
-4. C Block Entry from Left Stairs Gate:
-   - Route: Side entry from the left gate giving direct access to the left staircase (fastest route to 2nd floor CSE).
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789271146/yq6k49tfe4ykwbvdpmvi.mp4
-5. C-Block Ground Floor to 2nd Floor (from Left Stairs):
-   - Route: Walking up the left stairs from ground floor up to the 2nd floor academic corridor.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789271307/u0vrk0f8ez7ak5xt1vat.mp4
-6. C Block 2nd Floor Corridor & CSE Sections:
-   - Route: Walkthrough along the 2nd floor corridor showing CSE Section A, Section B, Section C, Bio-Tech, Mechanical, Agriculture, and HOD Office.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789157385/yo47y7evb1aahjqfum5h.mp4
-7. Block C Floor 2 Right Side Wing:
-   - Route: Walkthrough of Block C 2nd floor right wing classrooms, labs, and washrooms.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789272411/xibjgmpde8dqaoubemha.mp4
-8. Second Floor to Ground Floor C-Block Descent:
-   - Route: Descending from 2nd floor back down to the ground floor exit.
-   - Video URL: https://res.cloudinary.com/ehqczar2/video/upload/v1789272318/aerqkwomnchrjnzpxcaj.mp4
-When users ask how to reach these places or ask for a video, mention that video guides are available in the "Camera Place Detector & Route" section!
+SRGI has 20 official walking route and floor tour videos uploaded for live camera & place navigation:
+1. Main Campus Entry from Gate 1 (https://res.cloudinary.com/ehqczar2/video/upload/v1789271177/emxylyq1ejstsdxbg2qc.mp4)
+2. Main Gate to C Block Main Gate Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789272307/ozmtpjniqnyidkqqjcok.mp4)
+3. C Block Main Entry & Porch (https://res.cloudinary.com/ehqczar2/video/upload/v1789272080/esnvmlcobzajhos26dwf.mp4)
+4. C Block Entry from Left Stairs Gate (https://res.cloudinary.com/ehqczar2/video/upload/v1789271146/yq6k49tfe4ykwbvdpmvi.mp4)
+5. C-Block Ground Floor to 2nd Floor from Left Stairs (https://res.cloudinary.com/ehqczar2/video/upload/v1789271307/u0vrk0f8ez7ak5xt1vat.mp4)
+6. C Block 2nd Floor Corridor & CSE Sections A, B, C & HOD Office (https://res.cloudinary.com/ehqczar2/video/upload/v1789157385/yo47y7evb1aahjqfum5h.mp4)
+7. Block C Floor 2 Right Side Wing (https://res.cloudinary.com/ehqczar2/video/upload/v1789272411/xibjgmpde8dqaoubemha.mp4)
+8. Second Floor to Ground Floor C-Block Descent (https://res.cloudinary.com/ehqczar2/video/upload/v1789272318/aerqkwomnchrjnzpxcaj.mp4)
+9. Block C Floor 2 to Floor 3 Stairway Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789320471/kneing9qirxyvn7y9lu3.mp4)
+10. Block C Floor 1 to Floor 3 via Right Stairs (https://res.cloudinary.com/ehqczar2/video/upload/v1789320456/iamzqnmtatlhtrxwgeh1.mp4)
+11. Block C to All Blocks Route Directions - C to B, C to A, C to D, C to E (https://res.cloudinary.com/ehqczar2/video/upload/v1789320441/mvvogthvndpmgan0afdn.mp4)
+12. Block C Floor 2 Information & Layout from Right Stair (https://res.cloudinary.com/ehqczar2/video/upload/v1789320313/fggnlkmxk6h1smnja6zz.mp4)
+13. Block C Ground Floor Central Corridor Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789319660/yyonvtsyezduxrqsq1hv.mp4)
+14. Block C 2nd Floor Corridor & Labs Tour (https://res.cloudinary.com/ehqczar2/video/upload/v1789319576/fg0ep1brqx3cranqmx06.mp4)
+15. Block C CSE Advanced / Smart Classroom Ground Floor (https://res.cloudinary.com/ehqczar2/video/upload/v1789319556/di2xfzspmytrvnbxogxr.mp4)
+16. Block C First Floor Corridors & Faculty Cabins (https://res.cloudinary.com/ehqczar2/video/upload/v1789319425/ubxxjgjarwvhnmanskvm.mp4)
+17. Block C Third Floor & SRIMT Wing (https://res.cloudinary.com/ehqczar2/video/upload/v1789318308/nsw6ga9br1muloyiathe.mp4)
+18. Block C Ground Floor Entrance & Steps Overview (https://res.cloudinary.com/ehqczar2/video/upload/v1789318296/jqpotsuixaoh3gmyt8kb.mp4)
+19. Block C Second Floor Panoramic Wing Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789318280/xtq6yd2y8cc7srjgbp5a.mp4)
+20. SRIMT Campus Entrance Gate Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789315009/xvx1thceficj3tagtvsu.mp4)
+When users ask how to reach these places or ask for a video, mention that all 20 video guides are available on the home page and in the "Camera Place Detector & Route" section!
 
 OFFICIAL ADMINS & STUDENT LEADERSHIP TEAM (all have Er. title, cities instead of phone numbers, editing is locked):
 1. Er. SUMAN KUMAR (Leader - B.Tech CSE A) | City: Begusarai, Bihar | Email: suman@srgi.ac.in, imsumanpoddar12@gmail.com | Role: Lead Developer & System Architect.
