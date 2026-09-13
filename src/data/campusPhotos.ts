@@ -266,6 +266,86 @@ export const defaultCampusPhotos: CampusPhotoItem[] = [
     imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789288380/WhatsApp_Image_2026-09-12_at_11.07.25_PM.jpg",
     caption: "SRGI Central Library (Block A, 2nd Floor): Full panoramic perspective of the modern campus library.",
     tags: ["library", "central library", "panorama", "reading", "block a", "srgi"]
+  },
+
+  // ==================== 7. CAFE & CAFETERIA ====================
+  {
+    id: "photo-cafe-1",
+    title: "Campus Cafe (2nd Gate)",
+    locationName: "Campus Cafes",
+    block: "Gate 2",
+    category: "Cafeteria",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292277/13.webp",
+    caption: "Campus food cafe & snacks point located at the 2nd Gate of SRGI Lucknow.",
+    tags: ["cafe", "cafes", "food", "refreshment", "gate 2", "snacks", "tea", "canteen"]
+  },
+  {
+    id: "photo-cafeteria-1",
+    title: "Central Cafeteria",
+    locationName: "Central Cafeteria",
+    block: "Central Campus",
+    category: "Cafeteria",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292276/9.webp",
+    caption: "Central Campus Cafeteria dining hall (Seminar Hall is located 20 metres straight from this cafeteria).",
+    tags: ["cafeteria", "central cafeteria", "dining", "food court", "canteen", "seminar hall 20m"]
+  },
+
+  // ==================== 8. CENTRAL LIBRARY (ADDITIONAL VIEW) ====================
+  {
+    id: "photo-srgi-library-11",
+    title: "Central Library - Reading Stacks & Academic Wing",
+    locationName: "Central Library",
+    block: "Block A",
+    category: "Library",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292601/1781176725phpiQweqZ.jpg",
+    caption: "SRGI Central Library (Block A, 2nd Floor): Study desks, textbook collection, and quiet reference section.",
+    tags: ["library", "central library", "books", "study", "reference", "reading hall", "block a"]
+  },
+
+  // ==================== 9. CAMPUS GROUNDS & COMPLEX ====================
+  {
+    id: "photo-campus-overview-1",
+    title: "SRGI Main Campus Complex",
+    locationName: "Campus Grounds",
+    block: "Main Campus",
+    category: "Campus Grounds",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292748/IMG_9914.webp",
+    caption: "Wide scenic perspective of SRGI Lucknow 65-acre campus grounds, pathways, and academic infrastructure.",
+    tags: ["campus", "main campus", "central campus", "grounds", "srgi lucknow", "campus overview"]
+  },
+
+  // ==================== 10. BOYS HOSTEL ====================
+  {
+    id: "photo-boys-hostel-1",
+    title: "Boys Hostel (Campus Residence)",
+    locationName: "Boys Hostel",
+    block: "Campus Grounds",
+    category: "Hostels",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292803/WhatsApp_Image_2026-09-13_at_3.14.47_PM_1.jpg",
+    caption: "SRGI Boys Hostel: Student residence located 300 metres away from the college Main Gate inside the campus.",
+    tags: ["boys hostel", "hostel", "hostels", "residence", "300m main gate", "campus accommodation"]
+  },
+
+  // ==================== 11. BLOCK D & BLOCK E PHOTOS (USING CAMPUS PHOTO) ====================
+  {
+    id: "photo-block-d-campus",
+    title: "Block D - Girls Hostel & Campus Complex",
+    locationName: "Block D (Girls Hostel)",
+    block: "Block D",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292748/IMG_9914.webp",
+    caption: "Block D campus view: Residential girls hostel with medicine dispensary and store room located right behind.",
+    tags: ["block d", "girls hostel", "blocks", "campus", "hostel", "medicines", "store room"]
+  },
+  {
+    id: "photo-block-e-campus",
+    title: "Block E - Senior Academic Wing",
+    locationName: "Block E (Seniors Classes)",
+    block: "Block E",
+    category: "Blocks",
+    imageUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292748/IMG_9914.webp",
+    caption: "Block E campus perspective: Dedicated academic block for 2nd Year, 3rd Year, and 4th Year seniors.",
+    tags: ["block e", "seniors classes", "blocks", "campus", "academic block", "2nd year", "3rd year", "4th year"]
   }
 ];
 

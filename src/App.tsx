@@ -109,11 +109,14 @@ export default function App() {
 
   const [locations, setLocations] = useState<CampusLocation[]>(() => {
     const saved = safeParse<CampusLocation[]>(safeGetItem("srgi_locations"), initialCampusLocations);
-    // Sanitize any outdated unsplash placeholder photos from saved locations
+    // Sanitize any outdated unsplash placeholder photos and propagate new official photoUrls
     const sanitized = saved.map((loc) => {
       const match = initialCampusLocations.find((init) => init.id === loc.id);
       if (loc.photoUrl && loc.photoUrl.includes("unsplash.com")) {
         return { ...loc, photoUrl: match?.photoUrl };
+      }
+      if (!loc.photoUrl && match?.photoUrl) {
+        return { ...loc, photoUrl: match.photoUrl };
       }
       return loc;
     });

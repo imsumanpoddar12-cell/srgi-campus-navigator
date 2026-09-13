@@ -474,6 +474,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Hostel Administration & Residence",
     direction: "Block D is the Girls Hostel inside campus with 24x7 security, dining hall, and warden office.",
     category: "Hostel",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292748/IMG_9914.webp",
   },
   {
     id: "loc-30",
@@ -483,6 +484,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Campus Health & Inventory",
     direction: "Located directly behind Block D (Girls Hostel). Medicines, first-aid, emergency nurse, and store supplies are available here.",
     category: "Facility",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292748/IMG_9914.webp",
   },
 
   // Block E - Seniors Classes
@@ -494,6 +496,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Senior Engineering Academics",
     direction: "Block E is exclusively for Seniors (2nd Year, 3rd Year, and 4th Year B.Tech and degree batches).",
     category: "Classroom",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292748/IMG_9914.webp",
   },
 
   // Campus Grounds & Amenities
@@ -505,6 +508,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Student Residential Complex",
     direction: "The Boys Hostel is located 300 metres away from the college Main Gate inside the same 65-acre campus.",
     category: "Hostel",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292803/WhatsApp_Image_2026-09-13_at_3.14.47_PM_1.jpg",
   },
   {
     id: "loc-33",
@@ -514,6 +518,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Food & Refreshment",
     direction: "Located at the 2nd Gate of the college. Features food stalls, cafes, tea points, and fast bites.",
     category: "Food",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292277/13.webp",
   },
   {
     id: "loc-34",
@@ -523,6 +528,7 @@ export const initialCampusLocations: CampusLocation[] = [
     department: "Dining & Food Court",
     direction: "Central Campus cafeteria. Note: Seminar Hall is 20 metres straight from this cafeteria!",
     category: "Food",
+    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292276/9.webp",
   },
 ];
 
