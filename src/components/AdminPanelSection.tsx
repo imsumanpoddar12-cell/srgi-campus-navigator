@@ -46,9 +46,7 @@ export default function AdminPanelSection({
 }: AdminPanelSectionProps) {
   const [activeTab, setActiveTab] = useState<"locations" | "team" | "suggestions">("locations");
 
-  const currentAdminDisplayName = currentAdmin.name.startsWith("Er.")
-    ? currentAdmin.name
-    : `Er. ${currentAdmin.name}`;
+  const currentAdminDisplayName = currentAdmin.name.replace(/^Er\.\s*/i, "");
 
   // Suggestions & Messages state
   const [suggestions, setSuggestions] = useState<SuggestionItem[]>([]);
@@ -393,7 +391,7 @@ export default function AdminPanelSection({
 
           <div className="space-y-3">
             {team.map((member) => {
-              const displayName = member.name.startsWith("Er.") ? member.name : `Er. ${member.name}`;
+              const displayName = member.name.replace(/^Er\.\s*/i, "");
               return (
                 <div
                   key={member.id}

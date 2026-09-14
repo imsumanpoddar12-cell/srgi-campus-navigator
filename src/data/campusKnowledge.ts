@@ -63,7 +63,7 @@ export function getComprehensiveCampusAnswer(queryRaw: string): string {
 • **पीरियड्स:** रोजाना 6 पीरियड्स और प्रैक्टिकल लैब्स (Chemistry, Electronics, Mechanics, Language Lab) आयोजित होती हैं।`;
   }
 
-  // 3. Admin & Team Members (all Er., Cities, updated emails, read-only)
+  // 3. Admin & Team Members (Cities, updated emails, read-only)
   if (
     q.includes("admin") ||
     q.includes("team") ||
@@ -82,21 +82,21 @@ export function getComprehensiveCampusAnswer(queryRaw: string): string {
     q.includes("किसने बनाया") ||
     q.includes("इंजीनियर")
   ) {
-    return `👥 **SRGI एडमिन व क्रिएटर टीम (सभी इंजीनियर्स - Official Records):**
-1. **Er. सुमन कुमार (Leader - B.Tech CSE A)**
-   • शहर: बेगूसराय, बिहार | ईमेल: imsumanpoddar12@gmail.com / suman@srgi.ac.in
-2. **Er. विवेक साहनी (Co-Leader - B.Tech CSE A)**
-   • शहर: कुशीनगर, उत्तर प्रदेश | ईमेल: vivek@srgi.ac.in
-3. **Er. प्रांजल मौर्या (Core Member - B.Tech CSE A)**
+    return `👥 **SRGI एडमिन व क्रिएटर टीम (Official Records):**
+1. **सुमन कुमार (Leader - B.Tech CSE A)**
+   • शहर: बेगूसराय, बिहार | ईमेल: imsumanpoddar12@gmail.com
+2. **विवेक साहनी (Co-Leader - B.Tech CSE A)**
+   • शहर: कुशीनगर, उत्तर प्रदेश | ईमेल: sahvds9416@gmal.com
+3. **प्रांजल मौर्या (Core Member - B.Tech CSE A)**
    • शहर: वाराणसी, उत्तर प्रदेश | ईमेल: pranjalmaurya1120@gmail.com
-4. **Er. रोशन कुमार भारती (Core Member - B.Tech CSE A)**
-   • शहर: मऊ, उत्तर प्रदेश | ईमेल: roshan@srgi.ac.in
-5. **Er. रिजवान खान (Core Member - B.Tech CSE A)**
+4. **रोशन कुमार भारती (Core Member - B.Tech CSE A)**
+   • शहर: मऊ, उत्तर प्रदेश | ईमेल: roshankumar11102007@gmail.com
+5. **रिजवान खान (Core Member - B.Tech CSE A)**
    • शहर: महराजगंज, उत्तर प्रदेश | ईमेल: rijawan5657@gmail.com
-6. **Er. अविनाश प्रजापति (Core Member - B.Tech CSE A)**
-   • शहर: महराजगंज, उत्तर प्रदेश | ईमेल: avinash@srgi.ac.in
-7. **Er. विवेक सरोज (Core Member - B.Tech CSE A)**
-   • शहर: प्रतापगंज, उत्तर प्रदेश | ईमेल: viveksaroj@srgi.ac.in
+6. **अविनाश प्रजापति (Core Member - B.Tech CSE A)**
+   • शहर: महराजगंज, उत्तर प्रदेश | ईमेल: avinashprajapati7598@gmail.com
+7. **विवेक सरोज (Core Member - B.Tech CSE A)**
+   • शहर: प्रतापगंज, उत्तर प्रदेश | ईमेल: viveksaroj7598@gmail.com
 
 🔒 सभी एडमिन्स की प्रोफाइल आधिकारिक व सुरक्षित है और फोन नंबर की जगह उनके गृह नगर प्रदर्शित हैं।`;
   }
@@ -270,7 +270,30 @@ export function getComprehensiveCampusAnswer(queryRaw: string): string {
 2. **Gate 2 Cafes:** कॉलेज के गेट नंबर 2 पर विद्यार्थियों के पसंदीदा टी-पॉइंट्स, फास्ट फूड और स्नैक्स कैफे मौजूद हैं।`;
   }
 
-  // 10. Faculties & Teachers (with contact numbers)
+  // Chairman, Vice Chairman & Institutional Leadership
+  if (
+    q.includes("chairman") ||
+    q.includes("vice chairman") ||
+    q.includes("pawan singh") ||
+    q.includes("piyush singh") ||
+    q.includes("mlc") ||
+    q.includes("चेयरमैन") ||
+    q.includes("वाइस चेयरमैन") ||
+    q.includes("पवन सिंह चौहान") ||
+    q.includes("पीयूष सिंह चौहान")
+  ) {
+    return `🏛️ **SR Group of Institutions (SRGI) शीर्ष नेतृत्व:**
+1. **श्री पवन सिंह चौहान (Hon'ble Chairman - SR Group):**
+   • **परिचय:** पवन सिंह चौहान (जन्म: 3 फरवरी 1965) भारतीय जनता पार्टी (BJP) के वरिष्ठ भारतीय राजनेता हैं।
+   • **विधान परिषद सदस्य:** वे 2022 से सीतापुर से उत्तर प्रदेश विधान परिषद (MLC) के सम्मानित सदस्य हैं।
+   • **संस्थापक एवं चेयरमैन:** वे SR Group of Institutions के चेयरमैन व संस्थापक हैं, जिन्होंने 2009 में 65 एकड़ के इस विशाल आधुनिक परिसर की स्थापना की।
+   • **ऑफिस:** Block A, First Floor, SRGI Campus.
+
+2. **श्री पीयूष सिंह चौहान (Vice-Chairman - SR Group):**
+   • **भूमिका:** SR Group of Institutions के वाइस-चेयरमैन के रूप में वे आधुनिक इंफ्रास्ट्रक्चर, रिसर्च लैब्स, उद्योग सहयोग और प्लेसमेंट को गति प्रदान कर रहे हैं।`;
+  }
+
+  // 10. Faculties, Teachers & Department Leadership
   if (
     q.includes("faculty") ||
     q.includes("teacher") ||
@@ -278,25 +301,52 @@ export function getComprehensiveCampusAnswer(queryRaw: string): string {
     q.includes("ma'am") ||
     q.includes("professor") ||
     q.includes("hod") ||
+    q.includes("deputy hod") ||
+    q.includes("coordinator") ||
+    q.includes("quardinator") ||
     q.includes("prashant") ||
+    q.includes("rajeev") ||
+    q.includes("laxmikant") ||
+    q.includes("vaish") ||
+    q.includes("aakash") ||
+    q.includes("anshuman") ||
+    q.includes("r.b. singh") ||
+    q.includes("rb singh") ||
+    q.includes("awaneesh") ||
+    q.includes("lavkush") ||
     q.includes("brijesh") ||
     q.includes("santosh") ||
     q.includes("preety") ||
     q.includes("manish") ||
-    q.includes("laxmikant") ||
     q.includes("maneesh") ||
     q.includes("फोन नंबर") ||
     q.includes("शिक्षक") ||
     q.includes("फैकल्टी")
   ) {
-    return `👨‍🏫 **CSE Section A फैकल्टी लिस्ट व आधिकारिक फोन नंबर:**
-• **प्रशांत बाजपेयी सर (HOD - CSE):** 7617000030 (Office: Block C, 1st व 2nd Floor)
-• **बृजेश सिंह सर (Language Lab / PCTW):** 7617000079
-• **संतोष कुमार माथुर सर (Electronics / EC):** 9455500244
-• **प्रीति चौधरी मैम (Personality Development / PD):** 7988499219
-• **मनीष कुमार मिश्रा सर (Engineering Chemistry):** 9793000017
-• **लक्ष्मीकांत सर (Engineering Mathematics):** 9451910027
-• **मनीष मिश्रा सर (Mechanical Engineering / ME):** 9793000055`;
+    return `👨‍🏫 **SRGI कंप्यूटर साइंस एवं इंजीनियरिंग फैकल्टी डायरेक्टरी:**
+
+👑 **विभागीय नेतृत्व (Department Leadership):**
+• **श्री प्रशांत बाजपेयी (HOD - CSE):** 7617000030 (Office: Block C, 1st & 2nd Floor)
+• **श्री राजीव कुमार मिश्रा (Deputy HOD & Language Lab / PCTW):** 9793000041
+• **श्री लक्ष्मीकांत (Quardinator / Coordinator & Maths):** 9451910027
+
+💻 **CSE Section A फैकल्टी लिस्ट:**
+• **श्री प्रशांत बाजपेयी (HOD):** 7617000030
+• **श्री लक्ष्मीकांत (Quardinator / Coordinator & Maths):** 9451910027
+• **श्री बृजेश सिंह (Language Lab / PCTW):** 7617000079
+• **श्री संतोष कुमार माथुर (Electronics / EC):** 9455500244
+• **सुश्री प्रीति चौधरी (Personality Development / PD):** 7988499219
+• **डॉ. मनीष कुमार मिश्रा (Engineering Chemistry):** 9793000017
+• **श्री मनीष मिश्रा (Mechanical Engineering / ME):** 9793000055
+
+📚 **CSE Section B & C फैकल्टी लिस्ट:**
+• **श्री मनोज कुमार वैश्य (MATHS):** 7617000089
+• **श्री आकाश श्रीवास्तव (Programming PL/PPS):** 7318548421
+• **डॉ. अंशुमान प्रकाश सिंह (Electronics / EC):** 8172808454
+• **डॉ. आर.बी. सिंह (CHEM):** 9793000084
+• **इंजी. अवनीश शुक्ला (ME):** 7617000062
+• **श्री राजीव कुमार मिश्रा (Deputy HOD, Language Lab & PCTW):** 9793000041
+• **श्री लवकुश मिश्रा (PD):** 9839751030`;
   }
 
   // 11. Campus Videos & Walkthroughs
@@ -396,7 +446,7 @@ export function getComprehensiveCampusAnswer(queryRaw: string): string {
 • **5 ब्लॉक्स:** Block A (Admin, Library, Seminar Hall), Block B (MBA), Block C (B.Tech Engg, Labs), Block D (Girls Hostel + Medical Store), Block E (Senior Classes)।
 • **सेंट्रल लाइब्रेरी:** Block A के 2nd Floor पर।
 • **सेमिनार हॉल:** Block A Ground Floor पर (Cafeteria से 20m सीधे)।
-• **एडमिन टीम:** Er. सुमन कुमार (बिहार), Er. विवेक साहनी (कुशीनगर), Er. प्रांजल मौर्या (वाराणसी), Er. रोशन कुमार भारती (मऊ), Er. रिजवान खान (महराजगंज), Er. अविनाश प्रजापति (महराजगंज), Er. विवेक सरोज (प्रतापगंज)।
+• **एडमिन टीम:** सुमन कुमार (बिहार), विवेक साहनी (कुशीनगर), प्रांजल मौर्या (वाराणसी), रोशन कुमार भारती (मऊ), रिजवान खान (महराजगंज), अविनाश प्रजापति (महराजगंज), विवेक सरोज (प्रतापगंज)।
 • **8 कैंपस वीडियो वॉकथ्रू:** होमपेज व Camera Detector में लाइव उपलब्ध हैं।
 
 आप मुझसे किसी भी विशेष जगह, फैकल्टी, या टाइम टेबल के बारे में बेझिझक पूछ सकते हैं!`;

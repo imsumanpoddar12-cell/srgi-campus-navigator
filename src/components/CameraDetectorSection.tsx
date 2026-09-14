@@ -829,15 +829,28 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
               /* Official Campus Route Video Player */
               <div className="w-full h-full flex flex-col items-center justify-center bg-black relative">
                 {selectedVideoRoute ? (
-                  <video
-                    key={selectedVideoRoute.videoUrl}
-                    ref={routeVideoPlayerRef}
-                    src={selectedVideoRoute.videoUrl}
-                    controls
-                    autoPlay
-                    playsInline
-                    className="w-full h-full object-contain"
-                  />
+                  <>
+                    <div className="absolute top-3 right-3 z-10">
+                      <span className="px-2.5 py-1 rounded-md bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-md">
+                        ⚡ 1.80x Speed
+                      </span>
+                    </div>
+                    <video
+                      key={selectedVideoRoute.videoUrl}
+                      ref={routeVideoPlayerRef}
+                      src={selectedVideoRoute.videoUrl}
+                      controls
+                      autoPlay
+                      playsInline
+                      onLoadedData={(e) => {
+                        e.currentTarget.playbackRate = 1.8;
+                      }}
+                      onPlay={(e) => {
+                        e.currentTarget.playbackRate = 1.8;
+                      }}
+                      className="w-full h-full object-contain"
+                    />
+                  </>
                 ) : (
                   <div className="text-slate-400 text-xs">No video selected</div>
                 )}
@@ -846,12 +859,26 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
               /* User Uploaded Video file player */
               <div className="w-full h-full flex flex-col items-center justify-center bg-black relative">
                 {videoFileUrl ? (
-                  <video
-                    ref={uploadedVideoRef}
-                    src={videoFileUrl}
-                    controls
-                    className="w-full h-full object-contain"
-                  />
+                  <>
+                    <div className="absolute top-3 right-3 z-10">
+                      <span className="px-2.5 py-1 rounded-md bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-md">
+                        ⚡ 1.80x Speed
+                      </span>
+                    </div>
+                    <video
+                      ref={uploadedVideoRef}
+                      src={videoFileUrl}
+                      controls
+                      playsInline
+                      onLoadedData={(e) => {
+                        e.currentTarget.playbackRate = 1.8;
+                      }}
+                      onPlay={(e) => {
+                        e.currentTarget.playbackRate = 1.8;
+                      }}
+                      className="w-full h-full object-contain"
+                    />
+                  </>
                 ) : (
                   <div className="p-6 text-center text-white">
                     <Video className="w-12 h-12 text-blue-400 mx-auto mb-3" />
@@ -1052,10 +1079,21 @@ export default function CameraDetectorSection({ locations }: CameraDetectorSecti
               </div>
 
               <div className="aspect-video bg-black rounded-2xl overflow-hidden relative border border-slate-700">
+                <div className="absolute top-2 right-2 z-10">
+                  <span className="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-md">
+                    ⚡ 1.80x Speed
+                  </span>
+                </div>
                 <video
                   src={calculatedRoute.matchedVideo.videoUrl}
                   controls
                   playsInline
+                  onLoadedData={(e) => {
+                    e.currentTarget.playbackRate = 1.8;
+                  }}
+                  onPlay={(e) => {
+                    e.currentTarget.playbackRate = 1.8;
+                  }}
                   className="w-full h-full object-contain"
                 />
               </div>

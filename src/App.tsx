@@ -14,6 +14,7 @@ import OurTeamSection from "./components/OurTeamSection";
 import AboutSection from "./components/AboutSection";
 import AdminPanelSection from "./components/AdminPanelSection";
 import WhereIsSRGISection from "./components/WhereIsSRGISection";
+import LeadershipSection from "./components/LeadershipSection";
 import SideMapDrawer from "./components/SideMapDrawer";
 import AdminLoginModal from "./components/AdminLoginModal";
 import AIAssistantModal from "./components/AIAssistantModal";
@@ -298,6 +299,10 @@ export default function App() {
               setActiveSection("camera");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
+            onNavigateToFaculties={() => {
+              setActiveSection("faculties-schedule");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           />
         )}
 
@@ -423,6 +428,22 @@ export default function App() {
               </button>
             </div>
             <WhereIsSRGISection />
+          </div>
+        )}
+
+        {(activeSection === "chairman-leadership" || activeSection === "leadership") && (
+          <div className="py-6">
+            <LeadershipSection
+              standalone
+              onBack={() => {
+                setActiveSection("home");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              onNavigateToFaculties={() => {
+                setActiveSection("faculties-schedule");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            />
           </div>
         )}
 
@@ -562,7 +583,7 @@ export default function App() {
 
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-blue-300 gap-3 text-center sm:text-left">
             <div>
-              © {new Date().getFullYear()} SRGI Campus Navigator • Built with pride by Er. Suman Kumar (Leader), Er. Vivek Sahani (Co-Leader) & Team.
+              © {new Date().getFullYear()} SRGI Campus Navigator • Built with pride by Suman Kumar (Leader), Vivek Sahani (Co-Leader) & Team.
             </div>
             <div className="flex items-center gap-4">
               <button

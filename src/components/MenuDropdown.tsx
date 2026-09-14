@@ -18,6 +18,7 @@ import {
   Sun,
   Globe,
   ExternalLink,
+  Award,
 } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
@@ -128,9 +129,16 @@ export default function MenuDropdown({
       badge: null,
     },
     {
+      id: "chairman-leadership",
+      label: "About Chairman & Leadership",
+      subtext: "Hon'ble Chairman Pawan Singh Chauhan (MLC) & Leadership",
+      icon: Award,
+      badge: "Hon'ble",
+    },
+    {
       id: "team",
       label: "Our Team",
-      subtext: "Er. Suman Kumar, Er. Vivek Sahani & Core Members",
+      subtext: "Suman Kumar, Vivek Sahani & Core Members",
       icon: Users,
       badge: null,
     },

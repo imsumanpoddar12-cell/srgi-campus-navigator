@@ -155,7 +155,7 @@ export default function AdminPhotosSection({
                 {/* Admin Name & Designation */}
                 <div className="text-center mt-3">
                   <h3 className="text-base font-bold text-slate-900 tracking-tight">
-                    {admin.name.startsWith("Er.") ? admin.name : `Er. ${admin.name}`}
+                    {admin.name.replace(/^Er\.\s*/i, "")}
                   </h3>
                   <div className="mt-1 flex items-center justify-center gap-1.5">
                     <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/80">

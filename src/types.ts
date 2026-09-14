@@ -53,6 +53,23 @@ export interface Faculty {
   designation: string;
   phone: string;
   subject?: string;
+  sectionGroup?: "CSE A" | "CSE B & C" | "Leadership" | "General";
+  roleTitle?: "Chairman" | "Vice Chairman" | "HOD" | "Deputy HOD" | "Coordinator" | "Faculty";
+  email?: string;
+  cabinOrRoom?: string;
+}
+
+export interface LeadershipMember {
+  id: string;
+  name: string;
+  title: string;
+  role: "Chairman" | "Vice Chairman" | "HOD" | "Deputy HOD" | "Coordinator";
+  phone?: string;
+  bio: string;
+  badge?: string;
+  politicalAffiliation?: string;
+  tenure?: string;
+  photoUrl?: string;
 }
 
 export interface ScheduleDay {

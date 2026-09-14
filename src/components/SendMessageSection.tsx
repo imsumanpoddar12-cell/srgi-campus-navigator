@@ -200,7 +200,7 @@ export default function SendMessageSection({ team, onBackToHome }: SendMessageSe
             <div className="space-y-2.5 pt-1 text-xs">
               <div className="p-3 bg-white/10 rounded-2xl border border-white/10 flex items-center justify-between">
                 <div>
-                  <div className="font-bold">Er. SUMAN KUMAR</div>
+                  <div className="font-bold">SUMAN KUMAR</div>
                   <div className="text-[11px] text-blue-200">Team Leader • Begusarai, Bihar</div>
                 </div>
                 <a
@@ -213,7 +213,7 @@ export default function SendMessageSection({ team, onBackToHome }: SendMessageSe
 
               <div className="p-3 bg-white/10 rounded-2xl border border-white/10 flex items-center justify-between">
                 <div>
-                  <div className="font-bold">Er. PRANJAL MAURYA</div>
+                  <div className="font-bold">PRANJAL MAURYA</div>
                   <div className="text-[11px] text-blue-200">Core Member • Varanasi, UP</div>
                 </div>
                 <a
@@ -226,7 +226,7 @@ export default function SendMessageSection({ team, onBackToHome }: SendMessageSe
 
               <div className="p-3 bg-white/10 rounded-2xl border border-white/10 flex items-center justify-between">
                 <div>
-                  <div className="font-bold">Er. RIJAWAN KHAN</div>
+                  <div className="font-bold">RIJAWAN KHAN</div>
                   <div className="text-[11px] text-blue-200">Core Member • Maharajganj, UP</div>
                 </div>
                 <a

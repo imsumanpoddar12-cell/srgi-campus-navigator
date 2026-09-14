@@ -1,5 +1,6 @@
 import { ArrowRight, Sparkles, MapPin, Coffee, Home as HomeIcon, Pill, BookOpen, Layers, Video, Image as ImageIcon } from "lucide-react";
 import { CollegeInfo, TeamMember, CampusPhotoItem } from "../types";
+import LeadershipSection from "./LeadershipSection";
 import OurTeamSection from "./OurTeamSection";
 import HomeVideoSection from "./HomeVideoSection";
 import HomeGallerySection from "./HomeGallerySection";
@@ -16,6 +17,7 @@ interface HomeSectionProps {
   customPhotos?: CampusPhotoItem[];
   onNavigateToPhotos?: () => void;
   onNavigateToCamera?: () => void;
+  onNavigateToFaculties?: () => void;
 }
 
 export default function HomeSection({
@@ -30,6 +32,7 @@ export default function HomeSection({
   customPhotos = [],
   onNavigateToPhotos = () => {},
   onNavigateToCamera = () => {},
+  onNavigateToFaculties,
 }: HomeSectionProps) {
   const blocks = [
     {
@@ -284,6 +287,11 @@ export default function HomeSection({
           </button>
         ))}
       </div>
+
+      {/* Campus Blocks End */}
+
+      {/* Section: CHAIRMAN, VICE-CHAIRMAN & LEADERSHIP on Main Interface */}
+      <LeadershipSection onNavigateToFaculties={onNavigateToFaculties} />
 
       {/* Campus Video Walkthroughs Section on Main Interface */}
       <HomeVideoSection onNavigateToCamera={onNavigateToCamera} />

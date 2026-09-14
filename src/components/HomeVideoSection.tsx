@@ -46,9 +46,16 @@ export default function HomeVideoSection({ onNavigateToCamera }: HomeVideoSectio
     setIsPlaying(true);
     if (videoRef.current) {
       videoRef.current.load();
+      videoRef.current.playbackRate = 1.8;
       videoRef.current.play().catch(() => setIsPlaying(false));
     }
   };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1.8;
+    }
+  }, [selectedVideo]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -112,7 +119,13 @@ export default function HomeVideoSection({ onNavigateToCamera }: HomeVideoSectio
             playsInline
             muted={isMuted}
             loop
-            onPlay={() => setIsPlaying(true)}
+            onLoadedData={(e) => {
+              e.currentTarget.playbackRate = 1.8;
+            }}
+            onPlay={(e) => {
+              e.currentTarget.playbackRate = 1.8;
+              setIsPlaying(true);
+            }}
             onPause={() => setIsPlaying(false)}
           />
 
@@ -120,10 +133,15 @@ export default function HomeVideoSection({ onNavigateToCamera }: HomeVideoSectio
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity flex flex-col justify-between p-4 pointer-events-none">
             {/* Top Video Header */}
             <div className="flex items-center justify-between pointer-events-auto">
-              <span className="px-3 py-1 rounded-full bg-blue-600/90 text-white text-[11px] font-bold backdrop-blur-xs flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-amber-300" />
-                {selectedVideo.block} • {selectedVideo.floor}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-blue-600/90 text-white text-[11px] font-bold backdrop-blur-xs flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-amber-300" />
+                  {selectedVideo.block} • {selectedVideo.floor}
+                </span>
+                <span className="px-2 py-0.5 rounded-md bg-amber-400/90 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-xs">
+                  ⚡ 1.80x Speed
+                </span>
+              </div>
               <div className="flex items-center gap-2">
                 <button
                   id="home-video-mute-btn"

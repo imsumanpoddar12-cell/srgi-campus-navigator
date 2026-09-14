@@ -40,7 +40,7 @@ export default function OurTeamSection({
         {team.map((member) => {
           const isLeader = member.role === "Leader";
           const isCoLeader = member.role === "Co-Leader";
-          const displayName = member.name.startsWith("Er.") ? member.name : `Er. ${member.name}`;
+          const displayName = member.name.replace(/^Er\.\s*/i, "");
 
           const photoSource =
             member.photoUrl ||

@@ -91,7 +91,7 @@ export default function AdminsSection({
           const isLeader = admin.role === "Leader";
           const isCoLeader = admin.role === "Co-Leader";
           const photoUrl = admin.avatarUrl || adminDefaultAvatars[admin.id];
-          const displayName = admin.name.startsWith("Er.") ? admin.name : `Er. ${admin.name}`;
+          const displayName = admin.name.replace(/^Er\.\s*/i, "");
 
           return (
             <div

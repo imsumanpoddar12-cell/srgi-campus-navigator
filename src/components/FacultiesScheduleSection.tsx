@@ -9,6 +9,9 @@ import {
   Coffee,
   Droplets,
   BookOpen,
+  Award,
+  Users,
+  CheckCircle2,
 } from "lucide-react";
 import { Faculty, ScheduleDay } from "../types";
 
@@ -26,6 +29,7 @@ export default function FacultiesScheduleSection({
   defaultTab = "faculties",
 }: FacultiesScheduleSectionProps) {
   const [activeTab, setActiveTab] = useState<"faculties" | "schedule">(defaultTab);
+  const [sectionFilter, setSectionFilter] = useState<"all" | "cse-a" | "cse-bc" | "leadership">("all");
   const [search, setSearch] = useState("");
   const [selectedDay, setSelectedDay] = useState<string>("All");
 
@@ -39,12 +43,19 @@ export default function FacultiesScheduleSection({
   ];
 
   const filteredFaculties = faculties.filter((f) => {
+    // Section group filter
+    if (sectionFilter === "cse-a" && f.sectionGroup !== "CSE A") return false;
+    if (sectionFilter === "cse-bc" && f.sectionGroup !== "CSE B & C") return false;
+    if (sectionFilter === "leadership" && !f.roleTitle) return false;
+
     const q = search.toLowerCase().trim();
     if (!q) return true;
     return (
       f.name.toLowerCase().includes(q) ||
       f.designation.toLowerCase().includes(q) ||
       (f.subject && f.subject.toLowerCase().includes(q)) ||
+      (f.sectionGroup && f.sectionGroup.toLowerCase().includes(q)) ||
+      (f.roleTitle && f.roleTitle.toLowerCase().includes(q)) ||
       f.phone.includes(q)
     );
   });
@@ -113,8 +124,8 @@ export default function FacultiesScheduleSection({
       {/* TAB 1: FACULTIES DIRECTORY */}
       {activeTab === "faculties" && (
         <div>
-          {/* Search bar */}
-          <div className="max-w-md mx-auto mb-6">
+          {/* Search bar & Section Filters */}
+          <div className="max-w-xl mx-auto mb-6 space-y-3">
             <div className="relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -126,6 +137,51 @@ export default function FacultiesScheduleSection({
                 className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-xs"
               />
             </div>
+
+            {/* Quick Section Group Filter Pills */}
+            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+              <button
+                onClick={() => setSectionFilter("all")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  sectionFilter === "all"
+                    ? "bg-[#123f73] text-white shadow-xs"
+                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                }`}
+              >
+                All Faculties ({faculties.length})
+              </button>
+              <button
+                onClick={() => setSectionFilter("cse-a")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  sectionFilter === "cse-a"
+                    ? "bg-[#123f73] text-white shadow-xs"
+                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                }`}
+              >
+                CSE Section A
+              </button>
+              <button
+                onClick={() => setSectionFilter("cse-bc")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  sectionFilter === "cse-bc"
+                    ? "bg-[#123f73] text-white shadow-xs"
+                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                }`}
+              >
+                CSE Section B & C
+              </button>
+              <button
+                onClick={() => setSectionFilter("leadership")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                  sectionFilter === "leadership"
+                    ? "bg-amber-600 text-white shadow-xs"
+                    : "bg-white text-amber-800 hover:bg-amber-50 border border-amber-200"
+                }`}
+              >
+                <Award className="w-3.5 h-3.5" />
+                <span>Leadership</span>
+              </button>
+            </div>
           </div>
 
           {/* Faculty Cards Grid */}
@@ -134,26 +190,46 @@ export default function FacultiesScheduleSection({
               <div
                 key={f.id}
                 id={`faculty-card-${f.id}`}
-                className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className={`bg-white rounded-2xl p-4 border shadow-xs hover:shadow-md transition-all flex flex-col justify-between ${
+                  f.roleTitle?.includes("HOD")
+                    ? "border-blue-300 ring-2 ring-blue-50"
+                    : f.roleTitle?.includes("Quardinator")
+                    ? "border-emerald-300 ring-2 ring-emerald-50"
+                    : "border-slate-200/80"
+                }`}
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#123f73] to-[#1e5899] text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
                       {f.name.replace("Prof. ", "").replace("Dr. ", "").substring(0, 2).toUpperCase()}
                     </div>
-                    {f.subject && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200/80 text-right truncate max-w-[140px]">
-                        {f.subject}
-                      </span>
-                    )}
+                    <div className="flex flex-col items-end gap-1">
+                      {f.roleTitle && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300">
+                          {f.roleTitle}
+                        </span>
+                      )}
+                      {f.sectionGroup && (
+                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                          {f.sectionGroup}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <h3 className="text-sm font-bold text-slate-800 tracking-tight">
-                    {f.name}
+                  <h3 className="text-sm font-bold text-slate-800 tracking-tight flex items-center gap-1.5">
+                    <span>{f.name}</span>
                   </h3>
                   <p className="text-xs text-slate-500 font-medium mt-0.5">
                     {f.designation}
                   </p>
+                  {f.subject && (
+                    <div className="mt-2">
+                      <span className="inline-block px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-blue-50 text-blue-800 border border-blue-200">
+                        Subject: {f.subject}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
