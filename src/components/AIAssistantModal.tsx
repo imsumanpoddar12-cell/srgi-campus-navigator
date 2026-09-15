@@ -22,7 +22,7 @@ interface AIAssistantModalProps {
 }
 
 const INITIAL_WELCOME_TEXT =
-  "नमस्ते! मैं SRGI कैंपस की स्मार्ट AI असिस्टेंट साथी हूँ। 🎓\n\nआप मुझसे कॉलेज के बारे में कुछ भी पूछ सकते हैं, जैसे:\n• 💻 CSE Section A का रास्ता व फैकल्टी\n• ⏰ क्लास टाइमिंग व वॉटर/लंच ब्रेक शेड्यूल\n• 🏛️ कैंपस के सभी 5 ब्लॉक्स (Block A, B, C, D, E)\n• 👥 एडमिन्स व टीम (सुमन कुमार, विवेक साहनी व अन्य)\n• 🎥 8 कैंपस वीडियो वॉकथ्रू रास्ते\n• 📚 सेंट्रल लाइब्रेरी, सेमिनार हॉल व दवाइयां\n\nआप जो भी सवाल पूछेंगे, मैं तुरंत बोलकर अपने-आप उत्तर दूँगी!";
+  "नमस्ते! मैं SRGI कैंपस की स्मार्ट AI असिस्टेंट साथी हूँ। 🎓\n\nआप मुझसे कॉलेज के बारे में कुछ भी पूछ सकते हैं, जैसे:\n• 💻 CSE Section A का रास्ता व फैकल्टी\n• ⏰ क्लास टाइमिंग व वॉटर/लंच ब्रेक शेड्यूल\n• 🏛️ कैंपस के सभी 5 ब्लॉक्स (Block A, B, C, D, E)\n• 👥 एडमिन्स व टीम (सुमन कुमार, विवेक साहनी व अन्य)\n• 🎥 23 कैंपस वीडियो वॉकथ्रू रास्ते\n• 📚 सेंट्रल लाइब्रेरी, सेमिनार हॉल व दवाइयां\n\nआप जो भी सवाल पूछेंगे, मैं तुरंत बोलकर अपने-आप उत्तर दूँगी!";
 
 export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -439,6 +439,11 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
         botReply = getComprehensiveCampusAnswer(query);
       }
 
+      // Privacy: Ensure no faculty phone numbers are output in chatbox responses
+      botReply = botReply
+        .replace(/(?:\+?91[\s-]?)?[6-9]\d{9}/g, "[फैकल्टी नंबर के लिए मुख्य पेज पर 'Faculties & Schedule' देखें]")
+        .replace(/\b0522[- ]?\d{7}\b/g, "[नंबर के लिए 'Faculties & Schedule' देखें]");
+
       const botMessageId = `bot-${Date.now()}`;
       const botMessage: ChatMessage = {
         id: botMessageId,
@@ -457,7 +462,10 @@ export default function AIAssistantModal({ isOpen, onClose }: AIAssistantModalPr
       }
     } catch (err) {
       console.warn("Chat error, using comprehensive campus knowledge engine:", err);
-      const fallbackReply = getComprehensiveCampusAnswer(query);
+      let fallbackReply = getComprehensiveCampusAnswer(query);
+      fallbackReply = fallbackReply
+        .replace(/(?:\+?91[\s-]?)?[6-9]\d{9}/g, "[फैकल्टी नंबर के लिए मुख्य पेज पर 'Faculties & Schedule' देखें]")
+        .replace(/\b0522[- ]?\d{7}\b/g, "[नंबर के लिए 'Faculties & Schedule' देखें]");
       const botMessageId = `bot-${Date.now()}`;
       const fallbackMessage: ChatMessage = {
         id: botMessageId,

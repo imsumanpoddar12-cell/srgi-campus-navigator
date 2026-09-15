@@ -19,6 +19,7 @@ import {
   Globe,
   ExternalLink,
   Award,
+  Film,
 } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
@@ -63,6 +64,13 @@ export default function MenuDropdown({
       subtext: "Blocks A, B, C, D & E Directory",
       icon: MapPin,
       badge: "Main",
+    },
+    {
+      id: "videos",
+      label: "Campus Videos (23 Routes)",
+      subtext: "Official HD walking route walkthroughs (1.80x speed)",
+      icon: Film,
+      badge: "23 Videos",
     },
     {
       id: "camera",
@@ -167,7 +175,7 @@ export default function MenuDropdown({
                 Campus Navigation
               </div>
               <div className="text-[11px] text-blue-200 font-medium">
-                SR Group of Institutes • Lucknow
+                SR GROUP OF INSTITUTION • Lucknow
               </div>
             </div>
           </div>

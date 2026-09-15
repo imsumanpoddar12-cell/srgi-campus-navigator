@@ -1,8 +1,8 @@
 import { AdminUser, TeamMember, CampusLocation, Faculty, LeadershipMember, ScheduleDay, CollegeInfo } from "../types";
 
 export const initialCollegeInfo: CollegeInfo = {
-  name: "SR GROUP OF INSTITUTES",
-  fullName: "SR Group of Institutions (SRGI), Lucknow",
+  name: "SR GROUP OF INSTITUTION",
+  fullName: "SR GROUP OF INSTITUTION, Lucknow",
   established: 2009,
   area: "65-Acre Sprawling Campus",
   branches: "10+ Academic Engineering & Management Branches",
@@ -93,7 +93,7 @@ export const initialAdmins: AdminUser[] = [
     password: "a@18",
     email: "viveksaroj7598@gmail.com",
     role: "Core Member",
-    city: "Pratapganj, Uttar Pradesh",
+    city: "Pratapgarh, Uttar Pradesh",
     avatarUrl: "https://i.postimg.cc/QddmqwMj/file-000000004a18820893d71e8d32dd2ff5.png",
   },
 ];
@@ -166,7 +166,7 @@ export const initialTeamMembers: TeamMember[] = [
     role: "Core Member",
     email: "viveksaroj7598@gmail.com",
     department: "B.Tech CSE - Section A",
-    city: "Pratapganj, Uttar Pradesh",
+    city: "Pratapgarh, Uttar Pradesh",
     photoUrl: "https://i.postimg.cc/QddmqwMj/file-000000004a18820893d71e8d32dd2ff5.png",
   },
 ];
@@ -543,7 +543,7 @@ export const leadershipMembers: LeadershipMember[] = [
     politicalAffiliation: "Member of Legislative Council (MLC), Uttar Pradesh • Bharatiya Janata Party (BJP)",
     tenure: "MLC from Sitapur since 2022 • Founded SRGI in 2009",
     bio: "Pawan Singh Chauhan (born 3 February 1965) is an Indian politician from Bhartiya Janata Party.[1] He has been a member of the Uttar Pradesh Legislative Council[2] from Sitapur since 2022. And he is the Chairman of SR Group. Through his visionary leadership, SR Group of Institutions was established in 2009 as a state-of-the-art 65-acre campus in Lucknow, empowering thousands of youths in technical and professional education.",
-    photoUrl: "https://res.cloudinary.com/ttlyyejm/image/upload/v1789292276/1.webp",
+    photoUrl: "https://res.cloudinary.com/ehqczar2/image/upload/v1789402686/d6yt3fjusxowy6tir6gi.jpg",
   },
   {
     id: "lead-vice-chairman",
@@ -552,6 +552,7 @@ export const leadershipMembers: LeadershipMember[] = [
     role: "Vice Chairman",
     badge: "Vice-Chairman",
     bio: "Piyush Singh Chauhan serves as the Vice-Chairman of SR Group of Institutions. He spearheads institutional modernization, industry collaborations, modern laboratory expansion, incubation cells, and national placement pathways for SRGI students.",
+    photoUrl: "https://res.cloudinary.com/ehqczar2/image/upload/v1789402653/extcvbsys6rg6zxxucjy.jpg",
   },
   {
     id: "lead-hod",
@@ -592,6 +593,7 @@ export const facultiesList: Faculty[] = [
     subject: "Founder & Institutional Governance",
     sectionGroup: "Leadership",
     roleTitle: "Chairman",
+    photoUrl: "https://res.cloudinary.com/ehqczar2/image/upload/v1789402686/d6yt3fjusxowy6tir6gi.jpg",
   },
   {
     id: "f-vice-chairman",
@@ -601,6 +603,7 @@ export const facultiesList: Faculty[] = [
     subject: "Executive Administration & Campus Expansion",
     sectionGroup: "Leadership",
     roleTitle: "Vice Chairman",
+    photoUrl: "https://res.cloudinary.com/ehqczar2/image/upload/v1789402653/extcvbsys6rg6zxxucjy.jpg",
   },
 
   // Department Leadership & Coordination

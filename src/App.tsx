@@ -18,9 +18,11 @@ import LeadershipSection from "./components/LeadershipSection";
 import SideMapDrawer from "./components/SideMapDrawer";
 import AdminLoginModal from "./components/AdminLoginModal";
 import AIAssistantModal from "./components/AIAssistantModal";
+import AIPopupChat from "./components/AIPopupChat";
 import AcknowledgementModal from "./components/AcknowledgementModal";
 import SRGILogo from "./components/SRGILogo";
 import CameraDetectorSection from "./components/CameraDetectorSection";
+import CampusVideosSection from "./components/CampusVideosSection";
 import SendMessageSection from "./components/SendMessageSection";
 
 import {
@@ -299,11 +301,30 @@ export default function App() {
               setActiveSection("camera");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
+            onNavigateToVideos={() => {
+              setActiveSection("videos");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             onNavigateToFaculties={() => {
               setActiveSection("faculties-schedule");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
+        )}
+
+        {activeSection === "videos" && (
+          <div className="py-6">
+            <CampusVideosSection
+              onBack={() => {
+                setActiveSection("home");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              onNavigateToCamera={() => {
+                setActiveSection("camera");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            />
+          </div>
         )}
 
         {activeSection === "camera" && (
@@ -636,6 +657,12 @@ export default function App() {
         }}
       />
 
+      {/* Pop-up AI Chatbot with auto voice narration ("EK POP JAISA laga do ai chatbox and khud bolne lage") */}
+      <AIPopupChat
+        onOpenFullModal={() => setIsAIModalOpen(true)}
+      />
+
+      {/* Full AI Assistant Modal ("also baaki pop up bhi add kardo aise bhi rehne do") */}
       <AIAssistantModal
         isOpen={isAIModalOpen}
         onClose={() => setIsAIModalOpen(false)}

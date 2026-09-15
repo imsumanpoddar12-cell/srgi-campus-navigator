@@ -31,7 +31,7 @@ export default function OurTeamSection({
           OUR TEAM
         </h2>
         <p className="text-slate-600 text-sm max-w-xl mx-auto mt-1">
-          The student creators and core developers of SR Group of Institutes Campus Navigator.
+          The student creators and core developers of SR GROUP OF INSTITUTION Campus Navigator.
         </p>
       </div>
 

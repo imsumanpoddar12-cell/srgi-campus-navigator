@@ -17,6 +17,7 @@ interface HomeSectionProps {
   customPhotos?: CampusPhotoItem[];
   onNavigateToPhotos?: () => void;
   onNavigateToCamera?: () => void;
+  onNavigateToVideos?: () => void;
   onNavigateToFaculties?: () => void;
 }
 
@@ -32,6 +33,7 @@ export default function HomeSection({
   customPhotos = [],
   onNavigateToPhotos = () => {},
   onNavigateToCamera = () => {},
+  onNavigateToVideos = () => {},
   onNavigateToFaculties,
 }: HomeSectionProps) {
   const blocks = [
@@ -103,7 +105,7 @@ export default function HomeSection({
             </span>
 
             <h2 className="text-2xl sm:text-4xl font-extrabold text-[#102e59] tracking-tight mb-2">
-              Welcome to SR Group of Institutes
+              Welcome to SR GROUP OF INSTITUTION
             </h2>
             <p className="text-sm sm:text-base text-slate-600 mb-6 max-w-xl mx-auto font-normal leading-relaxed">
               Your comprehensive guide across our 65-acre campus. Explore classroom blocks, faculty offices, timetable, library, laboratories, and hostel facilities with real-time navigation.
@@ -294,7 +296,10 @@ export default function HomeSection({
       <LeadershipSection onNavigateToFaculties={onNavigateToFaculties} />
 
       {/* Campus Video Walkthroughs Section on Main Interface */}
-      <HomeVideoSection onNavigateToCamera={onNavigateToCamera} />
+      <HomeVideoSection
+        onNavigateToVideos={onNavigateToVideos}
+        onNavigateToCamera={onNavigateToCamera}
+      />
 
       {/* Campus Photo Gallery Section on Main Interface */}
       <HomeGallerySection

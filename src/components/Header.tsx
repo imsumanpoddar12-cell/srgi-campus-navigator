@@ -1,4 +1,4 @@
-import { Menu, Sparkles, Image as ImageIcon, Users, Compass, Camera, MessageSquare, Moon, Sun } from "lucide-react";
+import { Menu, Sparkles, Image as ImageIcon, Users, Compass, Camera, MessageSquare, Moon, Sun, Film } from "lucide-react";
 import SRGILogo from "./SRGILogo";
 
 interface HeaderProps {
@@ -20,14 +20,14 @@ export default function Header({ onToggleMenu, onNavigate, activeSection, isDark
         id="brand-logo-container"
         onClick={() => onNavigate("home")}
         className="flex items-center gap-3.5 cursor-pointer group"
-        title="SR Group of Institutes - Go to Home"
+        title="SR GROUP OF INSTITUTION - Go to Home"
       >
         <div className="transition-transform group-hover:scale-105 duration-200">
           <SRGILogo size={46} />
         </div>
         <div>
           <h1 className="text-base sm:text-lg md:text-xl font-black tracking-wide leading-tight text-white drop-shadow-xs flex items-center gap-2">
-            <span>SR GROUP OF INSTITUTES</span>
+            <span>SR GROUP OF INSTITUTION</span>
           </h1>
           <p className="text-[11px] sm:text-xs text-blue-200/90 font-medium tracking-wide flex items-center gap-1.5">
             <span>Campus Navigator</span>
@@ -49,14 +49,14 @@ export default function Header({ onToggleMenu, onNavigate, activeSection, isDark
           Campus Blocks
         </button>
         <button
-          id="header-nav-campus"
-          onClick={() => onNavigate("campus")}
+          id="header-nav-videos"
+          onClick={() => onNavigate("videos")}
           className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
-            activeSection === "campus" ? "bg-white text-[#123f73] shadow-xs" : "text-white hover:bg-white/15"
+            activeSection === "videos" ? "bg-white text-[#123f73] shadow-xs" : "text-amber-300 hover:bg-white/15"
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5" />
-          Search Map
+          <Film className="w-3.5 h-3.5" />
+          Campus Videos (23)
         </button>
         <button
           id="header-nav-camera"
@@ -67,6 +67,16 @@ export default function Header({ onToggleMenu, onNavigate, activeSection, isDark
         >
           <Camera className="w-3.5 h-3.5" />
           Camera Detector
+        </button>
+        <button
+          id="header-nav-campus"
+          onClick={() => onNavigate("campus")}
+          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+            activeSection === "campus" ? "bg-white text-[#123f73] shadow-xs" : "text-white hover:bg-white/15"
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          Search Map
         </button>
         <button
           id="header-nav-messages"

@@ -88,8 +88,22 @@ export default function LeadershipSection({
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 text-white font-extrabold text-xl flex items-center justify-center shadow-md shadow-amber-900/15 shrink-0 border border-amber-200">
-                PSC
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-md shadow-amber-900/15 shrink-0 border-2 border-amber-300 bg-amber-100 relative">
+                {chairman.photoUrl ? (
+                  <img
+                    src={chairman.photoUrl}
+                    alt={chairman.name}
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-amber-500 to-amber-700 text-white font-extrabold text-xl flex items-center justify-center">
+                    PSC
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
@@ -151,8 +165,22 @@ export default function LeadershipSection({
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-extrabold text-xl flex items-center justify-center shadow-md shadow-blue-900/15 shrink-0 border border-blue-200">
-                PSC
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-md shadow-blue-900/15 shrink-0 border-2 border-blue-300 bg-blue-100 relative">
+                {viceChairman.photoUrl ? (
+                  <img
+                    src={viceChairman.photoUrl}
+                    alt={viceChairman.name}
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-extrabold text-xl flex items-center justify-center">
+                    PSC
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
@@ -294,15 +322,27 @@ export default function LeadershipSection({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4 mb-4">
-              <div>
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 mb-2">
-                  {selectedLeader.badge || selectedLeader.role}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-                  {selectedLeader.name}
-                </h3>
-                <div className="text-xs font-bold text-[#123f73] mt-0.5">
-                  {selectedLeader.title}
+              <div className="flex items-center gap-3">
+                {selectedLeader.photoUrl && (
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border-2 border-amber-300 bg-slate-100 shrink-0">
+                    <img
+                      src={selectedLeader.photoUrl}
+                      alt={selectedLeader.name}
+                      className="w-full h-full object-cover object-top"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                )}
+                <div>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 mb-1">
+                    {selectedLeader.badge || selectedLeader.role}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                    {selectedLeader.name}
+                  </h3>
+                  <div className="text-xs font-bold text-[#123f73] mt-0.5">
+                    {selectedLeader.title}
+                  </div>
                 </div>
               </div>
               <button

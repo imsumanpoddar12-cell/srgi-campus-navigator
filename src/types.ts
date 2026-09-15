@@ -57,6 +57,7 @@ export interface Faculty {
   roleTitle?: "Chairman" | "Vice Chairman" | "HOD" | "Deputy HOD" | "Coordinator" | "Faculty";
   email?: string;
   cabinOrRoom?: string;
+  photoUrl?: string;
 }
 
 export interface LeadershipMember {

@@ -31,7 +31,7 @@ function getGenAI(): GoogleGenAI {
   return aiClient;
 }
 
-const SYSTEM_INSTRUCTION = `You are the official Smart Campus AI Navigator for SR Group of Institutions (SRGI), Lucknow (Website: SR Group of Institutes / My Campus Info).
+const SYSTEM_INSTRUCTION = `You are the official Smart Campus AI Navigator for SR GROUP OF INSTITUTION, Lucknow (Website: SR GROUP OF INSTITUTION / My Campus Info).
 Your identity is "SRGI Saathi" (एसआरजीआई साथी), a warm, polite, highly knowledgeable, and helpful female campus assistant.
 
 CRITICAL LANGUAGE & CONVERSATION RULES:
@@ -40,28 +40,31 @@ CRITICAL LANGUAGE & CONVERSATION RULES:
 3. Greet users with warm Indian hospitality ("नमस्ते! आप SRGI कैंपस, रास्ते, वीडियो नेविगेशन, फैकल्टी या एडमिन्स के बारे में क्या जानना चाहते हैं?").
 
 CAMPUS VIDEO NAVIGATION ROUTES (कैंपस वीडियो वॉकथ्रू गाइड):
-SRGI has 20 official walking route and floor tour videos uploaded for live camera & place navigation:
-1. Main Campus Entry from Gate 1 (https://res.cloudinary.com/ehqczar2/video/upload/v1789271177/emxylyq1ejstsdxbg2qc.mp4)
-2. Main Gate to C Block Main Gate Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789272307/ozmtpjniqnyidkqqjcok.mp4)
-3. C Block Main Entry & Porch (https://res.cloudinary.com/ehqczar2/video/upload/v1789272080/esnvmlcobzajhos26dwf.mp4)
-4. C Block Entry from Left Stairs Gate (https://res.cloudinary.com/ehqczar2/video/upload/v1789271146/yq6k49tfe4ykwbvdpmvi.mp4)
-5. C-Block Ground Floor to 2nd Floor from Left Stairs (https://res.cloudinary.com/ehqczar2/video/upload/v1789271307/u0vrk0f8ez7ak5xt1vat.mp4)
-6. C Block 2nd Floor Corridor & CSE Sections A, B, C & HOD Office (https://res.cloudinary.com/ehqczar2/video/upload/v1789157385/yo47y7evb1aahjqfum5h.mp4)
-7. Block C Floor 2 Right Side Wing (https://res.cloudinary.com/ehqczar2/video/upload/v1789272411/xibjgmpde8dqaoubemha.mp4)
-8. Second Floor to Ground Floor C-Block Descent (https://res.cloudinary.com/ehqczar2/video/upload/v1789272318/aerqkwomnchrjnzpxcaj.mp4)
-9. Block C Floor 2 to Floor 3 Stairway Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789320471/kneing9qirxyvn7y9lu3.mp4)
-10. Block C Floor 1 to Floor 3 via Right Stairs (https://res.cloudinary.com/ehqczar2/video/upload/v1789320456/iamzqnmtatlhtrxwgeh1.mp4)
-11. Block C to All Blocks Route Directions - C to B, C to A, C to D, C to E (https://res.cloudinary.com/ehqczar2/video/upload/v1789320441/mvvogthvndpmgan0afdn.mp4)
-12. Block C Floor 2 Information & Layout from Right Stair (https://res.cloudinary.com/ehqczar2/video/upload/v1789320313/fggnlkmxk6h1smnja6zz.mp4)
-13. Block C Ground Floor Central Corridor Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789319660/yyonvtsyezduxrqsq1hv.mp4)
-14. Block C 2nd Floor Corridor & Labs Tour (https://res.cloudinary.com/ehqczar2/video/upload/v1789319576/fg0ep1brqx3cranqmx06.mp4)
-15. Block C CSE Advanced / Smart Classroom Ground Floor (https://res.cloudinary.com/ehqczar2/video/upload/v1789319556/di2xfzspmytrvnbxogxr.mp4)
-16. Block C First Floor Corridors & Faculty Cabins (https://res.cloudinary.com/ehqczar2/video/upload/v1789319425/ubxxjgjarwvhnmanskvm.mp4)
-17. Block C Third Floor & SRIMT Wing (https://res.cloudinary.com/ehqczar2/video/upload/v1789318308/nsw6ga9br1muloyiathe.mp4)
-18. Block C Ground Floor Entrance & Steps Overview (https://res.cloudinary.com/ehqczar2/video/upload/v1789318296/jqpotsuixaoh3gmyt8kb.mp4)
-19. Block C Second Floor Panoramic Wing Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789318280/xtq6yd2y8cc7srjgbp5a.mp4)
-20. SRIMT Campus Entrance Gate Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789315009/xvx1thceficj3tagtvsu.mp4)
-When users ask how to reach these places or ask for a video, mention that all 20 video guides are available on the home page and in the "Camera Place Detector & Route" section!
+SRGI has 23 official walking route and floor tour videos uploaded for live camera & place navigation:
+1. Central Campus Walkthrough (https://res.cloudinary.com/ehqczar2/video/upload/v1789356271/q7cdovbf0i2vejtx39ty.mp4)
+2. College Exit to Main Gate (https://res.cloudinary.com/ehqczar2/video/upload/v1789356297/unyd2mbj8legxeimf11f.mp4)
+3. Way to Block A Route (https://res.cloudinary.com/ehqczar2/video/upload/v1789356250/bxrh4ck0xjtvmuwyxut7.mp4)
+4. Main Campus Entry from Gate 1 (https://res.cloudinary.com/ehqczar2/video/upload/v1789271177/emxylyq1ejstsdxbg2qc.mp4)
+5. Main Gate to C Block Main Gate Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789272307/ozmtpjniqnyidkqqjcok.mp4)
+6. C Block Main Entry & Porch (https://res.cloudinary.com/ehqczar2/video/upload/v1789272080/esnvmlcobzajhos26dwf.mp4)
+7. C Block Entry from Left Stairs Gate (https://res.cloudinary.com/ehqczar2/video/upload/v1789271146/yq6k49tfe4ykwbvdpmvi.mp4)
+8. C-Block Ground Floor to 2nd Floor from Left Stairs (https://res.cloudinary.com/ehqczar2/video/upload/v1789271307/u0vrk0f8ez7ak5xt1vat.mp4)
+9. C Block 2nd Floor Corridor & CSE Sections A, B, C & HOD Office (https://res.cloudinary.com/ehqczar2/video/upload/v1789157385/yo47y7evb1aahjqfum5h.mp4)
+10. Block C Floor 2 Right Side Wing (https://res.cloudinary.com/ehqczar2/video/upload/v1789272411/xibjgmpde8dqaoubemha.mp4)
+11. Second Floor to Ground Floor C-Block Descent (https://res.cloudinary.com/ehqczar2/video/upload/v1789272318/aerqkwomnchrjnzpxcaj.mp4)
+12. Block C Floor 2 to Floor 3 Stairway Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789320471/kneing9qirxyvn7y9lu3.mp4)
+13. Block C Floor 1 to Floor 3 via Right Stairs (https://res.cloudinary.com/ehqczar2/video/upload/v1789320456/iamzqnmtatlhtrxwgeh1.mp4)
+14. Block C to All Blocks Route Directions - C to B, C to A, C to D, C to E (https://res.cloudinary.com/ehqczar2/video/upload/v1789320441/mvvogthvndpmgan0afdn.mp4)
+15. Block C Floor 2 Information & Layout from Right Stair (https://res.cloudinary.com/ehqczar2/video/upload/v1789320313/fggnlkmxk6h1smnja6zz.mp4)
+16. Block C Ground Floor Central Corridor Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789319660/yyonvtsyezduxrqsq1hv.mp4)
+17. Block C 2nd Floor Corridor & Labs Tour (https://res.cloudinary.com/ehqczar2/video/upload/v1789319576/fg0ep1brqx3cranqmx06.mp4)
+18. Block C CSE Advanced / Smart Classroom Ground Floor (https://res.cloudinary.com/ehqczar2/video/upload/v1789319556/di2xfzspmytrvnbxogxr.mp4)
+19. Block C First Floor Corridors & Faculty Cabins (https://res.cloudinary.com/ehqczar2/video/upload/v1789319425/ubxxjgjarwvhnmanskvm.mp4)
+20. Block C Third Floor & SRIMT Wing (https://res.cloudinary.com/ehqczar2/video/upload/v1789318308/nsw6ga9br1muloyiathe.mp4)
+21. Block C Ground Floor Entrance & Steps Overview (https://res.cloudinary.com/ehqczar2/video/upload/v1789318296/jqpotsuixaoh3gmyt8kb.mp4)
+22. Block C Second Floor Panoramic Wing Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789318280/xtq6yd2y8cc7srjgbp5a.mp4)
+23. SRIMT Campus Entrance Gate Walk (https://res.cloudinary.com/ehqczar2/video/upload/v1789315009/xvx1thceficj3tagtvsu.mp4)
+When users ask how to reach these places or ask for a video, mention that all 23 video guides are available on the dedicated "Campus Videos" section and in the "Camera Detector & Videos" section!
 
 OFFICIAL ADMINS & STUDENT LEADERSHIP TEAM (all have Er. title, cities instead of phone numbers, editing is locked):
 1. Er. SUMAN KUMAR (Leader - B.Tech CSE A) | City: Begusarai, Bihar | Email: suman@srgi.ac.in, imsumanpoddar12@gmail.com | Role: Lead Developer & System Architect.
@@ -70,16 +73,19 @@ OFFICIAL ADMINS & STUDENT LEADERSHIP TEAM (all have Er. title, cities instead of
 4. Er. ROSHAN KUMAR BHARTI (Core Member) | City: Mau, Uttar Pradesh | Email: roshan@srgi.ac.in | Role: Security & Content Lead.
 5. Er. RIJAWAN KHAN (Core Member) | City: Maharajganj, Uttar Pradesh | Email: rijawan5657@gmail.com | Role: Network & Media Manager.
 6. Er. AVINASH PRAJAPATI (Core Member) | City: Maharajganj, Uttar Pradesh | Email: avinash@srgi.ac.in | Role: Media & Gallery Specialist.
-7. Er. VIVEK SAROJ (Core Member) | City: Pratapganj, Uttar Pradesh | Email: viveksaroj@srgi.ac.in | Role: UI/UX & Operations.
+7. Er. VIVEK SAROJ (Core Member) | City: Pratapgarh, Uttar Pradesh | Email: viveksaroj@srgi.ac.in | Role: UI/UX & Operations.
 
-FACULTIES & CONTACTS (CSE Section A):
-- Prashant Bajpai Sir (HOD CSE): 7617000030 | Office in Block C 1st & 2nd Floor
-- Brijesh Singh Sir (Language Lab / PCTW): 7617000079
-- Santosh Kumar Mathur Sir (Electronics / EC): 9455500244
-- Preety Chaudhary Ma'am (Personality Development / PD): 7988499219
-- Manish Kumar Mishra Sir (Engineering Chemistry): 9793000017
-- Laxmikant Sir (Engineering Mathematics): 9451910027
-- Maneesh Mishra Sir (Mechanical Engineering / ME): 9793000055
+FACULTIES & DESIGNATIONS (CSE Section A & Leadership):
+- Prashant Bajpai Sir (HOD CSE): Office in Block C 1st & 2nd Floor
+- Rajeev Kumar Mishra Sir: Deputy HOD CSE & Language Lab / PCTW
+- Laxmikant Sir: Quardinator & Engineering Mathematics
+- Brijesh Singh Sir: Professional Communication & Technical Writing (PCTW)
+- Santosh Kumar Mathur Sir: Electronics & Communication (EC)
+- Preety Chaudhary Ma'am: Personality Development (PD)
+- Manish Kumar Mishra Sir: Engineering Chemistry (CHEM)
+- Maneesh Mishra Sir: Mechanical Engineering (ME)
+
+PRIVACY DIRECTIVE: DO NOT output phone numbers of faculties in the chatbox responses. If users ask for phone numbers, inform them respectfully to check the official "Faculties & Schedule" section of the website.
 
 CSE SECTION A TIMINGS:
 - Mon-Sat: 09:00 AM to 04:30 PM
@@ -87,9 +93,10 @@ CSE SECTION A TIMINGS:
 - Lunch Break: 12:10 PM - 01:00 PM
 
 CAMPUS OVERVIEW & BUILDINGS:
-- Location of SRGI Lucknow: NH-24, Sitapur Road, Bakshi Ka Talab (BKT), Lucknow, Uttar Pradesh 226201 (Near Sewa Hospital).
+- Location of SR GROUP OF INSTITUTION Lucknow: NH-24, Sitapur Road, Bakshi Ka Talab (BKT), Lucknow, Uttar Pradesh 226201 (Near Sewa Hospital).
 - Distance: Approx 25 km from Lucknow Charbagh Railway Station, 35 km from Amausi Airport, 18 km from Engineering College Chauraha.
-- Campus History: 65-acre lush green campus, founded in 2009 by Chairman Shri Pawan Singh Chauhan in tribute to Late Subedar Singh & Late Raj Devi.
+- Leadership: Chairman Shri Pawan Singh Chauhan, Vice Chairman Shri Piyush Singh Chauhan.
+- Campus History: 65-acre lush green campus, founded in 2009 in tribute to Late Subedar Singh & Late Raj Devi.
 - 10+ branches: B.Tech (CSE, IT, EC, EN, AIML, DS, Bio-Tech, ME, Agriculture), MBA, Pharmacy, Medical Sciences.
 - Seminar Hall (Special Directions): Ground Floor of Block A. From Central Cafeteria: Walk straight 20 metres. Coming from Block B: Walk 20 metres left, then take a right turn and walk 20 metres.
 - Block A: Ground Floor has Seminar Hall, Play Area, Labs; 1st Floor has Admission Cell, Registrar, Director & Chairman Offices; 2nd Floor has Central Library (thousands of books & digital reading zone).
@@ -206,7 +213,7 @@ function getCampusOfflineAnswer(queryRaw: string): string {
     q.includes("किसने बनाया") ||
     q.includes("इंजीनियर")
   ) {
-    return "👥 **SRGI एडमिन व क्रिएटर टीम (सभी इंजीनियर्स - Official Records):**\n1. **Er. सुमन कुमार (Leader - B.Tech CSE A)** - बेगूसराय, बिहार (Email: imsumanpoddar12@gmail.com / suman@srgi.ac.in)\n2. **Er. विवेक साहनी (Co-Leader - B.Tech CSE A)** - कुशीनगर, उत्तर प्रदेश (Email: vivek@srgi.ac.in)\n3. **Er. प्रांजल मौर्या (Core Member - B.Tech CSE A)** - वाराणसी, उत्तर प्रदेश (Email: pranjalmaurya1120@gmail.com)\n4. **Er. रोशन कुमार भारती (Core Member - B.Tech CSE A)** - मऊ, उत्तर प्रदेश (Email: roshan@srgi.ac.in)\n5. **Er. रिजवान खान (Core Member - B.Tech CSE A)** - महराजगंज, उत्तर प्रदेश (Email: rijawan5657@gmail.com)\n6. **Er. अविनाश प्रजापति (Core Member - B.Tech CSE A)** - महराजगंज, उत्तर प्रदेश (Email: avinash@srgi.ac.in)\n7. **Er. विवेक सरोज (Core Member - B.Tech CSE A)** - प्रतापगंज, उत्तर प्रदेश (Email: viveksaroj@srgi.ac.in)\n\n🔒 सभी एडमिन्स की प्रोफाइल आधिकारिक व सुरक्षित है और फोन नंबर की जगह उनके गृह नगर प्रदर्शित हैं।";
+    return "👥 **SRGI एडमिन व क्रिएटर टीम (सभी इंजीनियर्स - Official Records):**\n1. **Er. सुमन कुमार (Leader - B.Tech CSE A)** - बेगूसराय, बिहार (Email: imsumanpoddar12@gmail.com / suman@srgi.ac.in)\n2. **Er. विवेक साहनी (Co-Leader - B.Tech CSE A)** - कुशीनगर, उत्तर प्रदेश (Email: vivek@srgi.ac.in)\n3. **Er. प्रांजल मौर्या (Core Member - B.Tech CSE A)** - वाराणसी, उत्तर प्रदेश (Email: pranjalmaurya1120@gmail.com)\n4. **Er. रोशन कुमार भारती (Core Member - B.Tech CSE A)** - मऊ, उत्तर प्रदेश (Email: roshan@srgi.ac.in)\n5. **Er. रिजवान खान (Core Member - B.Tech CSE A)** - महराजगंज, उत्तर प्रदेश (Email: rijawan5657@gmail.com)\n6. **Er. अविनाश प्रजापति (Core Member - B.Tech CSE A)** - महराजगंज, उत्तर प्रदेश (Email: avinash@srgi.ac.in)\n7. **Er. विवेक सरोज (Core Member - B.Tech CSE A)** - प्रतापगढ़, उत्तर प्रदेश (Email: viveksaroj@srgi.ac.in)\n\n🔒 सभी एडमिन्स की प्रोफाइल आधिकारिक व सुरक्षित है और फोन नंबर की जगह उनके गृह नगर प्रदर्शित हैं।";
   }
 
   // 4. All 5 Blocks Overview
@@ -305,7 +312,7 @@ function getCampusOfflineAnswer(queryRaw: string): string {
     q.includes("शिक्षक") ||
     q.includes("फैकल्टी")
   ) {
-    return "👨‍🏫 **CSE Section A फैकल्टी लिस्ट व आधिकारिक फोन नंबर:**\n• **प्रशांत बाजपेयी सर (HOD - CSE):** 7617000030 (Office: Block C, 1st व 2nd Floor)\n• **बृजेश सिंह सर (Language Lab / PCTW):** 7617000079\n• **संतोष कुमार माथुर सर (Electronics / EC):** 9455500244\n• **प्रीति चौधरी मैम (Personality Development / PD):** 7988499219\n• **मनीष कुमार मिश्रा सर (Engineering Chemistry):** 9793000017\n• **लक्ष्मीकांत सर (Engineering Mathematics):** 9451910027\n• **मनीष मिश्रा सर (Mechanical Engineering / ME):** 9793000055";
+    return "👨‍🏫 **CSE Section A फैकल्टी लिस्ट एवं विषय:**\n• **श्री प्रशांत बाजपेयी:** हेड ऑफ डिपार्टमेंट (HOD - CSE) | ऑफिस: Block C (1st व 2nd Floor)\n• **श्री राजीव कुमार मिश्रा:** डिप्टी HOD एवं लैंग्वेज लैब / PCTW फैकल्टी\n• **श्री लक्ष्मीकांत:** क्वार्डिनेटर (Coordinator) एवं इंजीनियरिंग मैथ्स फैकल्टी\n• **श्री बृजेश सिंह:** Professional Communication & Tech Writing (PCTW)\n• **श्री संतोष कुमार माथुर:** Electronics & Communication (EC)\n• **सुश्री प्रीति चौधरी:** Personality Development (PD)\n• **डॉ. मनीष कुमार मिश्रा:** Engineering Chemistry (CHEM)\n• **श्री मनीष मिश्रा:** Mechanical Engineering (ME)\n\n📌 *नोट: सभी फैकल्टीज के ऑफिशियल संपर्क नंबर देखने के लिए वेबसाइट के 'Faculties & Schedule' सेक्शन पर जाएँ।*";
   }
 
   // Videos & Routes
@@ -318,7 +325,7 @@ function getCampusOfflineAnswer(queryRaw: string): string {
     q.includes("कैमरा") ||
     q.includes("रास्ते का वीडियो")
   ) {
-    return "🎥 **SRGI के 8 ऑफिशियल कैंपस वीडियो वॉकथ्रू:**\n1. **गेट 1 से मेन कैंपस एंट्री:** Gate 1 से कॉलेज का मुख्य मार्ग।\n2. **मेन गेट से ब्लॉक C मुख्य गेट:** Gate 1 से सीधे Block C तक का वॉकथ्रू।\n3. **ब्लॉक C मुख्य प्रवेश द्वार व लॉबी:** फ्रंट पोर्च और ग्राउंड फ्लोर।\n4. **ब्लॉक C बाईं सीढ़ियों वाले गेट से एंट्री:** Side gate से बाईं सीढ़ी का शॉर्टकट।\n5. **ब्लॉक C ग्राउंड फ्लोर से 2nd फ्लोर (बाएं सीढ़ियों से):** CSE कक्षाओं तक जाने का वीडियो।\n6. **ब्लॉक C 2nd फ्लोर कॉरिडोर:** CSE Section A, B, C, Bio-Tech, Mechanical और HOD Office।\n7. **ब्लॉक C 2nd फ्लोर राइट साइड विंग:** क्लासरूम्स और लैब्स का कॉरिडोर।\n8. **ब्लॉक C 2nd फ्लोर से ग्राउंड फ्लोर नीचे जाने का वीडियो।**\n\n👉 यह सभी वीडियो आप मेन स्क्रीन (Home) और **'Camera Detector & Videos'** सेक्शन में सीधे देख सकते हैं!";
+    return "🎥 **SRGI के 23 ऑफिशियल कैंपस वीडियो वॉकथ्रू:**\n1. **सेंट्रल कैंपस ग्राउंड्स (Central Campus Walkthrough)**\n2. **कॉलेज एग्जिट वॉक (College Exit to Main Gate)**\n3. **वे टू ब्लॉक A (Way to Block A Administration)**\n4. **गेट 1 से मेन कैंपस एंट्री:** Gate 1 से कॉलेज का मुख्य मार्ग।\n5. **मेन गेट से ब्लॉक C मुख्य गेट:** Gate 1 से सीधे Block C तक का वॉकथ्रू।\n6. **ब्लॉक C मुख्य प्रवेश द्वार व लॉबी:** फ्रंट पोर्च और ग्राउंड फ्लोर।\n7. **ब्लॉक C बाईं सीढ़ियों वाले गेट से एंट्री:** Side gate से बाईं सीढ़ी का शॉर्टकट।\n8. **ब्लॉक C ग्राउंड फ्लोर से 2nd फ्लोर (बाएं सीढ़ियों से):** CSE कक्षाओं तक जाने का वीडियो।\n9. **ब्लॉक C 2nd फ्लोर कॉरिडोर:** CSE Section A, B, C, Bio-Tech, Mechanical और HOD Office।\n10. **ब्लॉक C 2nd फ्लोर राइट साइड विंग:** क्लासरूम्स और लैब्स का कॉरिडोर।\n11. **ब्लॉक C 2nd फ्लोर से ग्राउंड फ्लोर नीचे जाने का वीडियो।**\n12. **ब्लॉक C फ्लोर 2 से 3 सीढ़ियों का रास्ता।**\n13. **ब्लॉक C फ्लोर 1 से 3 (दाएं सीढ़ियों से)।**\n14. **ब्लॉक C से सभी ब्लॉक्स का दिशा निर्देश (C से B, A, D, E)।**\n15. **ब्लॉक C फ्लोर 2 जानकारी (दाएं सीढ़ियों से)।**\n16. **ब्लॉक C ग्राउंड फ्लोर विस्तृत कॉरिडोर वॉकथ्रू।**\n17. **ब्लॉक C 2nd फ्लोर कॉरिडोर व लैब्स टूर।**\n18. **ब्लॉक C CSE एडवांस्ड / स्मार्ट क्लासरूम (ग्राउंड फ्लोर)।**\n19. **ब्लॉक C 1st फ्लोर कॉरिडोर व फैकल्टी केबिन।**\n20. **ब्लॉक C 3rd फ्लोर व SRIMT विंग।**\n21. **ब्लॉक C ग्राउंड फ्लोर मुख्य प्रवेश व स्टेप्स।**\n22. **ब्लॉक C 2nd फ्लोर पैनोरमिक विंग वॉक।**\n23. **SRIMT मुख्य प्रवेश द्वार व पाथवे।**\n\n👉 यह सभी 23 वीडियो आप मुख्य इंटरफ़ेस के 'Campus Videos' सेक्शन और 'Camera Detector & Videos' में सीधे देख सकते हैं!";
   }
 
   // Medical, First Aid, Medicines, Store Room
@@ -382,7 +389,7 @@ function getCampusOfflineAnswer(queryRaw: string): string {
   }
 
   // Default multi-point answer covering ALL major highlights of the college
-  return "🏛️ **SRGI कैंपस गाइड — मुख्य जानकारी:**\n• **CSE Section A:** Block C के 2nd Floor पर (बाएं सीढ़ियों से ऊपर जाकर दाईं ओर मुड़ें)।\n• **क्लास टाइमिंग:** सुबह 09:00 AM से शाम 04:30 PM (वॉटर ब्रेक: 11:00 AM, 2:10 PM, 3:20 PM | लंच: 12:10 - 1:00 PM)।\n• **5 ब्लॉक्स:** Block A (Admin, Library, Seminar Hall), Block B (MBA), Block C (B.Tech Engg), Block D (Girls Hostel + Medical Store), Block E (Senior Classes)।\n• **सेंट्रल लाइब्रेरी:** Block A के 2nd Floor पर।\n• **सेमिनार हॉल:** Block A Ground Floor पर (Cafeteria से 20m सीधे)।\n• **एडमिन टीम:** Er. सुमन कुमार, Er. विवेक साहनी, Er. प्रांजल मौर्या, Er. रोशन कुमार भारती, Er. रिजवान खान, Er. अविनाश प्रजापति, Er. विवेक सरोज।\n• **8 कैंपस वीडियो वॉकथ्रू:** होमपेज व Camera Detector में लाइव उपलब्ध हैं।\n\nआप किसी भी ब्लॉक, क्लास, फैकल्टी या टाइमिंग के बारे में विस्तार से पूछ सकते हैं!";
+  return "🏛️ **SRGI कैंपस गाइड — मुख्य जानकारी:**\n• **CSE Section A:** Block C के 2nd Floor पर (बाएं सीढ़ियों से ऊपर जाकर दाईं ओर मुड़ें)।\n• **क्लास टाइमिंग:** सुबह 09:00 AM से शाम 04:30 PM (वॉटर ब्रेक: 11:00 AM, 2:10 PM, 3:20 PM | लंच: 12:10 - 1:00 PM)।\n• **5 ब्लॉक्स:** Block A (Admin, Library, Seminar Hall), Block B (MBA), Block C (B.Tech Engg), Block D (Girls Hostel + Medical Store), Block E (Senior Classes)।\n• **सेंट्रल लाइब्रेरी:** Block A के 2nd Floor पर।\n• **सेमिनार हॉल:** Block A Ground Floor पर (Cafeteria से 20m सीधे)।\n• **एडमिन टीम:** Er. सुमन कुमार, Er. विवेक साहनी, Er. प्रांजल मौर्या, Er. रोशन कुमार भारती, Er. रिजवान खान, Er. अविनाश प्रजापति, Er. विवेक सरोज।\n• **23 कैंपस वीडियो वॉकथ्रू:** 'Campus Videos' व Camera Detector में लाइव उपलब्ध हैं।\n\nआप किसी भी ब्लॉक, क्लास, फैकल्टी या टाइमिंग के बारे में विस्तार से पूछ सकते हैं!";
 }
 
 // API Routes

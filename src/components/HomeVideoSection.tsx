@@ -1,288 +1,220 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import {
   Video,
   Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize2,
   ArrowRight,
-  Compass,
-  MapPin,
-  Layers,
   Sparkles,
+  MapPin,
+  Film,
+  Camera,
+  Layers,
+  CheckCircle2,
 } from "lucide-react";
 import { CampusVideoRoute } from "../types";
 import { initialCampusVideos } from "../data/campusVideos";
 
 interface HomeVideoSectionProps {
-  onNavigateToCamera: () => void;
+  onNavigateToVideos?: () => void;
+  onNavigateToCamera?: () => void;
+  onSelectVideo?: (videoId: string) => void;
 }
 
-export default function HomeVideoSection({ onNavigateToCamera }: HomeVideoSectionProps) {
-  const [allVideos, setAllVideos] = useState<CampusVideoRoute[]>(initialCampusVideos);
-  const [selectedVideo, setSelectedVideo] = useState<CampusVideoRoute>(initialCampusVideos[0]);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isMuted, setIsMuted] = useState<boolean>(true);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+export default function HomeVideoSection({
+  onNavigateToVideos,
+  onNavigateToCamera,
+  onSelectVideo,
+}: HomeVideoSectionProps) {
+  const [activePreviewVideo, setActivePreviewVideo] = useState<CampusVideoRoute | null>(null);
 
-  // Load any user-added videos from localStorage
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("srgi_custom_video_routes");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setAllVideos([...initialCampusVideos, ...parsed]);
-        }
-      }
-    } catch {
-      // ignore
-    }
-  }, []);
+  // Top 4 highlighted route walkthroughs for quick preview
+  const featuredVideos = [
+    {
+      vid: initialCampusVideos.find((v) => v.id === "vid-central-campus-ground") || initialCampusVideos[0],
+      badge: "Central Campus",
+      color: "from-blue-600 to-indigo-700",
+      bgBadge: "bg-blue-500/20 text-blue-200 border-blue-400/30",
+    },
+    {
+      vid: initialCampusVideos.find((v) => v.id === "vid-college-exit-gate") || initialCampusVideos[1],
+      badge: "College Exit Route",
+      color: "from-emerald-600 to-teal-700",
+      bgBadge: "bg-emerald-500/20 text-emerald-200 border-emerald-400/30",
+    },
+    {
+      vid: initialCampusVideos.find((v) => v.id === "vid-way-to-a-block") || initialCampusVideos[2],
+      badge: "Way to Block A",
+      color: "from-amber-600 to-orange-700",
+      bgBadge: "bg-amber-500/20 text-amber-200 border-amber-400/30",
+    },
+    {
+      vid: initialCampusVideos.find((v) => v.id === "vid-c-block-second-floor") || initialCampusVideos[5],
+      badge: "Block C & CSE A",
+      color: "from-purple-600 to-pink-700",
+      bgBadge: "bg-purple-500/20 text-purple-200 border-purple-400/30",
+    },
+  ];
 
-  const handleSelectVideo = (video: CampusVideoRoute) => {
-    setSelectedVideo(video);
-    setIsPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.playbackRate = 1.8;
-      videoRef.current.play().catch(() => setIsPlaying(false));
-    }
-  };
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 1.8;
-    }
-  }, [selectedVideo]);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
+  const handleCardClick = (vid: CampusVideoRoute) => {
+    if (onSelectVideo) {
+      onSelectVideo(vid.id);
+    } else if (onNavigateToVideos) {
+      onNavigateToVideos();
     } else {
-      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
-    }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsMuted(videoRef.current.muted);
-  };
-
-  const handleFullscreen = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen();
+      setActivePreviewVideo(vid);
     }
   };
 
   return (
-    <section id="home-video-walkthroughs-section" className="max-w-4xl mx-auto px-4 my-10">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
-        <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 text-xs font-bold tracking-wide uppercase border border-blue-200/60 dark:border-blue-800 mb-2">
-            <Video className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            Official Campus Walkthrough Videos ({allVideos.length})
-          </span>
-          <h2 className="text-xl sm:text-2xl font-black text-[#102e59] dark:text-blue-100 tracking-tight">
-            Campus Route Videos & Walkthroughs
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            कैंपस वीडियो वॉकथ्रू — गेट 1, ब्लॉक C, सीढ़ियों व लैब तक का सीधा रास्ता देखें
-          </p>
-        </div>
+    <section id="home-video-walkthroughs-section" className="max-w-4xl mx-auto px-4 my-12">
+      <div className="bg-gradient-to-br from-slate-950 via-[#0d233e] to-[#08182b] text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-blue-500/20 relative overflow-hidden">
+        {/* Subtle decorative glow */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <button
-          id="home-open-camera-detector-btn"
-          onClick={onNavigateToCamera}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#075db4] hover:bg-[#064e9a] text-white text-xs font-bold transition-all shadow-md shadow-blue-900/10 cursor-pointer shrink-0 self-start sm:self-auto"
-        >
-          <Compass className="w-3.5 h-3.5 text-blue-200" />
-          <span>Open Full Camera Detector</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
-      </div>
-
-      {/* Main Video Player Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-900/5 overflow-hidden transition-colors">
-        {/* Video Player Display */}
-        <div className="relative bg-slate-950 aspect-video w-full flex items-center justify-center overflow-hidden group">
-          <video
-            ref={videoRef}
-            src={selectedVideo.videoUrl}
-            className="w-full h-full object-contain"
-            playsInline
-            muted={isMuted}
-            loop
-            onLoadedData={(e) => {
-              e.currentTarget.playbackRate = 1.8;
-            }}
-            onPlay={(e) => {
-              e.currentTarget.playbackRate = 1.8;
-              setIsPlaying(true);
-            }}
-            onPause={() => setIsPlaying(false)}
-          />
-
-          {/* Controls Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity flex flex-col justify-between p-4 pointer-events-none">
-            {/* Top Video Header */}
-            <div className="flex items-center justify-between pointer-events-auto">
-              <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-blue-600/90 text-white text-[11px] font-bold backdrop-blur-xs flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-amber-300" />
-                  {selectedVideo.block} • {selectedVideo.floor}
-                </span>
-                <span className="px-2 py-0.5 rounded-md bg-amber-400/90 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-xs">
-                  ⚡ 1.80x Speed
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  id="home-video-mute-btn"
-                  onClick={toggleMute}
-                  className="p-2 rounded-lg bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer"
-                  title={isMuted ? "Unmute" : "Mute"}
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                </button>
-                <button
-                  id="home-video-fullscreen-btn"
-                  onClick={handleFullscreen}
-                  className="p-2 rounded-lg bg-black/60 hover:bg-black/80 text-white transition-colors cursor-pointer"
-                  title="Fullscreen"
-                >
-                  <Maximize2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Bottom Play/Pause & Title */}
-            <div className="pointer-events-auto">
-              <div className="flex items-center gap-3">
-                <button
-                  id="home-video-play-btn"
-                  onClick={togglePlay}
-                  className="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-lg transition-transform transform active:scale-95 cursor-pointer"
-                >
-                  {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
-                </button>
-                <div>
-                  <div className="text-white text-sm font-bold drop-shadow-sm">{selectedVideo.title}</div>
-                  <div className="text-slate-300 text-xs drop-shadow-sm">{selectedVideo.hindiTitle}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Floating Play Button if Paused */}
-          {!isPlaying && (
-            <button
-              id="home-video-center-play-btn"
-              onClick={togglePlay}
-              className="absolute z-10 w-16 h-16 rounded-full bg-blue-600/90 hover:bg-blue-600 text-white flex items-center justify-center shadow-xl backdrop-blur-xs transition-transform transform hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              <Play className="w-7 h-7 ml-1" />
-            </button>
-          )}
-        </div>
-
-        {/* Selected Route Info Strip */}
-        <div className="p-4 sm:p-5 bg-gradient-to-br from-slate-50 to-blue-50/40 dark:from-slate-850 dark:to-slate-900 border-b border-slate-200/70 dark:border-slate-800">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="relative z-10">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <div className="text-base font-extrabold text-[#102e59] dark:text-blue-200 flex items-center gap-2">
-                <span>{selectedVideo.title}</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider border border-blue-400/30 mb-2">
+                <Video className="w-3.5 h-3.5 text-blue-400" />
+                <span>23 Official Campus Videos</span>
               </div>
-              <div className="text-xs font-semibold text-blue-800 dark:text-blue-300 mt-0.5">
-                {selectedVideo.hindiTitle}
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed max-w-2xl">
-                {selectedVideo.description}
+              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Campus Video Walkthroughs (वीडियो वॉकथ्रू)
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
+                High-definition walking videos guiding you step-by-step through Central Campus, Main Gate, Block C corridors, CSE Section A classrooms, and Block A administration.
               </p>
             </div>
 
-            {/* Start to Destination pill */}
-            <div className="bg-white dark:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-200/80 dark:border-slate-700 shadow-xs shrink-0 text-xs flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="font-semibold text-slate-800 dark:text-slate-200">{selectedVideo.startLocation}</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-blue-700 dark:text-blue-300 font-bold pl-3.5">
-                <ArrowRight className="w-3 h-3 text-blue-500 dark:text-blue-400" />
-                <span>{selectedVideo.endLocation}</span>
-              </div>
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              {onNavigateToVideos && (
+                <button
+                  id="view-all-23-videos-btn"
+                  onClick={onNavigateToVideos}
+                  className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-900/30 flex items-center gap-1.5 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                >
+                  <Film className="w-4 h-4 text-blue-200" />
+                  <span>Open Video Section ({initialCampusVideos.length})</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+
+              {onNavigateToCamera && (
+                <button
+                  onClick={onNavigateToCamera}
+                  className="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-emerald-300 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-emerald-400/30 transition-colors cursor-pointer"
+                >
+                  <Camera className="w-4 h-4 text-emerald-400" />
+                  <span>Camera Vision</span>
+                </button>
+              )}
             </div>
           </div>
-        </div>
 
-        {/* Route Videos Selector Carousel/Grid */}
-        <div className="p-4 sm:p-5">
-          <div className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-3 flex items-center justify-between">
-            <span className="flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              Available Route Videos ({allVideos.length})
-            </span>
-            <span className="text-[11px] text-slate-400 dark:text-slate-500 font-normal">Tap any video to play directly</span>
+          {/* Featured Video Route Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+            {featuredVideos.map((item, idx) => (
+              <div
+                key={item.vid.id}
+                onClick={() => handleCardClick(item.vid)}
+                className="bg-white/5 hover:bg-white/10 rounded-2xl p-4 border border-white/10 hover:border-blue-400/50 transition-all duration-200 cursor-pointer flex flex-col justify-between group transform hover:-translate-y-1"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1 mb-2">
+                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase border ${item.bgBadge}`}>
+                      {item.badge}
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">
+                      #{idx + 1}
+                    </span>
+                  </div>
+
+                  <h4 className="text-xs font-bold text-white group-hover:text-blue-300 transition-colors line-clamp-2">
+                    {item.vid.title}
+                  </h4>
+                  <p className="text-[11px] text-blue-200/80 font-medium mt-0.5 line-clamp-1">
+                    {item.vid.hindiTitle}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">1.8x Fast Walk</span>
+                  <div className="w-7 h-7 rounded-full bg-blue-600/80 group-hover:bg-blue-500 text-white flex items-center justify-center transition-colors shadow-sm">
+                    <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-            {allVideos.map((video, idx) => {
-              const isSelected = selectedVideo.id === video.id;
-              return (
-                <button
-                  key={video.id}
-                  id={`home-video-card-${idx}`}
-                  onClick={() => handleSelectVideo(video)}
-                  className={`text-left p-3 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
-                    isSelected
-                      ? "bg-blue-50/90 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 shadow-sm ring-2 ring-blue-100 dark:ring-blue-900/50"
-                      : "bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200/80 dark:border-slate-700 hover:border-slate-300"
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-1 mb-1.5">
-                      <span
-                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
-                          isSelected ? "bg-blue-600 text-white" : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300"
-                        }`}
-                      >
-                        Route #{idx + 1}
-                      </span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate max-w-[100px]">
-                        {video.floor}
-                      </span>
-                    </div>
+          {/* Quick Route Highlights Bar */}
+          <div className="bg-white/5 rounded-2xl p-4 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 text-slate-300">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>
+                All 23 route videos feature <b>1.8x speed</b> for fast walking preview across all 5 campus blocks.
+              </span>
+            </div>
 
-                    <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug mb-1">
-                      {video.title}
-                    </h4>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1">
-                      {video.hindiTitle}
-                    </p>
-                  </div>
-
-                  <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1 truncate max-w-[120px]">
-                      <MapPin className="w-3 h-3 text-slate-400 dark:text-slate-500 shrink-0" />
-                      <span className="truncate">{video.block}</span>
-                    </span>
-                    <span className={`font-bold flex items-center gap-0.5 ${isSelected ? "text-blue-700 dark:text-blue-300" : "text-slate-600 dark:text-slate-300"}`}>
-                      {isSelected ? "Playing" : "Watch"}
-                      <Play className="w-2.5 h-2.5 ml-0.5" />
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
+            {onNavigateToVideos && (
+              <button
+                onClick={onNavigateToVideos}
+                className="text-amber-300 hover:text-amber-200 font-bold inline-flex items-center gap-1 cursor-pointer"
+              >
+                <span>Browse All 23 Walk Videos</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Quick In-Modal Video Player if triggered directly */}
+      {activePreviewVideo && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-slate-950 rounded-3xl max-w-3xl w-full overflow-hidden border border-slate-800 shadow-2xl relative">
+            <div className="p-4 bg-slate-900 flex items-center justify-between border-b border-slate-800">
+              <div>
+                <h4 className="text-sm font-bold text-white">{activePreviewVideo.title}</h4>
+                <p className="text-xs text-blue-300">{activePreviewVideo.hindiTitle}</p>
+              </div>
+              <button
+                onClick={() => setActivePreviewVideo(null)}
+                className="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-bold"
+              >
+                Close ✕
+              </button>
+            </div>
+            <div className="aspect-video bg-black">
+              <video
+                src={activePreviewVideo.videoUrl}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="p-4 bg-slate-900 text-xs text-slate-300 flex items-center justify-between">
+              <div>
+                From: <b>{activePreviewVideo.startLocation}</b> → To: <b>{activePreviewVideo.endLocation}</b>
+              </div>
+              {onNavigateToVideos && (
+                <button
+                  onClick={() => {
+                    setActivePreviewVideo(null);
+                    onNavigateToVideos();
+                  }}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold flex items-center gap-1"
+                >
+                  <span>Open Full Video Hub</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
